@@ -1,4 +1,4 @@
-%module Vector2
+%module PhysicsPropertiesModule
 
 %typemap(jstype) Vector2f "com.westerholmgmail.v.lauri.tunnelescape.Vector2f";
 %typemap(jtype) Vector2f "com.westerholmgmail.v.lauri.tunnelescape.Vector2f";
@@ -14,19 +14,14 @@
     $result = jVect;
 }
 
+
+
 %{
-#include "Vector2.hpp"
+#include "PhysicsProperties.hpp"
 %}
+
+%include "PhysicsProperties.hpp"
 %include "Vector2.hpp"
 
 %template (Vector2f) Vector2<float>;
 %template (Vector2i) Vector2<int>;
-
-
-%rename(equals) Vector2<T>::operator==(const Vector2<T>& vect1) const;
-%rename(greaterThan) Vector2<T>::operator>(const Vector2<T>& vect) const;
-%rename(smallerThan) Vector2<T>::operator<(const Vector2<T>& vect) const;
-%rename(vectorMultiplication) Vector2<T>::operator*(const Vector2<T>& vect1) const;
-%rename(multiplication) Vector2<T>::operator*(T multiplier) const;
-%rename(vectorAddition) Vector2<T>::operator+(const Vector2<T>& vect1);
-%rename(vectorSubstraction) Vector2<T>::operator-(const Vector2<T>& vect);
