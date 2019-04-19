@@ -12,7 +12,6 @@ cmake_minimum_required(VERSION 3.4.1)
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             # native-lib
              physics-lib
 
              # Sets the library as a shared library.
@@ -27,12 +26,27 @@ add_library( # Sets the name of the library.
              src/main/cpp/jns/Rect_wrap.cxx
              src/main/cpp/jns/Shape.cpp
              src/main/cpp/jns/Shape_wrap.cxx
+             src/main/cpp/jns/PhysicsProperties.cpp
+             src/main/cpp/jns/PhysicsProperties_wrap.cxx
+             src/main/cpp/jns/PhysicsObject.cpp
+             src/main/cpp/jns/DynamicObject.cpp
+             src/main/cpp/jns/StaticObject.cpp
+             src/main/cpp/jns/PhysicsGrid.cpp
+             src/main/cpp/jns/PhysicsWorld.cpp
+             src/main/cpp/jns/CollisionDetection.cpp
 
         )
 include_directories(
             src/main/cpp/jns/Vector2.hpp
             src/main/cpp/jns/Rect.hpp
             src/main/cpp/jns/Shape.hpp
+            src/main/cpp/jns/PhysicsProperties.hpp
+            src/main/cpp/jns/PhysicsObject.hpp
+            src/main/cpp/jns/DynamicObject.hpp
+            src/main/cpp/jns/StaticObject.hpp
+            src/main/cpp/jns/PhysicsGrid.hpp
+            src/main/cpp/jns/PhysicsWorld.hpp
+            src/main/cpp/jns/CollisionDetection.hpp
 )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -53,7 +67,6 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       # native-lib
                         physics-lib
                        # Links the target library to the log library
                        # included in the NDK.
