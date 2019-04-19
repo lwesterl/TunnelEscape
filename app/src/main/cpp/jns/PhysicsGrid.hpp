@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "../utils/Rect.hpp"
-#include "../utils/Vector2.hpp"
+#include "Rect.hpp"
+#include "Vector2.hpp"
 #include "PhysicsObject.hpp"
 #include "DynamicObject.hpp"
 #include "StaticObject.hpp"
@@ -15,11 +15,6 @@
 #include <map>
 
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
 
   /**
@@ -234,5 +229,3 @@ namespace pe {
 
 
 
-
-} // end of namespace pe

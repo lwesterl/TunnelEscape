@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "../utils/Rect.hpp"
-#include "../utils/Vector2.hpp"
+#include "Rect.hpp"
+#include "Vector2.hpp"
 #include "PhysicsObject.hpp"
 #include "DynamicObject.hpp"
 #include "StaticObject.hpp"
@@ -17,11 +17,6 @@
 #include <thread>
 #include <mutex>
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
   /**
     *   @struct Collided
@@ -240,5 +235,3 @@ namespace pe {
       std::mutex collided_mutex;
 
   };
-
-} // end of namespace pe

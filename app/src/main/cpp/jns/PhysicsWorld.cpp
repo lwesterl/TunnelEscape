@@ -4,9 +4,8 @@
   *   @brief Contains class PhysicsWorld
   */
 
-#include "../include/PhysicsWorld.hpp"
+#include "PhysicsWorld.hpp"
 
-namespace pe {
 
   /* Class PhysicsWorld */
 
@@ -217,4 +216,3 @@ namespace pe {
     return collided;
   }
 
-} // end of namespace pe

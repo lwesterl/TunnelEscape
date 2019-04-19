@@ -9,11 +9,6 @@
 #include "Vector2.hpp"
 #include <ostream>
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
   /**
     *   @class Rect
@@ -48,6 +43,8 @@ namespace pe {
         *   @return updated Rect refence
         */
       Rect<T>& operator=(const Rect<T>& rect);
+
+      inline Rect<T>* getPointer() { return this; }
 
       /**
         *   @brief Set position for Rect
@@ -162,10 +159,5 @@ namespace pe {
       T height;
   };
 
-  // shorter keywords
-  typedef Rect<float> Rectf; /**< typedef for float Rect */
-  typedef Rect<int> Recti; /**< typedef for int Rect */
-  typedef Rect<unsigned> Rectu; /**< typedef for unsigned Rect */
-  typedef Rect<double> Rectd; /**< typedef for double Rect */
-
-} // end of namespace pe
+  typedef Rect<float> Rectf;
+  typedef Rect<int> Recti;

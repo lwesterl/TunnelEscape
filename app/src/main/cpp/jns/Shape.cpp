@@ -7,7 +7,6 @@
 
 #include "Shape.hpp"
 
-namespace pe {
 
   // Empty constructor
   Shape::Shape(): area(0.f) {}
@@ -185,4 +184,4 @@ namespace pe {
     // remove duplicates permanently
     axis.erase(last, axis.end());
   }
-}// end of namespace pe
+

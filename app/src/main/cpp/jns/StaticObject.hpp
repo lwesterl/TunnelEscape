@@ -8,12 +8,6 @@
 
 #include "PhysicsObject.hpp"
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
-
   /**
     *   @class StaticObject
     *   @brief PhysicsObject inherited class describing static objects in PhysicsWorld
@@ -74,4 +68,4 @@ namespace pe {
       virtual Vector2f getPrevPosition() override;
 
   };
-}// enf of namespace pe
+

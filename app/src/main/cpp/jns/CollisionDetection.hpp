@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../utils/Vector2.hpp"
+#include "Vector2.hpp"
 #include "PhysicsObject.hpp"
 #include "PhysicsProperties.hpp"
 #include <vector>
@@ -15,12 +15,6 @@
 #include <limits>
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b)) /**< Macro for min value */
-
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
   /**
     *   @namespace CollisionDetection
@@ -145,4 +139,3 @@ namespace pe {
     void setCollisionDirections(PhysicsObject* obj1, PhysicsObject* obj2);
 
   } // end of namespace CollisionDetection
-} // end of namespace pe

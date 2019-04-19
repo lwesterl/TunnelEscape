@@ -4,9 +4,9 @@
   *   @brief Contains source code for StaticObject
   */
 
-#include "../include/StaticObject.hpp"
+#include "StaticObject.hpp"
 
-namespace pe {
+
 
   // Empty constructor
   StaticObject::StaticObject(): PhysicsObject() {}
@@ -20,4 +20,4 @@ namespace pe {
     return physics.position - physics.origin_transform;
   }
 
-}// end of namespace pe
+

@@ -13,11 +13,6 @@
 #include <cmath>
 #include <algorithm>
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
   /**
     *   @class Shape
     *   @brief Contains PhysicsObject shape (polygon)
@@ -53,6 +48,8 @@ namespace pe {
           *   @return Shape which is identical to shape
           */
         Shape& operator=(const Shape& shape);
+
+        inline Shape* getPointer() { return this; }
 
         /**
           *   @brief Get the center of mass of Shape
@@ -156,4 +153,4 @@ namespace pe {
         float area; /**< Area of the Spape */
 
     };
-}// end of namespace pe
+

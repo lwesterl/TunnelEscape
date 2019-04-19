@@ -6,16 +6,11 @@
 
 #pragma once
 
-#include "../utils/Vector2.hpp"
+#include "Vector2.hpp"
 #include <limits>
 #include <cmath>
 
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
   /**
     *   @class PhysicsProperties
@@ -49,6 +44,8 @@ namespace pe {
           */
         PhysicsProperties(float density, float area, bool static_object = false);
 
+        inline PhysicsProperties* getPointer() { return this; }
+        
         /**
           *   @brief Use this to set new position
           *   @details This method takes origin_transform into account so this is
@@ -108,7 +105,3 @@ namespace pe {
           */
         void CalculateInverseMass(float area, bool static_object);
     };
-
-
-
-}// end of namespace pe

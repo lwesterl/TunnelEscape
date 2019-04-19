@@ -6,17 +6,13 @@
 
 #pragma once
 
+#include "Vector2.hpp"
 #include "PhysicsObject.hpp"
 #include <limits>
 
 #define ABS(a) ((a) > 0 ? (a) : -(a)) /**< Macro for abs, use carefully */
 
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
   /**
     *   @class DynamicObject
@@ -95,4 +91,3 @@ namespace pe {
 
     };
 
-}// end of namespace pe

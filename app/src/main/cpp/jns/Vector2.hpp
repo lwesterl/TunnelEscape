@@ -10,11 +10,8 @@
 #include <ostream>
 #include <cmath>
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
+
+
 
   template<typename T> class Rect; /**< Forward declaration of Rect template class */
 
@@ -53,6 +50,10 @@ namespace pe {
       template<typename N>
       operator Vector2<N>() {
         return Vector2<N>(static_cast<N>(x), static_cast<N>(y));
+      }
+
+      inline Vector2<T>* getPointer() {
+          return this;
       }
 
       /**
@@ -267,10 +268,5 @@ namespace pe {
       T y;
   };
 
-  /* shorter keywords */
-  typedef Vector2<float> Vector2f; /**< typedef for float Vector2 */
-  typedef Vector2<int> Vector2i; /**< typedef for int Vector2 */
-  typedef Vector2<double> Vector2d; /**< typedef for double Vector2 */
-  typedef Vector2<unsigned> Vector2u; /**< typedef for unsigned Vector2 */
-
-} // end of namespace pe
+  typedef Vector2<float> Vector2f;
+  typedef Vector2<int> Vector2i;

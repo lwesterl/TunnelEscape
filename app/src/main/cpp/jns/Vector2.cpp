@@ -6,7 +6,6 @@
 
 #include "Vector2.hpp"
 
-namespace pe {
 
 
   /*  Constructors */
@@ -100,10 +99,6 @@ namespace pe {
     return *this;
   }
 
-  /*  Instantiate needed templates */
-  template class Vector2<int>;
-  template class Vector2<float>;
-  template class Vector2<unsigned>;
-  template class Vector2<double>;
-
-} // end of namespace pe
+/*  Instantiate needed templates */
+template class Vector2<int>;
+template class Vector2<float>;

@@ -5,9 +5,8 @@
   */
 
 
-#include "../include/PhysicsProperties.hpp"
+#include "PhysicsProperties.hpp"
 
-namespace pe {
 
   // Member variable initializations
   float PhysicsProperties::GravityX = 0.f;
@@ -64,5 +63,3 @@ namespace pe {
     CalculateInverseMass(area, static_object);
   }
 
-
-}// end of namespace pe

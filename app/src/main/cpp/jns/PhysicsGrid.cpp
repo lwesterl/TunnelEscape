@@ -5,9 +5,8 @@
   */
 
 
-#include "../include/PhysicsGrid.hpp"
+#include "PhysicsGrid.hpp"
 
-namespace pe {
 
   // Empty constructor
   PhysicsGrid::PhysicsGrid(): loose_cell(new Cell<PhysicsObject*>()) {}
@@ -200,4 +199,3 @@ namespace pe {
     moveLooseCellObjects();
   }
 
-} // end of namespace pe

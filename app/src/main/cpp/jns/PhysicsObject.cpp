@@ -4,9 +4,8 @@
   *   @brief Source for PhysicsObject
   */
 
-#include "../include/PhysicsObject.hpp"
+#include "PhysicsObject.hpp"
 
-namespace pe {
 
   // Constructor
   PhysicsObject::PhysicsObject(Shape *shape, float density, bool static_object, ObjectType::ObjectType type):
@@ -69,7 +68,7 @@ namespace pe {
   }
 
   // Get origin transform of PhysicsObject
-  Vector2f& PhysicsObject::getOriginTransform() {
+  Vector2f PhysicsObject::getOriginTransform() {
     return physics.origin_transform;
   }
 
@@ -106,4 +105,3 @@ namespace pe {
     return physics.inverse_mass ? 1.f / physics.inverse_mass : std::numeric_limits<float>::max();
   }
 
-}// end of namespace pe

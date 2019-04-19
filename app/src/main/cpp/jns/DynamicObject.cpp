@@ -5,9 +5,8 @@
   */
 
 
-#include "../include/DynamicObject.hpp"
+#include "DynamicObject.hpp"
 
-namespace pe {
 
   // Empty constructor
   DynamicObject::DynamicObject(): PhysicsObject(),
@@ -88,4 +87,3 @@ namespace pe {
     return prevPosition - physics.origin_transform;
   }
 
-}// end of namespace pe

@@ -7,18 +7,13 @@
 
 #pragma once
 
-#include "../utils/Vector2.hpp"
-#include "../include/Shape.hpp"
-#include "../include/PhysicsProperties.hpp"
+#include "Vector2.hpp"
+#include "Shape.hpp"
+#include "PhysicsProperties.hpp"
 #include <cmath>
 #include <utility>
 #include <cstdint>
 
-/**
-  *   @namespace pe
-  *   @remark Stands for PhysicsEngine
-  */
-namespace pe {
 
 
   /**
@@ -48,6 +43,7 @@ namespace pe {
     bool dynamic_dynamic_collision = false; /**< whether collision is between two dynamicObjects, then the other values must be set */
     Vector2f opponentVelocity; /**< opponent collision_velocity, no need to define if collision is between static and dynamic object */
     float opponentMass; /**< mass of the opponent in collision, no need to define if collision is between static and dynamic object */
+    inline CollisionDetails* getPointer() { return this; }
   };
 
 
@@ -83,6 +79,7 @@ namespace pe {
         */
       PhysicsObject(Shape *shape, float density, bool static_object, ObjectType::ObjectType type);
 
+      inline PhysicsObject* getPointer() { return this; }
       /**
         *   @brief Set force for PhysicObject
         *   @details implemented in lower classes
@@ -208,7 +205,7 @@ namespace pe {
         *   @return physics.origin_transform
         *   @see setOriginTransform
         */
-      Vector2f& getOriginTransform();
+      Vector2f getOriginTransform();
 
       /**
         *   @brief Set elasticity for PhysicsObject
@@ -289,4 +286,3 @@ namespace pe {
 
 
   };
-} // end of namespace pe

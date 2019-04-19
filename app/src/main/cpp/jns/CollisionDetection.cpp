@@ -4,10 +4,9 @@
   *   @brief Contains implementations relating to CollisionDetection
   */
 
-#include "../include/CollisionDetection.hpp"
+#include "CollisionDetection.hpp"
 
 
-namespace pe {
 
   namespace CollisionDetection {
 
@@ -167,4 +166,3 @@ namespace pe {
     }
 
   }// end of namespace CollisionDetection
-}// end of namespace pe

@@ -6,7 +6,6 @@
 
 #include "Rect.hpp"
 
-namespace pe {
 
   // Empty constructor
   template<typename T>
@@ -92,11 +91,5 @@ namespace pe {
     return ((point.x >= pos.x) && (point.x <= pos.x + width) && (point.y >= pos.y) && (point.y <= pos.y + height));
   }
 
-  //  Instantiate needed templates
-  template class Rect<int>;
-  template class Rect<float>;
-  template class Rect<unsigned>;
-  template class Rect<double>;
-
-
-} // end of namespace pe
+template class Rect<int>;
+template class Rect<float>;
