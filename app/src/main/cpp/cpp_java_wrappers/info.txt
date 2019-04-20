@@ -1,0 +1,9 @@
+This directory should contain wrappers between C++ and Java implementations
+
+- Basically only World class should be wrapped to Java class using swig
+
+  * World implements basic methods which are used to transfer info between
+  C++ physics implementations and object as well as logic implemented with Java
+
+- Other classes in this directory shouldn't be wrapped to Java: they should remain
+  C++ and World internal classes
