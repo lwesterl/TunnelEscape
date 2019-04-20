@@ -20,33 +20,33 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              # src/main/cpp/native-lib.cpp
-             src/main/cpp/jns/Vector2.cpp
-             src/main/cpp/jns/Vector2_wrap.cxx
-             src/main/cpp/jns/Rect.cpp
-             src/main/cpp/jns/Rect_wrap.cxx
-             src/main/cpp/jns/Shape.cpp
-             src/main/cpp/jns/Shape_wrap.cxx
-             src/main/cpp/jns/PhysicsProperties.cpp
-             src/main/cpp/jns/PhysicsProperties_wrap.cxx
-             src/main/cpp/jns/PhysicsObject.cpp
-             src/main/cpp/jns/DynamicObject.cpp
-             src/main/cpp/jns/StaticObject.cpp
-             src/main/cpp/jns/PhysicsGrid.cpp
-             src/main/cpp/jns/PhysicsWorld.cpp
-             src/main/cpp/jns/CollisionDetection.cpp
+        src/main/cpp/physics/Vector2.cpp
+        src/main/cpp/physics/Vector2_wrap.cxx
+        src/main/cpp/physics/Rect.cpp
+        src/main/cpp/physics/Rect_wrap.cxx
+        src/main/cpp/physics/Shape.cpp
+        src/main/cpp/physics/Shape_wrap.cxx
+        src/main/cpp/physics/PhysicsProperties.cpp
+        src/main/cpp/physics/PhysicsProperties_wrap.cxx
+        src/main/cpp/physics/PhysicsObject.cpp
+        src/main/cpp/physics/DynamicObject.cpp
+        src/main/cpp/physics/StaticObject.cpp
+        src/main/cpp/physics/PhysicsGrid.cpp
+        src/main/cpp/physics/PhysicsWorld.cpp
+        src/main/cpp/physics/CollisionDetection.cpp
 
         )
 include_directories(
-            src/main/cpp/jns/Vector2.hpp
-            src/main/cpp/jns/Rect.hpp
-            src/main/cpp/jns/Shape.hpp
-            src/main/cpp/jns/PhysicsProperties.hpp
-            src/main/cpp/jns/PhysicsObject.hpp
-            src/main/cpp/jns/DynamicObject.hpp
-            src/main/cpp/jns/StaticObject.hpp
-            src/main/cpp/jns/PhysicsGrid.hpp
-            src/main/cpp/jns/PhysicsWorld.hpp
-            src/main/cpp/jns/CollisionDetection.hpp
+        src/main/cpp/physics/Vector2.hpp
+        src/main/cpp/physics/Rect.hpp
+        src/main/cpp/physics/Shape.hpp
+        src/main/cpp/physics/PhysicsProperties.hpp
+        src/main/cpp/physics/PhysicsObject.hpp
+        src/main/cpp/physics/DynamicObject.hpp
+        src/main/cpp/physics/StaticObject.hpp
+        src/main/cpp/physics/PhysicsGrid.hpp
+        src/main/cpp/physics/PhysicsWorld.hpp
+        src/main/cpp/physics/CollisionDetection.hpp
 )
 
 # Searches for a specified prebuilt library and stores the path as a
