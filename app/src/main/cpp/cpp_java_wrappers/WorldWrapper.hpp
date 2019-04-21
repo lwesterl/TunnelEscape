@@ -150,7 +150,7 @@ class WorldWrapper {
       *   @param key object id
       *   @return ObjectStatus, this is a bit heavy but makes the interface simple
       */
-    struct ObjectStatus fetchPosition(unsigned key);
+    struct ObjectStatus fetchPosition(unsigned key) const;
 
   private:
     static unsigned ObjectID; /**< This is the object ID which is used to find correct item in physicsObjects */
@@ -185,6 +185,12 @@ class WorldWrapper {
       *   @return Shape with correct size
       */
     Shape* GetShape(float width, float height);
+
+    /**
+      *   @brief Get physicsObject matching key
+      *   @return PhysicsObject pointer if object exists, otherwise nullptr
+      */
+    PhysicsObject* GetObject(unsigned key) const;
 
 
     /* Variables */

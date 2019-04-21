@@ -64,6 +64,67 @@ unsigned WorldWrapper::addObject(bool static_object, Vector2f pos, float width, 
 }
 
 
+// Set physics values for the object
+void WorldWrapper::setObjectPhysicsProperties(unsigned key, float elasticity, float density) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    object->setElasticity(elasticity);
+    object->setDensity(density);
+  }
+}
+
+// Set object collision mask, note: input must be converted to uint8_t
+void WorldWrapper::setObjectCollisionMask(unsigned key, unsigned mask) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    object->setCollisionMask(static_cast<uint8_t> (mask));
+  }
+}
+
+// Set object origin_transform
+void WorldWrapper::setObjectOriginTransform(unsigned key, Vector2f transform) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    object->setOriginTransform(transform);
+  }
+}
+
+// Set force for object
+void WorldWrapper::setObjectForce(unsigned key, Vector2f force) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    object->setForce(force);
+  }
+}
+
+// Set velocity for object
+void WorldWrapper::setObjectVelocity(unsigned key, Vector2f velocity) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    object->setVelocity(velocity);
+  }
+}
+
+// Set object position
+void WorldWrapper::setObjectPosition(unsigned key, Vector2f pos) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    object->setPosition(pos);
+  }
+}
+
+// Get object position and whether object still exists
+struct ObjectStatus WorldWrapper::fetchPosition(unsigned key) const {
+  struct ObjectStatus status;
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    status.position = object->getPosition();
+  } else {
+    status.exists = false;
+  }
+  return status;
+}
+
 // Get correct Shape, private method
 Shape* WorldWrapper::GetShape(float width, float height) {
   auto it = shapes.find(Vector2f(width, height));
@@ -74,4 +135,10 @@ Shape* WorldWrapper::GetShape(float width, float height) {
     return new_shape;
   }
   return it->second;
+}
+
+// Get correct PhysicsObject, private method
+PhysicsObject* WorldWrapper::GetObject(unsigned key) const {
+  auto it = keysToObjects.find(key);
+  return it != keysToObjects.end() ? it->second : nullptr;
 }
