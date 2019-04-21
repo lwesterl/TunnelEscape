@@ -21,8 +21,8 @@ public class PhysicsPropertiesModuleJNI {
   public final static native long new_PhysicsProperties__SWIG_1(float jarg1, float jarg2, boolean jarg3);
   public final static native long new_PhysicsProperties__SWIG_2(float jarg1, float jarg2);
   public final static native long PhysicsProperties_getPointer(long jarg1, PhysicsProperties jarg1_);
-  public final static native void PhysicsProperties_setPosition(long jarg1, PhysicsProperties jarg1_, com.westerholmgmail.v.lauri.tunnelescape.Vector2f jarg2);
-  public final static native void PhysicsProperties_movePosition(long jarg1, PhysicsProperties jarg1_, com.westerholmgmail.v.lauri.tunnelescape.Vector2f jarg2);
+  public final static native void PhysicsProperties_setPosition(long jarg1, PhysicsProperties jarg1_, long jarg2, Vector2f jarg2_);
+  public final static native void PhysicsProperties_movePosition(long jarg1, PhysicsProperties jarg1_, long jarg2, Vector2f jarg2_);
   public final static native void PhysicsProperties_applyResistance(long jarg1, PhysicsProperties jarg1_, float jarg2);
   public final static native void PhysicsProperties_setDensity(long jarg1, PhysicsProperties jarg1_, float jarg2, float jarg3, boolean jarg4);
   public final static native void PhysicsProperties_velocity_set(long jarg1, PhysicsProperties jarg1_, long jarg2, Vector2f jarg2_);

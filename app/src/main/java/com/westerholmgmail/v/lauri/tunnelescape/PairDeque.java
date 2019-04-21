@@ -71,8 +71,8 @@ public class PairDeque {
     return WorldWrapperModuleJNI.PairDeque_max_size(swigCPtr, this);
   }
 
-  public void resize(long n, com.westerholmgmail.v.lauri.tunnelescape.Pair c) {
-    WorldWrapperModuleJNI.PairDeque_resize__SWIG_0(swigCPtr, this, n, c);
+  public void resize(long n, Pair c) {
+    WorldWrapperModuleJNI.PairDeque_resize__SWIG_0(swigCPtr, this, n, Pair.getCPtr(c), c);
   }
 
   public void resize(long n) {

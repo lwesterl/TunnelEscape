@@ -248,79 +248,6 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <algorithm>
 #include <stdexcept>
 
-SWIGINTERN std::deque< Vector2< float > >::const_reference std_deque_Sl_Vector2f_Sg__getitem(std::deque< Vector2f > *self,int i){
-                int size = int(self->size());
-                if (i<0) i += size;
-                if (i>=0 && i<size)
-                    return (*self)[i];
-                else
-                    throw std::out_of_range("deque index out of range");
-           }
-SWIGINTERN void std_deque_Sl_Vector2f_Sg__setitem(std::deque< Vector2f > *self,int i,Vector2< float > const &x){
-                int size = int(self->size());
-                if (i<0) i+= size;
-                if (i>=0 && i<size)
-                    (*self)[i] = x;
-                else
-                    throw std::out_of_range("deque index out of range");
-           }
-SWIGINTERN void std_deque_Sl_Vector2f_Sg__delitem(std::deque< Vector2f > *self,int i){
-                int size = int(self->size());
-                if (i<0) i+= size;
-                if (i>=0 && i<size) {
-                    self->erase(self->begin()+i);
-                } else {
-                    throw std::out_of_range("deque index out of range");
-                }
-           }
-SWIGINTERN std::deque< Vector2< float > > std_deque_Sl_Vector2f_Sg__getslice(std::deque< Vector2f > *self,int i,int j){
-                int size = int(self->size());
-                if (i<0) i = size+i;
-                if (j<0) j = size+j;
-                if (i<0) i = 0;
-                if (j>size) j = size;
-                std::deque< Vector2< float > > tmp(j-i);
-                std::copy(self->begin()+i,self->begin()+j,tmp.begin());
-                return tmp;
-            }
-SWIGINTERN void std_deque_Sl_Vector2f_Sg__setslice(std::deque< Vector2f > *self,int i,int j,std::deque< Vector2< float > > const &v){
-                int size = int(self->size());
-                if (i<0) i = size+i;
-                if (j<0) j = size+j;
-                if (i<0) i = 0;
-                if (j>size) j = size;
-                if (int(v.size()) == j-i) {
-                    std::copy(v.begin(),v.end(),self->begin()+i);
-                } else {
-                    self->erase(self->begin()+i,self->begin()+j);
-                    if (i+1 <= size)
-                        self->insert(self->begin()+i+1,v.begin(),v.end());
-                    else
-                        self->insert(self->end(),v.begin(),v.end());
-                }
-            }
-SWIGINTERN void std_deque_Sl_Vector2f_Sg__delslice(std::deque< Vector2f > *self,int i,int j){
-                int size = int(self->size());
-                if (i<0) i = size+i;
-                if (j<0) j = size+j;
-                if (i<0) i = 0;
-                if (j>size) j = size;
-                self->erase(self->begin()+i,self->begin()+j);
-            }
-SWIGINTERN std::vector< Vector2< float > >::const_reference std_vector_Sl_Vector2f_Sg__get(std::vector< Vector2f > *self,int i){
-                int size = int(self->size());
-                if (i>=0 && i<size)
-                    return (*self)[i];
-                else
-                    throw std::out_of_range("vector index out of range");
-            }
-SWIGINTERN void std_vector_Sl_Vector2f_Sg__set(std::vector< Vector2f > *self,int i,std::vector< Vector2< float > >::value_type const &val){
-                int size = int(self->size());
-                if (i>=0 && i<size)
-                    (*self)[i] = val;
-                else
-                    throw std::out_of_range("vector index out of range");
-            }
 SWIGINTERN std::deque< Pair >::const_reference std_deque_Sl_Pair_Sg__getitem(std::deque< Pair > *self,int i){
                 int size = int(self->size());
                 if (i<0) i += size;
@@ -617,7 +544,7 @@ SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrap
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1addObject(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2, jobject jarg3, jfloat jarg4, jfloat jarg5) {
+SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1addObject(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2, jlong jarg3, jobject jarg3_, jfloat jarg4, jfloat jarg5) {
   jlong jresult = 0 ;
   WorldWrapper *arg1 = (WorldWrapper *) 0 ;
   bool arg2 ;
@@ -630,6 +557,7 @@ SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrap
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg3_;
   arg1 = *(WorldWrapper **)&jarg1; 
   arg2 = jarg2 ? true : false; 
   argp3 = *(Vector2f **)&jarg3; 
@@ -643,6 +571,19 @@ SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrap
   result = (unsigned int)(arg1)->addObject(arg2,arg3,arg4,arg5);
   jresult = (jlong)result; 
   return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1removeObject(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  WorldWrapper *arg1 = (WorldWrapper *) 0 ;
+  unsigned int arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(WorldWrapper **)&jarg1; 
+  arg2 = (unsigned int)jarg2; 
+  (arg1)->removeObject(arg2);
 }
 
 
@@ -678,7 +619,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectOriginTransform(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg3) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectOriginTransform(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
   WorldWrapper *arg1 = (WorldWrapper *) 0 ;
   unsigned int arg2 ;
   Vector2f arg3 ;
@@ -687,6 +628,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg3_;
   arg1 = *(WorldWrapper **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   argp3 = *(Vector2f **)&jarg3; 
@@ -699,7 +641,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectForce(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg3) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectForce(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
   WorldWrapper *arg1 = (WorldWrapper *) 0 ;
   unsigned int arg2 ;
   Vector2f arg3 ;
@@ -708,6 +650,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg3_;
   arg1 = *(WorldWrapper **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   argp3 = *(Vector2f **)&jarg3; 
@@ -720,7 +663,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectVelocity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg3) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectVelocity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
   WorldWrapper *arg1 = (WorldWrapper *) 0 ;
   unsigned int arg2 ;
   Vector2f arg3 ;
@@ -729,6 +672,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg3_;
   arg1 = *(WorldWrapper **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   argp3 = *(Vector2f **)&jarg3; 
@@ -741,7 +685,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectPosition(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg3) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setObjectPosition(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
   WorldWrapper *arg1 = (WorldWrapper *) 0 ;
   unsigned int arg2 ;
   Vector2f arg3 ;
@@ -750,6 +694,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg3_;
   arg1 = *(WorldWrapper **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   argp3 = *(Vector2f **)&jarg3; 
@@ -1225,600 +1170,6 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1empty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  result = (bool)((std::deque< Vector2f > const *)arg1)->empty();
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1Vector2fDeque_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (std::deque< Vector2f > *)new std::deque< Vector2f >();
-  *(std::deque< Vector2f > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1Vector2fDeque_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
-  jlong jresult = 0 ;
-  unsigned int arg1 ;
-  Vector2< float > *arg2 = 0 ;
-  std::deque< Vector2f > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg2_;
-  arg1 = (unsigned int)jarg1; 
-  arg2 = *(Vector2< float > **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Vector2< float > const & reference is null");
-    return 0;
-  } 
-  result = (std::deque< Vector2f > *)new std::deque< Vector2f >(arg1,(Vector2< float > const &)*arg2);
-  *(std::deque< Vector2f > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1Vector2fDeque_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  jlong jresult = 0 ;
-  unsigned int arg1 ;
-  std::deque< Vector2f > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = (unsigned int)jarg1; 
-  result = (std::deque< Vector2f > *)new std::deque< Vector2f >(arg1);
-  *(std::deque< Vector2f > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1Vector2fDeque_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::deque< Vector2< float > > *arg1 = 0 ;
-  std::deque< Vector2f > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2< float > > **)&jarg1;
-  if (!arg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::deque< Vector2< float > > const & reference is null");
-    return 0;
-  } 
-  result = (std::deque< Vector2f > *)new std::deque< Vector2f >((std::deque< Vector2< float > > const &)*arg1);
-  *(std::deque< Vector2f > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_delete_1Vector2fDeque(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  delete arg1;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1assign(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  unsigned int arg2 ;
-  Vector2< float > *arg3 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (unsigned int)jarg2; 
-  arg3 = *(Vector2< float > **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Vector2< float > const & reference is null");
-    return ;
-  } 
-  (arg1)->assign(arg2,(Vector2< float > const &)*arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1swap(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  std::deque< Vector2< float > > *arg2 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = *(std::deque< Vector2< float > > **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::deque< Vector2< float > > & reference is null");
-    return ;
-  } 
-  (arg1)->swap(*arg2);
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  unsigned int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  result = (unsigned int)((std::deque< Vector2f > const *)arg1)->size();
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1max_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  unsigned int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  result = (unsigned int)((std::deque< Vector2f > const *)arg1)->max_size();
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1resize_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  unsigned int arg2 ;
-  Vector2< float > arg3 ;
-  Vector2< float > *argp3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (unsigned int)jarg2; 
-  argp3 = *(Vector2< float > **)&jarg3; 
-  if (!argp3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null Vector2< float >");
-    return ;
-  }
-  arg3 = *argp3; 
-  (arg1)->resize(arg2,arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1resize_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  unsigned int arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (unsigned int)jarg2; 
-  (arg1)->resize(arg2);
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1front(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  std::deque< Vector2< float > >::value_type *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  result = (std::deque< Vector2< float > >::value_type *) &(arg1)->front();
-  *(std::deque< Vector2< float > >::value_type **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1back(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  std::deque< Vector2< float > >::value_type *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  result = (std::deque< Vector2< float > >::value_type *) &(arg1)->back();
-  *(std::deque< Vector2< float > >::value_type **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1push_1front(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  Vector2< float > *arg2 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = *(Vector2< float > **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Vector2< float > const & reference is null");
-    return ;
-  } 
-  (arg1)->push_front((Vector2< float > const &)*arg2);
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1push_1back(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  Vector2< float > *arg2 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = *(Vector2< float > **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Vector2< float > const & reference is null");
-    return ;
-  } 
-  (arg1)->push_back((Vector2< float > const &)*arg2);
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1pop_1front(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  (arg1)->pop_front();
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1pop_1back(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  (arg1)->pop_back();
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  (arg1)->clear();
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1getitem(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  int arg2 ;
-  std::deque< Vector2< float > >::value_type *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  try {
-    result = (std::deque< Vector2< float > >::value_type *) &std_deque_Sl_Vector2f_Sg__getitem(arg1,arg2);
-  }
-  catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  
-  *(std::deque< Vector2< float > >::value_type **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1setitem(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  int arg2 ;
-  Vector2< float > *arg3 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = *(Vector2< float > **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Vector2< float > const & reference is null");
-    return ;
-  } 
-  try {
-    std_deque_Sl_Vector2f_Sg__setitem(arg1,arg2,(Vector2< float > const &)*arg3);
-  }
-  catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return ;
-  }
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1delitem(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  int arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  try {
-    std_deque_Sl_Vector2f_Sg__delitem(arg1,arg2);
-  }
-  catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return ;
-  }
-  
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1getslice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
-  jlong jresult = 0 ;
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  std::deque< Vector2< float > > result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = (int)jarg3; 
-  result = std_deque_Sl_Vector2f_Sg__getslice(arg1,arg2,arg3);
-  *(std::deque< Vector2< float > > **)&jresult = new std::deque< Vector2< float > >((const std::deque< Vector2< float > > &)result); 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1setslice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  std::deque< Vector2< float > > *arg4 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg4_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = (int)jarg3; 
-  arg4 = *(std::deque< Vector2< float > > **)&jarg4;
-  if (!arg4) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::deque< Vector2< float > > const & reference is null");
-    return ;
-  } 
-  std_deque_Sl_Vector2f_Sg__setslice(arg1,arg2,arg3,(std::deque< Vector2< float > > const &)*arg4);
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fDeque_1delslice(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jint jarg3) {
-  std::deque< Vector2f > *arg1 = (std::deque< Vector2f > *) 0 ;
-  int arg2 ;
-  int arg3 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::deque< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = (int)jarg3; 
-  std_deque_Sl_Vector2f_Sg__delslice(arg1,arg2,arg3);
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1Vector2fVector_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  std::vector< Vector2f > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (std::vector< Vector2f > *)new std::vector< Vector2f >();
-  *(std::vector< Vector2f > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1Vector2fVector_1_1SWIG_11(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  jlong jresult = 0 ;
-  std::vector< Vector2< float > >::size_type arg1 ;
-  std::vector< Vector2f > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = (std::vector< Vector2< float > >::size_type)jarg1; 
-  result = (std::vector< Vector2f > *)new std::vector< Vector2f >(arg1);
-  *(std::vector< Vector2f > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1size(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  std::vector< Vector2< float > >::size_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  result = ((std::vector< Vector2f > const *)arg1)->size();
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1capacity(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jlong jresult = 0 ;
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  std::vector< Vector2< float > >::size_type result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  result = ((std::vector< Vector2f > const *)arg1)->capacity();
-  jresult = (jlong)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1reserve(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  std::vector< Vector2< float > >::size_type arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  arg2 = (std::vector< Vector2< float > >::size_type)jarg2; 
-  (arg1)->reserve(arg2);
-}
-
-
-SWIGEXPORT jboolean JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1isEmpty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jboolean jresult = 0 ;
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  bool result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  result = (bool)((std::vector< Vector2f > const *)arg1)->empty();
-  jresult = (jboolean)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1clear(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  (arg1)->clear();
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1add(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  std::vector< Vector2< float > >::value_type *arg2 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg2_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  arg2 = *(std::vector< Vector2< float > >::value_type **)&jarg2;
-  if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< Vector2< float > >::value_type const & reference is null");
-    return ;
-  } 
-  (arg1)->push_back((std::vector< Vector2< float > >::value_type const &)*arg2);
-}
-
-
-SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  jlong jresult = 0 ;
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  int arg2 ;
-  std::vector< Vector2< float > >::value_type *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  try {
-    result = (std::vector< Vector2< float > >::value_type *) &std_vector_Sl_Vector2f_Sg__get(arg1,arg2);
-  }
-  catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  
-  *(std::vector< Vector2< float > >::value_type **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_Vector2fVector_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2, jlong jarg3, jobject jarg3_) {
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  int arg2 ;
-  std::vector< Vector2< float > >::value_type *arg3 = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  (void)jarg3_;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  arg2 = (int)jarg2; 
-  arg3 = *(std::vector< Vector2< float > >::value_type **)&jarg3;
-  if (!arg3) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::vector< Vector2< float > >::value_type const & reference is null");
-    return ;
-  } 
-  try {
-    std_vector_Sl_Vector2f_Sg__set(arg1,arg2,(Vector2< float > const &)*arg3);
-  }
-  catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return ;
-  }
-  
-}
-
-
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_delete_1Vector2fVector(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  std::vector< Vector2f > *arg1 = (std::vector< Vector2f > *) 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(std::vector< Vector2f > **)&jarg1; 
-  delete arg1;
-}
-
-
 SWIGEXPORT jboolean JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_PairDeque_1empty(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jboolean jresult = 0 ;
   std::deque< Pair > *arg1 = (std::deque< Pair > *) 0 ;
@@ -1978,7 +1329,7 @@ SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrap
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_PairDeque_1resize_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg3) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_PairDeque_1resize_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jlong jarg3, jobject jarg3_) {
   std::deque< Pair > *arg1 = (std::deque< Pair > *) 0 ;
   unsigned int arg2 ;
   Pair arg3 ;
@@ -1987,6 +1338,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg3_;
   arg1 = *(std::deque< Pair > **)&jarg1; 
   arg2 = (unsigned int)jarg2; 
   argp3 = *(Pair **)&jarg3; 

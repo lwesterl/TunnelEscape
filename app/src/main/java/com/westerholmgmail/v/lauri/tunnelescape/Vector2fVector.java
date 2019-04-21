@@ -29,50 +29,50 @@ public class Vector2fVector {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        WorldWrapperModuleJNI.delete_Vector2fVector(swigCPtr);
+        ShapeModuleJNI.delete_Vector2fVector(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public Vector2fVector() {
-    this(WorldWrapperModuleJNI.new_Vector2fVector__SWIG_0(), true);
+    this(ShapeModuleJNI.new_Vector2fVector__SWIG_0(), true);
   }
 
   public Vector2fVector(long n) {
-    this(WorldWrapperModuleJNI.new_Vector2fVector__SWIG_1(n), true);
+    this(ShapeModuleJNI.new_Vector2fVector__SWIG_1(n), true);
   }
 
   public long size() {
-    return WorldWrapperModuleJNI.Vector2fVector_size(swigCPtr, this);
+    return ShapeModuleJNI.Vector2fVector_size(swigCPtr, this);
   }
 
   public long capacity() {
-    return WorldWrapperModuleJNI.Vector2fVector_capacity(swigCPtr, this);
+    return ShapeModuleJNI.Vector2fVector_capacity(swigCPtr, this);
   }
 
   public void reserve(long n) {
-    WorldWrapperModuleJNI.Vector2fVector_reserve(swigCPtr, this, n);
+    ShapeModuleJNI.Vector2fVector_reserve(swigCPtr, this, n);
   }
 
   public boolean isEmpty() {
-    return WorldWrapperModuleJNI.Vector2fVector_isEmpty(swigCPtr, this);
+    return ShapeModuleJNI.Vector2fVector_isEmpty(swigCPtr, this);
   }
 
   public void clear() {
-    WorldWrapperModuleJNI.Vector2fVector_clear(swigCPtr, this);
+    ShapeModuleJNI.Vector2fVector_clear(swigCPtr, this);
   }
 
   public void add(Vector2f x) {
-    WorldWrapperModuleJNI.Vector2fVector_add(swigCPtr, this, Vector2f.getCPtr(x), x);
+    ShapeModuleJNI.Vector2fVector_add(swigCPtr, this, Vector2f.getCPtr(x), x);
   }
 
   public Vector2f get(int i) {
-    return new Vector2f(WorldWrapperModuleJNI.Vector2fVector_get(swigCPtr, this, i), false);
+    return new Vector2f(ShapeModuleJNI.Vector2fVector_get(swigCPtr, this, i), false);
   }
 
   public void set(int i, Vector2f val) {
-    WorldWrapperModuleJNI.Vector2fVector_set(swigCPtr, this, i, Vector2f.getCPtr(val), val);
+    ShapeModuleJNI.Vector2fVector_set(swigCPtr, this, i, Vector2f.getCPtr(val), val);
   }
 
 }

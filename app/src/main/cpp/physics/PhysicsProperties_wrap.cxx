@@ -388,7 +388,7 @@ SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPr
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPropertiesModuleJNI_PhysicsProperties_1setPosition(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPropertiesModuleJNI_PhysicsProperties_1setPosition(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   PhysicsProperties *arg1 = (PhysicsProperties *) 0 ;
   Vector2f arg2 ;
   Vector2f *argp2 ;
@@ -396,6 +396,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPro
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   arg1 = *(PhysicsProperties **)&jarg1; 
   argp2 = *(Vector2f **)&jarg2; 
   if (!argp2) {
@@ -407,7 +408,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPro
 }
 
 
-SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPropertiesModuleJNI_PhysicsProperties_1movePosition(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPropertiesModuleJNI_PhysicsProperties_1movePosition(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   PhysicsProperties *arg1 = (PhysicsProperties *) 0 ;
   Vector2f arg2 ;
   Vector2f *argp2 ;
@@ -415,6 +416,7 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_PhysicsPro
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
+  (void)jarg2_;
   arg1 = *(PhysicsProperties **)&jarg1; 
   argp2 = *(Vector2f **)&jarg2; 
   if (!argp2) {

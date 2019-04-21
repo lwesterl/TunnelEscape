@@ -47,8 +47,12 @@ public class WorldWrapper {
     return new PairDeque(WorldWrapperModuleJNI.WorldWrapper_update(swigCPtr, this), true);
   }
 
-  public long addObject(boolean static_object, com.westerholmgmail.v.lauri.tunnelescape.Vector2f pos, float width, float height) {
-    return WorldWrapperModuleJNI.WorldWrapper_addObject(swigCPtr, this, static_object, pos, width, height);
+  public long addObject(boolean static_object, Vector2f pos, float width, float height) {
+    return WorldWrapperModuleJNI.WorldWrapper_addObject(swigCPtr, this, static_object, Vector2f.getCPtr(pos), pos, width, height);
+  }
+
+  public void removeObject(long key) {
+    WorldWrapperModuleJNI.WorldWrapper_removeObject(swigCPtr, this, key);
   }
 
   public void setObjectPhysicsProperties(long key, float elasticity, float density) {
@@ -59,20 +63,20 @@ public class WorldWrapper {
     WorldWrapperModuleJNI.WorldWrapper_setObjectCollisionMask(swigCPtr, this, key, mask);
   }
 
-  public void setObjectOriginTransform(long key, com.westerholmgmail.v.lauri.tunnelescape.Vector2f transform) {
-    WorldWrapperModuleJNI.WorldWrapper_setObjectOriginTransform(swigCPtr, this, key, transform);
+  public void setObjectOriginTransform(long key, Vector2f transform) {
+    WorldWrapperModuleJNI.WorldWrapper_setObjectOriginTransform(swigCPtr, this, key, Vector2f.getCPtr(transform), transform);
   }
 
-  public void setObjectForce(long key, com.westerholmgmail.v.lauri.tunnelescape.Vector2f force) {
-    WorldWrapperModuleJNI.WorldWrapper_setObjectForce(swigCPtr, this, key, force);
+  public void setObjectForce(long key, Vector2f force) {
+    WorldWrapperModuleJNI.WorldWrapper_setObjectForce(swigCPtr, this, key, Vector2f.getCPtr(force), force);
   }
 
-  public void setObjectVelocity(long key, com.westerholmgmail.v.lauri.tunnelescape.Vector2f velocity) {
-    WorldWrapperModuleJNI.WorldWrapper_setObjectVelocity(swigCPtr, this, key, velocity);
+  public void setObjectVelocity(long key, Vector2f velocity) {
+    WorldWrapperModuleJNI.WorldWrapper_setObjectVelocity(swigCPtr, this, key, Vector2f.getCPtr(velocity), velocity);
   }
 
-  public void setObjectPosition(long key, com.westerholmgmail.v.lauri.tunnelescape.Vector2f pos) {
-    WorldWrapperModuleJNI.WorldWrapper_setObjectPosition(swigCPtr, this, key, pos);
+  public void setObjectPosition(long key, Vector2f pos) {
+    WorldWrapperModuleJNI.WorldWrapper_setObjectPosition(swigCPtr, this, key, Vector2f.getCPtr(pos), pos);
   }
 
   public ObjectStatus fetchPosition(long key) {
