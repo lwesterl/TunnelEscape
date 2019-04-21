@@ -35,6 +35,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/physics/PhysicsWorld.cpp
         src/main/cpp/physics/CollisionDetection.cpp
         src/main/cpp/cpp_java_wrappers/WorldWrapper.cpp
+        src/main/cpp/cpp_java_wrappers/WorldWrapper_wrap.cxx
 
         )
 include_directories(
