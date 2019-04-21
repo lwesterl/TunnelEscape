@@ -63,6 +63,19 @@ unsigned WorldWrapper::addObject(bool static_object, Vector2f pos, float width, 
   return 0;
 }
 
+// Remove object from the world
+void WorldWrapper::removeObject(unsigned key) {
+  PhysicsObject* object = GetObject(key);
+  if (object) {
+    // remove object from the maps
+    auto it = keysToObjects.find(key);
+    if (it != keysToObjects.end()) keysToObjects.erase(it);
+    auto it2 = objectsToKeys.find(object);
+    if (it2 != objectsToKeys.end()) objectsToKeys.erase(it2);
+    // remove from physicsWorld, this also frees the memory
+    physicsWorld->removeObject(object);
+  }
+}
 
 // Set physics values for the object
 void WorldWrapper::setObjectPhysicsProperties(unsigned key, float elasticity, float density) {

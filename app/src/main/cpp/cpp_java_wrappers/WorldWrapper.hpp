@@ -98,9 +98,9 @@ class WorldWrapper {
     static void setPhysicsWorldUpdateInterval(float interval);
 
     /**
-      *   @brief Empty constructor
+      *   @brief Constructor
       */
-    WorldWrapper() {}
+    WorldWrapper(): physicsWorld(new PhysicsWorld()) {}
 
     /**
       *   @brief Deconstructor
@@ -119,7 +119,7 @@ class WorldWrapper {
     /**
       *   @brief Add object to from Java to physicsWorld
       *   @param static_object whether object is static or not
-      *   @param pos object initial position
+      *   @param pos object initial position (center of the object)
       *   @param width object width
       *   @param height object height
       *   @return current ObjectID, this key is used to access the object so it must
@@ -127,6 +127,14 @@ class WorldWrapper {
       *   means that object adding failed
       */
     unsigned addObject(bool static_object, Vector2f pos, float width, float height);
+
+    /**
+      *   @brief Remove object
+      *   @param key object id
+      *   @remark Does nothing if object matching the key won't exist. This is the only valid way to
+      *   remove objects aside deleting the whole WorldWrapper instance
+      */
+    void removeObject(unsigned key);
 
     /**
       *   @brief Set physic properties for the object, these don't need to be set
@@ -200,7 +208,7 @@ class WorldWrapper {
     /**
       *   @brief Comparison used in shapes map
       *   @details std::maps identify correct key by taking negative bools of
-      *   comparisons in both orders (!vect1<vect2 and !vect2<vect1)
+      *   comparisons in both orders (!vec1<vec2 and !vec2<vec1)
       *   @param vec1 1st Vector2f to be compared
       *   @param vec2 2nd Vector2f to be compared
       *   @return true if vec1 x or y value is smaller than those of vec2
