@@ -25,16 +25,16 @@ WorldWrapper::~WorldWrapper() {
 }
 
 // Update PhysicsWorld periodically
-std::list<struct Pair> WorldWrapper::update() {
+std::deque<Pair> WorldWrapper::update() {
   physicsWorld->update();
   // also return collided objects as list
-  std::list<struct Pair> pairs;
+  std::deque<Pair> pairs;
   std::list<struct Collided>& collided = physicsWorld->getCollided();
   auto getKey = [this] (PhysicsObject* obj) -> unsigned {
                         auto it = objectsToKeys.find(obj);
                         return it != objectsToKeys.end() ? it->second : 0; };
   for (auto& item : collided) {
-      struct Pair pair(getKey(item.first), getKey(item.second));
+      Pair pair(getKey(item.first), getKey(item.second));
       pairs.push_back(pair);
   }
   return pairs;

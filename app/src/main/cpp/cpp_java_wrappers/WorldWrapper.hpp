@@ -13,6 +13,7 @@
 #include "../physics/StaticObject.hpp"
 #include "../physics/PhysicsWorld.hpp"
 #include <map>
+#include <deque>
 #include <list>
 
 
@@ -33,21 +34,53 @@ struct ObjectStatus {
   Vector2f position; /**< object's current position, includes origin_transform */
 };
 
+
 /**
-  *   @struct Pair
+  *   @class Pair
   *   @brief contains two unsigned keys, this is just for portability between C++ and Java
   */
-struct Pair {
+class Pair {
+
+  public:
+    /**
+      *   @brief Empty constructor
+      */
+    Pair(): first(0), second(0) {}
 
     /**
-      *     @brief Constructor
-      *     @param first the first value
-      *     @param second the second value
+      *   @brief Constructor
+      *   @param first the first value
+      *   @param second the second value
       */
     Pair(unsigned first, unsigned second) : first(first), second(second) {}
 
-  unsigned first = 0; /**< key for the first item, 0 value is placeholder */
-  unsigned second = 0; /**< key for the second item, 0 value is placeholder */
+    /**
+      *   @brief Get first value
+      *   @return first
+      */
+    inline unsigned getFirst() const { return first; }
+
+    /**
+      *   @brief Get second value
+      *   @return second
+      */
+    inline unsigned getSecond() const { return second; }
+
+    /**
+      *   @brief Set first value
+      *   @param first new first value
+      */
+    inline void setFirst(unsigned first) { this->first = first; }
+
+    /**
+      *   @brief Set second value
+      *   @param second new second value
+      */
+    inline void setSecond(unsigned second) { this->second = second; }
+
+  private:
+    unsigned first;
+    unsigned second;
 };
 
 
@@ -78,10 +111,10 @@ class WorldWrapper {
       *   @brief Update PhysicsWorld
       *   @remark This is a wrapper call for physicsWorld->update(). Use this
       *   to update physics. This also returns all collision Pairs
-      *   @return collided object keys as list of Pairs, quite heavy return but
+      *   @return collided object keys as deque of Pairs, quite heavy return but
       *   this is called form Java so references don't really work
       */
-    std::list<struct Pair> update();
+    std::deque<Pair> update();
 
     /**
       *   @brief Add object to from Java to physicsWorld
