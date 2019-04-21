@@ -29,59 +29,59 @@ public class Vector2f {
     if (swigCPtr != 0) {
       if (swigCMemOwn) {
         swigCMemOwn = false;
-        PhysicsPropertiesModuleJNI.delete_Vector2f(swigCPtr);
+        WorldWrapperModuleJNI.delete_Vector2f(swigCPtr);
       }
       swigCPtr = 0;
     }
   }
 
   public Vector2f(float x, float y) {
-    this(PhysicsPropertiesModuleJNI.new_Vector2f__SWIG_0(x, y), true);
+    this(WorldWrapperModuleJNI.new_Vector2f__SWIG_0(x, y), true);
   }
 
   public Vector2f() {
-    this(PhysicsPropertiesModuleJNI.new_Vector2f__SWIG_1(), true);
+    this(WorldWrapperModuleJNI.new_Vector2f__SWIG_1(), true);
   }
 
   public Vector2f(Vector2f vector2) {
-    this(PhysicsPropertiesModuleJNI.new_Vector2f__SWIG_2(Vector2f.getCPtr(vector2), vector2), true);
+    this(WorldWrapperModuleJNI.new_Vector2f__SWIG_2(Vector2f.getCPtr(vector2), vector2), true);
   }
 
   public Vector2f getPointer() {
-    long cPtr = PhysicsPropertiesModuleJNI.Vector2f_getPointer(swigCPtr, this);
+    long cPtr = WorldWrapperModuleJNI.Vector2f_getPointer(swigCPtr, this);
     return (cPtr == 0) ? null : new Vector2f(cPtr, false);
   }
 
   public float getX() {
-    return PhysicsPropertiesModuleJNI.Vector2f_getX(swigCPtr, this);
+    return WorldWrapperModuleJNI.Vector2f_getX(swigCPtr, this);
   }
 
   public float getY() {
-    return PhysicsPropertiesModuleJNI.Vector2f_getY(swigCPtr, this);
+    return WorldWrapperModuleJNI.Vector2f_getY(swigCPtr, this);
   }
 
   public void update(float x, float y) {
-    PhysicsPropertiesModuleJNI.Vector2f_update(swigCPtr, this, x, y);
+    WorldWrapperModuleJNI.Vector2f_update(swigCPtr, this, x, y);
   }
 
   public void normalize() {
-    PhysicsPropertiesModuleJNI.Vector2f_normalize(swigCPtr, this);
+    WorldWrapperModuleJNI.Vector2f_normalize(swigCPtr, this);
   }
 
   public float dotProduct(Vector2f vector) {
-    return PhysicsPropertiesModuleJNI.Vector2f_dotProduct(swigCPtr, this, Vector2f.getCPtr(vector), vector);
+    return WorldWrapperModuleJNI.Vector2f_dotProduct(swigCPtr, this, Vector2f.getCPtr(vector), vector);
   }
 
   public Vector2f rotate(float angle) {
-    return new Vector2f(PhysicsPropertiesModuleJNI.Vector2f_rotate(swigCPtr, this, angle), false);
+    return new Vector2f(WorldWrapperModuleJNI.Vector2f_rotate(swigCPtr, this, angle), false);
   }
 
   public float getAngle() {
-    return PhysicsPropertiesModuleJNI.Vector2f_getAngle(swigCPtr, this);
+    return WorldWrapperModuleJNI.Vector2f_getAngle(swigCPtr, this);
   }
 
   public float getLength() {
-    return PhysicsPropertiesModuleJNI.Vector2f_getLength(swigCPtr, this);
+    return WorldWrapperModuleJNI.Vector2f_getLength(swigCPtr, this);
   }
 
 }

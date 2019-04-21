@@ -38,8 +38,6 @@ public class MenuScreen extends AppCompatActivity {
        /*PhysicsObject obj;
        DynamicObject dyn = new DynamicObject(shape, 19.f);
        PhysicsObject dyn1 = new DynamicObject();*/
-
-
     }
 
 
