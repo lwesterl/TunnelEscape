@@ -34,6 +34,7 @@ add_library( # Sets the name of the library.
         src/main/cpp/physics/PhysicsGrid.cpp
         src/main/cpp/physics/PhysicsWorld.cpp
         src/main/cpp/physics/CollisionDetection.cpp
+        src/main/cpp/cpp_java_wrappers/WorldWrapper.cpp
 
         )
 include_directories(
@@ -47,6 +48,7 @@ include_directories(
         src/main/cpp/physics/PhysicsGrid.hpp
         src/main/cpp/physics/PhysicsWorld.hpp
         src/main/cpp/physics/CollisionDetection.hpp
+        src/main/cpp/cpp_java_wrappers/WorldWrapper.hpp
 )
 
 # Searches for a specified prebuilt library and stores the path as a
