@@ -3,6 +3,12 @@ package com.westerholmgmail.v.lauri.tunnelescape;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+/**
+ * @brief Class which implements and runs the game loop
+ * @details Uses Thread to create another thread used purely for game loop. Game is running with locked
+ * frame rate
+ */
+
 public class GameLoop extends Thread {
 
     static final long FrameRate = 60;
@@ -11,7 +17,11 @@ public class GameLoop extends Thread {
     private GameEngine gameEngine;
     private volatile boolean running;
 
-
+    /**
+     * @brief Constructor
+     * @param surfaceHolder used to lock surface
+     * @param gameEngine GameEngine which should be run
+     */
     GameLoop(SurfaceHolder surfaceHolder, GameEngine gameEngine) {
         super();
         this.surfaceHolder = surfaceHolder;
@@ -19,6 +29,9 @@ public class GameLoop extends Thread {
         running = true;
     }
 
+    /**
+     * @brief Crates thread and starts running gameEngine
+     */
     @Override
     public void run() {
         long prevTime = System.nanoTime();
@@ -64,6 +77,10 @@ public class GameLoop extends Thread {
         }
     }
 
+    /**
+     * @brief Start or stop the game loop
+     * @param running false -> stop the game loop
+     */
     public void setRunning(boolean running) {
         this.running = running;
     }
