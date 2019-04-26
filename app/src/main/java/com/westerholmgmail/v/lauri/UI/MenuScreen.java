@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
 public class MenuScreen extends AppCompatActivity implements View.OnClickListener {
@@ -20,8 +20,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private ImageView mainMenuImage;
     private GameEngine gameEngine;
 
-    // load native lib during start up
+
     static {
+        // load native lib during start up
         System.loadLibrary("physics-lib");
     }
 
@@ -29,12 +30,13 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // load resources during start up
+        ResourceManager.loadResources(this);
         // hide title and make window full-sized
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.main_menu_layout);
         gameEngine = findViewById(R.id.gameEngine);
         CreateUI();
