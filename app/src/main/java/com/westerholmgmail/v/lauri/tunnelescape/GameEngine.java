@@ -102,8 +102,12 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        gameScreens.get(currentGameState).handleMotionEvent(event);
-        return true;
+        GameScreen gameScreen = gameScreens.get(currentGameState);
+        if (gameScreen != null) {
+            gameScreen.handleMotionEvent(event);
+            return true;
+        }
+        return false; // event shouldn't be handled by GameEngine
     }
 
     /**
@@ -160,5 +164,7 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
 
     public void exitGame() {
         System.out.println("______________________Exit____________________ ");
+        // TODO clear game related stuff properly
+        menuScreen.exit();
     }
 }
