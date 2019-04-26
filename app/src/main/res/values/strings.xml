@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TunnelEscape</string>
+    <string name="SinglePlayer">Single player</string>
+    <string name="Exit">Exit</string>
 </resources>
