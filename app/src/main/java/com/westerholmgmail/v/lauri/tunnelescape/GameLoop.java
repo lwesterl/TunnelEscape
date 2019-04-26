@@ -26,7 +26,7 @@ public class GameLoop extends Thread {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameEngine = gameEngine;
-        running = true;
+        running = false;
     }
 
     /**

@@ -1,13 +1,18 @@
 package com.westerholmgmail.v.lauri.tunnelescape;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Canvas;
+import android.view.View;
+
 import com.westerholmgmail.v.lauri.UI.GameState;
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MainMenu;
+import com.westerholmgmail.v.lauri.UI.MenuScreen;
 
 import java.util.HashMap;
 
@@ -18,19 +23,42 @@ import java.util.HashMap;
 public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameLoop gameLoop; /**< another thread running the update and render loop */
+    private GameState currentGameState = GameState.MainMenu;
     private HashMap<GameState, GameScreen> gameScreens = new HashMap<>();
-    private GameState currentGameState;
+    private Context context;
+    private MenuScreen menuScreen;
 
     /**
      * @brief Constructor
      * @param context android context for the view
+     * @param attributeSet AttributeSet
+     */
+    public GameEngine(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        this.context = context;
+        init();
+    }
+
+    /**
+     * @brief Another constructor
+     * @param context android context for the view
      */
     public GameEngine(Context context) {
         super(context);
-        getHolder().addCallback(this);
-        gameLoop = new GameLoop(getHolder(), this);
-        setFocusable(true);
-        CreateGameScreens();
+        this.context = context;
+        init();
+    }
+
+    /**
+     * @brief Another constructor
+     * @param context android context for the view
+     * @param attributeSet AttributeSet
+     * @param defStyle android style parameter
+     */
+    public GameEngine(Context context, AttributeSet attributeSet, int defStyle) {
+        super(context, attributeSet, defStyle);
+        this.context = context;
+        init();
     }
 
     /**
@@ -39,12 +67,13 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-
-        gameLoop.run();
+        gameLoop.setRunning(true);
+        gameLoop.start();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        // TODO implement
 
     }
 
@@ -78,11 +107,24 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
+     * @brief Init GameEngine
+     */
+    private void init() {
+        this.menuScreen = (MenuScreen) context;
+        //setZOrderOnTop(false);
+        getHolder().addCallback(this);
+        setFocusable(true);
+        CreateGameScreens();
+        gameLoop = new GameLoop(getHolder(), this);
+    }
+
+    /**
      * @brief Update game periodically
      * @details This should be called from GameLoop. This further calls correct GameScreen update
      */
     public void update() {
-        gameScreens.get(currentGameState).update();
+        GameScreen gameScreen = gameScreens.get(currentGameState);
+        if (gameScreen != null) gameScreen.update();
     }
 
     /**
@@ -90,17 +132,19 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      * @details This should be called from GameLoop. This further calls correct GameScreen render
      */
     public void render(Canvas canvas) {
-        gameScreens.get(currentGameState).render(canvas);
+        GameScreen gameScreen = gameScreens.get(currentGameState);
+        if (gameScreen != null) gameScreen.render(canvas);
     }
 
     /**
      * @brief Set currentGameState for GameEngine
      * @details This changes from one GameScreen to another
-     * @param gameState
+     * @param gameState new GameState
      */
     public void setGameState(GameState gameState) {
         // reset old GameScreen
-        gameScreens.get(currentGameState).reset();
+        GameScreen gameScreen = gameScreens.get(currentGameState);
+        if (gameScreen != null) gameScreen.reset();
         currentGameState = gameState;
     }
 
@@ -108,7 +152,13 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      * @brief Create GameScreens and add those to gameScreens
      */
     private void CreateGameScreens() {
-        gameScreens.put(GameState.MainMenu, new MainMenu(this));
+        View view = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
         gameScreens.put(GameState.SinglePlayer, new SinglePlayer());
+        // TODO add possible other game modes
+    }
+
+
+    public void exitGame() {
+        System.out.println("______________________Exit____________________ ");
     }
 }
