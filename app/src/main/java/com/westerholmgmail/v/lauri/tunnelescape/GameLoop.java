@@ -47,7 +47,7 @@ public class GameLoop extends Thread {
                     GameLoop.canvas = surfaceHolder.lockCanvas();
                     synchronized (surfaceHolder) {
                         gameEngine.update();
-                        gameEngine.draw(GameLoop.canvas);
+                        gameEngine.render(GameLoop.canvas);
                     }
                 } catch (Exception e) {
                     System.out.println(e.getStackTrace());
