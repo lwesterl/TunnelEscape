@@ -24,6 +24,7 @@ public class WorldWrapperModuleJNI {
   public final static native void Pair_setSecond(long jarg1, Pair jarg1_, long jarg2);
   public final static native void delete_Pair(long jarg1);
   public final static native void WorldWrapper_setPhysicsWorldUpdateInterval(float jarg1);
+  public final static native void WorldWrapper_setPhysicsEngineThreads(long jarg1);
   public final static native long new_WorldWrapper();
   public final static native void delete_WorldWrapper(long jarg1);
   public final static native long WorldWrapper_update(long jarg1, WorldWrapper jarg1_);

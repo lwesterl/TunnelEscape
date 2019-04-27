@@ -39,6 +39,10 @@ public class WorldWrapper {
     WorldWrapperModuleJNI.WorldWrapper_setPhysicsWorldUpdateInterval(interval);
   }
 
+  public static void setPhysicsEngineThreads(long threads) {
+    WorldWrapperModuleJNI.WorldWrapper_setPhysicsEngineThreads(threads);
+  }
+
   public WorldWrapper() {
     this(WorldWrapperModuleJNI.new_WorldWrapper(), true);
   }
