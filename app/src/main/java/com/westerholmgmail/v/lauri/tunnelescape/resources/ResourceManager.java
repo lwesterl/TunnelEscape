@@ -43,4 +43,26 @@ final public class ResourceManager {
      * @brief This is a static class so no constructor
      */
     private ResourceManager() {}
+
+    /**
+     * @brief Get image height
+     * @return return matching bitmap height or 0 if there is no matching bitmap
+     */
+    public static float getImageWidth(ImageType imageType) {
+        Bitmap bitmap = ResourceManager.getBitmap(imageType);
+        if(bitmap != null) return bitmap.getWidth();
+        return 0;
+    }
+
+    /**
+     * @brief Get image height
+     * @return return matching bitmap height or 0 if there is no matching bitmap
+     */
+    public static float getImageHeight(ImageType imageType) {
+        Bitmap bitmap = ResourceManager.getBitmap(imageType);
+        if(bitmap != null) return bitmap.getHeight();
+        return 0;
+    }
+
+
 }
