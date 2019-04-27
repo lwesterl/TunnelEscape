@@ -11,12 +11,12 @@ import android.view.View;
 
 import com.westerholmgmail.v.lauri.UI.GameState;
 import com.westerholmgmail.v.lauri.UI.GameScreen;
-import com.westerholmgmail.v.lauri.UI.MainMenu;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
 
 import java.util.HashMap;
 
 /**
+ * @class GameEngine
  * @brief Central class which creates and manages different game modes or statuses
  */
 
