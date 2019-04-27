@@ -507,6 +507,16 @@ SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapp
 }
 
 
+SWIGEXPORT void JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setPhysicsEngineThreads(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  unsigned int arg1 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (unsigned int)jarg1; 
+  WorldWrapper::setPhysicsEngineThreads(arg1);
+}
+
+
 SWIGEXPORT jlong JNICALL Java_com_westerholmgmail_v_lauri_tunnelescape_WorldWrapperModuleJNI_new_1WorldWrapper(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   WorldWrapper *result = 0 ;

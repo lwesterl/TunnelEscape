@@ -97,13 +97,16 @@ class WorldWrapper {
     /**< Set how often physics are updated, this is just a wrapper for Java */
     static void setPhysicsWorldUpdateInterval(float interval);
 
+    /**< Set how many threads PhysicsWorld uses, this is just a wrapper for Java */
+    static void setPhysicsEngineThreads(unsigned threads);
+
     /**
       *   @brief Constructor
       */
     WorldWrapper(): physicsWorld(new PhysicsWorld()) {}
 
     /**
-      *   @brief Deconstructor
+      *   @brief Deconstrutor
       */
     virtual ~WorldWrapper();
 
@@ -148,7 +151,7 @@ class WorldWrapper {
     /**
       *   @brief Set collision mask for the object
       *   @param key object id
-      *   @param mask new collisin mask, this must in range if (0, 256) as its
+      *   @param mask new collision mask, this must in range if (0, 256) as its
       *   converted to uint8_t, it passed as unsigned to make the interface simpler
       *   @remark Does nothing if object won't exist
       */
@@ -158,7 +161,7 @@ class WorldWrapper {
       *   @brief Set origin_transform for the object
       *   @param key object id
       *   @param transform new origin_transform as Vector2f
-      *   @remark Doed nothing if object won't exist
+      *   @remark Does nothing if object won't exist
       */
     void setObjectOriginTransform(unsigned key, Vector2f transform);
 
