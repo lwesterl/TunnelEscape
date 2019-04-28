@@ -53,7 +53,7 @@ SinglePlayer implements GameScreen {
             gameObject.updatePosition(position);
             // move also matching PhysicsObject
             Vector2f force = gameObject.move();
-            if (force.getX() != 0.f && force.getY() != 0.f) {
+            if (force.getX() != 0.f || force.getY() != 0.f) {
                 worldWrapper.setObjectForce(gameObject.getObjectId(), force);
             }
         }

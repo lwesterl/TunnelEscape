@@ -12,6 +12,7 @@ import android.view.View;
 import com.westerholmgmail.v.lauri.UI.GameState;
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
+import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
 
 import java.util.HashMap;
 
@@ -166,5 +167,29 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
         System.out.println("______________________Exit____________________ ");
         // TODO clear game related stuff properly
         menuScreen.exit();
+    }
+
+    /**
+     * @brief boostButton is touched, this forwards the touch
+     * @param pressed whether button is pressed or released
+     */
+    public void boostButtonClicked(boolean pressed) {
+        PlayerObject.boostPressed = pressed;
+    }
+
+    /**
+     * @brief leftButton is touched, this forwards the touch
+     * @param pressed whether button is pressed or released
+     */
+    public void leftButtonClicked(boolean pressed) {
+        PlayerObject.lefPressed = pressed;
+    }
+
+    /**
+     * @brief rightButton is touched, this forwards the touch
+     * @param pressed whether button is pressed or released
+     */
+    public void rightButtonClicked(boolean pressed) {
+        PlayerObject.rightPressed = pressed;
     }
 }

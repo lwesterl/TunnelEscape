@@ -14,9 +14,12 @@ import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
  * @brief Object which represent the player
  */
 public class PlayerObject extends GameObject {
-    private int count = 0;
+    public static volatile boolean boostPressed = false;
+    public static volatile boolean lefPressed = false;
+    public static volatile boolean rightPressed = false;
+
     private static float ForceX = 500000.f; // right
-    private static float ForceY = -1000000.f; // upwards
+    private static float ForceY = -500000.f; // upwards
 
     /**
      * @brief Constructor
@@ -47,12 +50,12 @@ public class PlayerObject extends GameObject {
      */
     @Override
     public Vector2f move() {
-        count ++;
         Vector2f force = new Vector2f();
-        if (count == 20) {
+        if (PlayerObject.boostPressed && PlayerObject.lefPressed && !PlayerObject.rightPressed) {
+            force.update(-PlayerObject.ForceX, PlayerObject.ForceY);
+        } else if (PlayerObject.boostPressed && PlayerObject.rightPressed && !PlayerObject.lefPressed) {
             force.update(PlayerObject.ForceX, PlayerObject.ForceY);
-            count = 0;
-        }
+        } else if (PlayerObject.boostPressed) force.update(0.f, PlayerObject.ForceY);
         return force;
     }
 }
