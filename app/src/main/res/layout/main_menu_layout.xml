@@ -6,11 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.westerholmgmail.v.lauri.tunnelescape.GameEngine
-        android:id="@+id/gameEngine"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    <ImageView
+        android:id="@+id/mainMenuImage"
+        android:layout_width="572dp"
+        android:layout_height="252dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="Test image"
+        app:srcCompat="@mipmap/ic_launcher_round"
+        tools:srcCompat="@mipmap/ic_launcher_round" />
 
     <RelativeLayout
         android:id="@+id/linearLayout"
@@ -43,16 +47,6 @@
             android:layout_toEndOf="@+id/singlePlayerButton"
             android:text="@string/Exit"
             tools:text="@string/Exit" />
-
-        <ImageView
-            android:id="@+id/mainMenuImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="Test image"
-            app:srcCompat="@mipmap/ic_launcher_round"
-            tools:srcCompat="@mipmap/ic_launcher_round" />
 
 
     </RelativeLayout>

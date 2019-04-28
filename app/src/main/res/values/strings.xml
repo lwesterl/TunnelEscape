@@ -2,4 +2,7 @@
     <string name="app_name">TunnelEscape</string>
     <string name="SinglePlayer">Single player</string>
     <string name="Exit">Exit</string>
+    <string name="RightButtonDescription">Right button</string>
+    <string name="LeftButtonDescription">Left button</string>
+    <string name="BoostButtonDescription">Boost button</string>
 </resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.westerholmgmail.v.lauri.tunnelescape.GameEngine
+        android:id="@+id/gameEngine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/boostButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="0dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/BoostButtonDescription"
+            app:srcCompat="@drawable/boost" />
+
+        <ImageButton
+            android:id="@+id/leftArrowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="150dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/LeftButtonDescription"
+            app:srcCompat="@drawable/left_arrow" />
+
+        <ImageButton
+            android:id="@+id/rightArrowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="30dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/RightButtonDescription"
+            app:srcCompat="@drawable/right_arrow" />
+    </RelativeLayout>
+</FrameLayout>
