@@ -3,6 +3,7 @@ package com.westerholmgmail.v.lauri.UI;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private Button exitButton;
     private ImageView mainMenuImage;
     private GameEngine gameEngine;
+    public static int ScreenWidth; /**< tells screen width */
+    public static int ScreenHeight; /**< tells screen height */
 
 
     static {
@@ -39,6 +42,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.main_menu_layout);
         gameEngine = findViewById(R.id.gameEngine);
+        InitScreenSize();
         CreateUI();
     }
 
@@ -91,5 +95,13 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         mainMenuImage.setVisibility(View.INVISIBLE);
     }
 
-
+    /**
+     * @brief Set correct values for the static screen related values (ScreenHeight and ScreenWidth)
+     */
+    private void InitScreenSize() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        MenuScreen.ScreenHeight = displayMetrics.heightPixels;
+        MenuScreen.ScreenWidth = displayMetrics.widthPixels;
+    }
 }
