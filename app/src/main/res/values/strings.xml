@@ -5,4 +5,5 @@
     <string name="RightButtonDescription">Right button</string>
     <string name="LeftButtonDescription">Left button</string>
     <string name="BoostButtonDescription">Boost button</string>
+    <string name="UIBarDescription">UI bar image view</string>
 </resources>
