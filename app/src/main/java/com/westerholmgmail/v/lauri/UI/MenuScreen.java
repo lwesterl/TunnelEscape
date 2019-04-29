@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
+import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
@@ -167,5 +168,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         boostButton.setOnTouchListener(this);
         leftArrowButton.setOnTouchListener(this);
         rightArrowButton.setOnTouchListener(this);
+        android.view.ViewGroup.LayoutParams layoutParams = gameEngine.getLayoutParams();
+        layoutParams.height = MenuScreen.ScreenHeight - SinglePlayer.UIBarHeight;
+        layoutParams.width = MenuScreen.ScreenWidth;
+        gameEngine.setLayoutParams(layoutParams);
     }
 }

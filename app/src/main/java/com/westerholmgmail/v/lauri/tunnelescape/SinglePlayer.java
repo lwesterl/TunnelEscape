@@ -22,12 +22,14 @@ import java.util.ArrayList;
 public class
 SinglePlayer implements GameScreen {
 
-    static private Vector2f playerPosition = new Vector2f(0.f, 0.f);
+    public static int UIBarHeight = 80; /**< tells the height of UI bar which is positioned on the lower edge of the screen, this must be match single_player_layout */
+    private static Vector2f playerPosition = new Vector2f(0.f, 0.f);
     private final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.PlayerImage); // used to detect when canvas should be transformed
-    private final static int maxDiffY = 2 * (int) ResourceManager.getImageHeight(ImageType.PlayerImage); // used to detect when canvas should be transformed
+    private final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.PlayerImage); // used to detect when canvas should be transformed
 
     private WorldWrapper worldWrapper;
     private ArrayList<GameObject> gameObjects = new ArrayList<>();
+    private ArrayList<GameObject> imageObjects = new ArrayList<>(); // these don't have PhysicsObject counterpart
     private @ColorInt int backgroundColor = Color.BLACK;
     private int canvasMultiplierX = 0;
     private int canvasMultiplierY = 0;
@@ -124,7 +126,7 @@ SinglePlayer implements GameScreen {
     public void loadLevel() {
         // set correct gravity values
         PhysicsProperties.setGravityY(20000.f);
-        addObject(ObjectType.Player, ImageType.PlayerImage, 200.f, 0.f);
+        addObject(ObjectType.Player, ImageType.PlayerImage, 300.f, 0.f);
     }
 
     /**
