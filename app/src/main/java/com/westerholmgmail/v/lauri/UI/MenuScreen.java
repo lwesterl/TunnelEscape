@@ -15,6 +15,8 @@ import android.widget.ImageView;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
@@ -45,6 +47,10 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         // load resources during start up
         ResourceManager.loadResources(this);
+        AudioManager.init(this);
+        AudioManager.setVolume(AudioType.BoostAudio, 5);
+        AudioManager.setVolume(AudioType.MainMenuAudio, 4);
+        AudioManager.setVolume(AudioType.SinglePlayerAudio, 4);
         // hide title and make window full-sized
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
@@ -120,6 +126,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         exitButton.setOnClickListener(this);
         // create other UI related object
         mainMenuImage = findViewById(R.id.mainMenuImage);
+        // start main_menu_audio
+        AudioManager.playAudio(AudioType.MainMenuAudio, true);
     }
 
     /**
@@ -172,5 +180,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         layoutParams.height = MenuScreen.ScreenHeight - SinglePlayer.UIBarHeight;
         layoutParams.width = MenuScreen.ScreenWidth;
         gameEngine.setLayoutParams(layoutParams);
+        // set single_player_audio playback
+        AudioManager.playAudio(AudioType.MainMenuAudio, false);
+        AudioManager.playAudio(AudioType.SinglePlayerAudio, true);
     }
 }

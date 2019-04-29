@@ -13,6 +13,8 @@ import com.westerholmgmail.v.lauri.UI.GameState;
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
 
 import java.util.HashMap;
 
@@ -175,6 +177,8 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     public void boostButtonClicked(boolean pressed) {
         PlayerObject.boostPressed = pressed;
+        if (pressed) AudioManager.playAudio(AudioType.BoostAudio, true);
+        else AudioManager.playAudio(AudioType.BoostAudio, false);
     }
 
     /**

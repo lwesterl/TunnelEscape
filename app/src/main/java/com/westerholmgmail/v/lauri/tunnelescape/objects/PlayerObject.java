@@ -49,7 +49,6 @@ public class PlayerObject extends GameObject {
                 float exhaustFlamesX = x + 0.5f * getObjectWidth() - 0.5f * flamesBitmap.getWidth();
                 canvas.drawBitmap(flamesBitmap, exhaustFlamesX, y + getObjectHeight(), new Paint());
             }
-
         }
     }
 
