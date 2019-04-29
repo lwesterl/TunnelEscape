@@ -41,6 +41,16 @@ public class PlayerObject extends GameObject {
             canvas.drawBitmap(bitmap, x, y, new Paint());
             SinglePlayer.setPlayerPosition(x, y);
         }
+        if (PlayerObject.boostPressed) {
+            // draw also exhaust flames
+            Bitmap flamesBitmap = ResourceManager.getBitmap(ImageType.ExhaustFlames);
+            if (flamesBitmap != null) {
+                // center the flames on the lower edge of the PlayerObject
+                float exhaustFlamesX = x + 0.5f * getObjectWidth() - 0.5f * flamesBitmap.getWidth();
+                canvas.drawBitmap(flamesBitmap, exhaustFlamesX, y + getObjectHeight(), new Paint());
+            }
+
+        }
     }
 
 
