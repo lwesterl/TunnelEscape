@@ -1,7 +1,8 @@
 package com.westerholmgmail.v.lauri.tunnelescape.resources;
 
 import android.support.annotation.IntDef;
-import android.widget.HeaderViewListAdapter;
+
+import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -19,6 +20,7 @@ public class AudioType {
     public static final int BoostAudio = 0;
     public static final int MainMenuAudio = 1;
     public static final int SinglePlayerAudio = 2;
+    private static final String[] audioFileNames = { "EffectsVolume", "MainMenuVolume", "BackGroundVolume" };
 
     public final int audioType;
 
@@ -34,9 +36,19 @@ public class AudioType {
     /**
      * @brief Get how many different audio types exits
      * @return amount of existing audio types
+     * @remark very bad implementation
      */
     public static int getAmountOfAudios() {
-        return BoostAudio + 1;
+        return AudioType.SinglePlayerAudio + 1;
+    }
+
+    /**
+     * @brief Get matching audio file name for AudioType
+     * @param audioType constant int value
+     * @return file path used to store the audio related info by AudioManager
+     */
+    public static String getAudioFileName(@AudioTypeRef int audioType) {
+        return AudioType.audioFileNames[audioType]; /** make sure that each AudioType has matching string constant */
     }
 
 }
