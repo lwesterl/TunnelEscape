@@ -6,4 +6,14 @@
     <string name="LeftButtonDescription">Left button</string>
     <string name="BoostButtonDescription">Boost button</string>
     <string name="UIBarDescription">UI bar image view</string>
+    <string name="menu_volume_text">Menu volume</string>
+    <string name="menu_volume_decription">Volume for menu</string>
+    <string name="settings_string">Settings</string>
+    <string name="settings_decription">Settings</string>
+    <string name="background_musics_settings">Background music volume</string>
+    <string name="background_settings_description">Background music volume</string>
+    <string name="effect_music_settings">Effects volume</string>
+    <string name="effect_music_description">Effect music volume</string>
+    <string name="settings_button">Settings</string>
+    <string name="settings_button_description">Settings button</string>
 </resources>
