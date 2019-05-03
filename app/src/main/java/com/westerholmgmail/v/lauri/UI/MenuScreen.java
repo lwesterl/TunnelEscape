@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
@@ -20,9 +21,10 @@ import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
-public class MenuScreen extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class MenuScreen extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
     private Button singlePlayerButton;
     private Button exitButton;
+    private Button settingsButton;
     private ImageButton boostButton;
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
@@ -48,9 +50,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         // load resources during start up
         ResourceManager.loadResources(this);
         AudioManager.init(this);
-        AudioManager.setVolume(AudioType.BoostAudio, 5);
-        AudioManager.setVolume(AudioType.MainMenuAudio, 4);
-        AudioManager.setVolume(AudioType.SinglePlayerAudio, 4);
+
         // hide title and make window full-sized
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
@@ -75,6 +75,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
             case R.id.exitButton:
                 //gameEngine.exitGame();
                 exit();
+                break;
+            case R.id.settingsButton:
+                CreateSettingsUI();
                 break;
             default:
                 System.out.println("Unhandled click");
@@ -124,6 +127,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         singlePlayerButton.setOnClickListener(this);
         exitButton = findViewById(R.id.exitButton);
         exitButton.setOnClickListener(this);
+        settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(this);
         // create other UI related object
         mainMenuImage = findViewById(R.id.mainMenuImage);
         // start main_menu_audio
@@ -148,6 +153,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     public void hideMenu() {
         singlePlayerButton.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
+        settingsButton.setVisibility(View.INVISIBLE);
         mainMenuImage.setVisibility(View.INVISIBLE);
     }
 
@@ -184,4 +190,65 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         AudioManager.playAudio(AudioType.MainMenuAudio, false);
         AudioManager.playAudio(AudioType.SinglePlayerAudio, true);
     }
+
+    /**
+     * @brief Create screen for settings menu
+     * @details Switches to setting_menu layout and creates correct seekBars
+     */
+    private void CreateSettingsUI() {
+        hideMenu();
+        setContentView(R.layout.settings_menu);
+        SeekBar seekBar = findViewById(R.id.menuVolumeSeekBar);
+        seekBar.setOnSeekBarChangeListener(this);
+        seekBar.setProgress(AudioManager.MenuVolume);
+        seekBar = findViewById(R.id.backgroundVolumeSeekBar);
+        seekBar.setOnSeekBarChangeListener(this);
+        seekBar.setProgress(AudioManager.BackGroundVolume);
+        seekBar = findViewById(R.id.effectsVolumeSeekBar);
+        seekBar.setOnSeekBarChangeListener(this);
+        seekBar.setProgress(AudioManager.EffectVolume);
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {}
+
+    /**
+     * @brief Implementation for seekBar event
+     * @param seekBar id of the activated SeekBar
+     * @param progress change in value
+     * @param fromUser user input or software based input source
+     */
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress,
+                                  boolean fromUser) {
+        if (fromUser) {
+            switch (seekBar.getId()) {
+                case R.id.menuVolumeSeekBar:
+                    AudioManager.setVolume(AudioType.MainMenuAudio, (byte) progress, this);
+                    break;
+                case R.id.backgroundVolumeSeekBar:
+                    AudioManager.setVolume(AudioType.SinglePlayerAudio, (byte) progress, this);
+                    break;
+                case R.id.effectsVolumeSeekBar:
+                    AudioManager.setVolume(AudioType.BoostAudio, (byte) progress, this);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @brief Overload for Android back button
+     * @details Return to main menu
+     * @Todo change so that it works also when user returns from single player
+     */
+    @Override
+    public void onBackPressed() {
+        setContentView(R.layout.main_menu_layout);
+        CreateMenuUI();
+    }
 }
+
+
