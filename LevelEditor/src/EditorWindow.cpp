@@ -7,6 +7,7 @@
 
 #include "../include/EditorWindow.hpp"
 
+
 // Constructor
 EditorWindow::EditorWindow(QWidget *parent): QMainWindow(parent) {
 
@@ -45,8 +46,12 @@ void EditorWindow::CreateMenu() {
 
   QMenu *elementOptions;
   elementOptions = menuBar()->addMenu("Elements");
-  for (int i = 0; i< 10; i++) {
-    elementOptions->addAction(new QAction("test"));
+  for (int i = static_cast<int>(AssetManager::ImageAssets::BlackGround);
+           i < static_cast<int>(AssetManager::ImageAssets::LightSky); i++) {
+    elementOptions->addAction(new QAction(
+      QIcon( *AssetManager::getPixmap(static_cast<AssetManager::ImageAssets>(i))),
+             QString::fromStdString(AssetManager::getImageAssetStr(static_cast<AssetManager::ImageAssets>(i)))
+           ));
   }
 
   QMenu *settings;

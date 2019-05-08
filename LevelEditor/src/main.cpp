@@ -8,6 +8,7 @@
 
 
 #include "../include/EditorWindow.hpp"
+#include "../include/AssetManager.hpp"
 #include <QApplication>
 
 /**
@@ -19,9 +20,11 @@
 int main(int args, char *argv[])
 {
   QApplication app(args, argv);
+  AssetManager::INIT();
   EditorWindow editorWindow;
   editorWindow.resize(700,500);
   editorWindow.show();
 
   return app.exec();
+  AssetManager::DELETE();
 }

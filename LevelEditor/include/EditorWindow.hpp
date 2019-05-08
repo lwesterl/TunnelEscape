@@ -6,6 +6,7 @@
 
 #pragma once
 #include "Editor.hpp"
+#include "AssetManager.hpp"
 
 #include <QMainWindow>
 #include <QMenu>
