@@ -48,11 +48,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = src/Editor.cpp \
+SOURCES       = src/AssetManager.cpp \
+		src/Editor.cpp \
 		src/EditorWindow.cpp \
 		src/main.cpp moc_Editor.cpp \
 		moc_EditorWindow.cpp
-OBJECTS       = Editor.o \
+OBJECTS       = AssetManager.o \
+		Editor.o \
 		EditorWindow.o \
 		main.o \
 		moc_Editor.o \
@@ -117,8 +119,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		LevelEditor.pro include/Editor.hpp \
-		include/EditorWindow.hpp src/Editor.cpp \
+		LevelEditor.pro include/AssetManager.hpp \
+		include/Editor.hpp \
+		include/EditorWindow.hpp src/AssetManager.cpp \
+		src/Editor.cpp \
 		src/EditorWindow.cpp \
 		src/main.cpp
 QMAKE_TARGET  = LevelEditor
@@ -275,8 +279,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents include/Editor.hpp include/EditorWindow.hpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/Editor.cpp src/EditorWindow.cpp src/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/AssetManager.hpp include/Editor.hpp include/EditorWindow.hpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/AssetManager.cpp src/Editor.cpp src/EditorWindow.cpp src/main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -328,6 +332,9 @@ compiler_clean: compiler_moc_header_clean
 
 ####### Compile
 
+AssetManager.o: src/AssetManager.cpp include/AssetManager.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AssetManager.o src/AssetManager.cpp
+
 Editor.o: src/Editor.cpp include/Editor.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Editor.o src/Editor.cpp
 
@@ -336,7 +343,8 @@ EditorWindow.o: src/EditorWindow.cpp include/EditorWindow.hpp \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o EditorWindow.o src/EditorWindow.cpp
 
 main.o: src/main.cpp include/EditorWindow.hpp \
-		include/Editor.hpp
+		include/Editor.hpp \
+		include/AssetManager.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cpp
 
 moc_Editor.o: moc_Editor.cpp 
