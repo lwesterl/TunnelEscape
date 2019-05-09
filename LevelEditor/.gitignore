@@ -1,3 +1,5 @@
 *.o
 LevelEditor
 moc_*
+# test levels should be ignored
+*.tescape
