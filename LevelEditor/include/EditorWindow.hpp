@@ -9,11 +9,23 @@
 #include "AssetManager.hpp"
 
 #include <QMainWindow>
+#include <QObject>
 #include <QMenu>
 #include <QMenuBar>
 #include <QAction>
 #include <QGraphicsView>
 #include <QVBoxLayout>
+#include <QVariant>
+#include <QFileDialog>
+#include <QString>
+#include <QStringList>
+#include <QMessageBox>
+
+#ifndef QTMetaTypes
+#define QTMetaTypes
+// These should be declared only once
+Q_DECLARE_METATYPE(AssetManager::ImageAssets)
+#endif
 
 /**
   *   @class EditorWindow
@@ -35,6 +47,25 @@ class EditorWindow: public QMainWindow {
       *   @brief Deconstructor
       */
     ~EditorWindow();
+
+    private slots:
+
+      /**
+        *   @brief Save level
+        */
+      void SaveSlot();
+
+      /**
+        *   @brief Load level
+        */
+      void LoadSlot();
+
+      /**
+        *   @brief Slot which is used to change Editor LevelItemImageAsset
+        *   @details Elements actions are connected to this slot
+        */
+      void ChangeEditorImageSlot();
+
 
   private:
 
