@@ -7,6 +7,7 @@
 #pragma once
 #include <QPixmap>
 #include <QString>
+#include <QDebug>
 
 #include <string>
 #include <map>
@@ -33,7 +34,8 @@ namespace AssetManager {
     LightSky
   };
 
-  extern std::map<ImageAssets, const std::string> imagePaths; /**< stores paths of the images */
+  extern std::map<const ImageAssets, const std::string> imagePaths; /**< stores paths of the images */
+  extern std::map<const std::string, const ImageAssets> strToImageAssets; /**< maps strings to ImageAssets */
   extern std::map<ImageAssets, QPixmap*> pixmaps; /**< stores QPixmaps of the images */
 
   /**
@@ -53,19 +55,26 @@ namespace AssetManager {
     *   @param imageAsset tells which image path should be returned
     *   @return image path
     */
-  const std::string getImagePath(ImageAssets imageAsset);
+  const std::string getImagePath(const ImageAssets imageAsset);
+
+  /**
+    *   @brief Get ImageAsset matching string
+    *   @return correct ImageAssets value. returns ImageAssets::BlackGround if
+    *   string doesn't match to any ImageAssets
+    */
+  ImageAssets getStrImageAsset(const std::string &asset);
 
   /**
     *   @brief Get QPixmap item
     *   @param imageAsset tells which QPixmap should be returned
     *   @return pointer to QPixmap
     */
-  const QPixmap* getPixmap(ImageAssets imageAsset);
+  const QPixmap* getPixmap(const ImageAssets imageAsset);
 
   /**
     *   @brief Get ImageAsset enum value as string
     *   @return string containing only the enum value (no path)
     */
-  const std::string getImageAssetStr(ImageAssets imageAsset);
+  const std::string getImageAssetStr(const ImageAssets imageAsset);
 
 } // end of namespace AssetManager

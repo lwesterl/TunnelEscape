@@ -8,7 +8,7 @@
 
 namespace AssetManager {
 
-  std::map<ImageAssets, const std::string> imagePaths =
+  std::map<const ImageAssets, const std::string> imagePaths =
   {
     { ImageAssets::BlackGround, "img/BlackGround.png" },
     { ImageAssets::DarkBrownGround, "img/DarkBrownGround.png" },
@@ -21,11 +21,34 @@ namespace AssetManager {
     { ImageAssets::LightSky, "img/LightSky.png" }
   };
 
-  const std::string getImagePath(ImageAssets imageAsset) { return imagePaths[imageAsset]; }
-  const QPixmap* getPixmap(ImageAssets imageAsset) { return pixmaps[imageAsset]; }
+  std::map<const std::string, const ImageAssets> strToImageAssets =
+  {
+    { "BlackGround", ImageAssets::BlackGround },
+    { "DarkBrownGround", ImageAssets::DarkBrownGround },
+    { "DarkBrownGroundMarks", ImageAssets::DarkBrownGroundMarks },
+    { "DeepSky", ImageAssets::DeepSky },
+    { "Flames", ImageAssets::Flames },
+    { "GrassMarks", ImageAssets::GrassMarks },
+    { "Grass", ImageAssets::Grass },
+    { "GroundGrass", ImageAssets::GroundGrass },
+    { "LightSky", ImageAssets::LightSky }
+  };
+
+  const std::string getImagePath(const ImageAssets imageAsset) { return imagePaths[imageAsset]; }
+
+  ImageAssets getStrImageAsset(const std::string &asset) {
+    try {
+      return strToImageAssets.at(asset);
+    } catch (std::out_of_range &e) {
+      qDebug() << e.what();
+      return ImageAssets::BlackGround;
+    }
+  }
+
+  const QPixmap* getPixmap(const ImageAssets imageAsset) { return pixmaps[imageAsset]; }
 
   // return substring (same as enum value in str format) of path strings
-  const std::string getImageAssetStr(ImageAssets imageAsset) {
+  const std::string getImageAssetStr(const ImageAssets imageAsset) {
     const std::string str = imagePaths[imageAsset];
     // all these paths start with img/ and end with .png
     return str.substr(4, str.size() - 8);
