@@ -11,10 +11,15 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsRectItem>
+#include <QRegularExpression>
 #include <QDebug>
 #include <deque>
+#include <fstream>
+#include <sstream>
+#include <string>
 
-
+#define LevelNameExtension ".tescape" /**< file extension used */
+#define LevelNameExtensionPattern "*.tescape" /**< pattern for level file extension */
 
 /**
   *   @enum EditorMode
@@ -55,10 +60,11 @@ class Editor: public QGraphicsScene {
 
     /**
       *   @brief Add new LevelItem to the level
+      *   @param imageAsset tells which image is used for the LevelItem
       *   @param x mouse center x coordinate
       *   @param y mouse center y coordinate
       */
-    void addLevelItem(float x, float y);
+    void addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y);
 
     /**
       *   @brief Try to remove LevelItem from the level
@@ -76,6 +82,22 @@ class Editor: public QGraphicsScene {
       *   @details removes the item from scene and deallocates memory
       */
     void removeCurrentLevelItem();
+
+    /**
+      *   @brief Save level to file
+      *   @param filename name for the new level
+      *   @return true if saving successful, otherwise false
+      */
+    bool saveLevel(const QString &filename);
+
+    /**
+      *   @brief Load level, this will erase old level content
+      *   @param filename tries to load this file
+      *   @return true if loading successful, otherwise false
+      *   @details Expects that the level is comma separated and contains one
+      *   LevelItem per line. The format should be same as LevelItem print format
+      */
+    bool loadLevel(const QString &filename);
 
 
   protected:
@@ -112,6 +134,19 @@ class Editor: public QGraphicsScene {
 
 
   private:
+
+    /**
+      *   @brief This checks that level name is valid (has correct extension)
+      *   @param levelName to be validated
+      *   @return true if levelName is valid, otherwise false
+      */
+    bool ValidateLevelName(const QString &levelName) const;
+
+    /**
+      *   @brief Clear all levelItems
+      */
+    void ClearLevelItems();
+
     std::deque<LevelItem*> levelItems; // use deque to push items front
     LevelItem *currentItem = nullptr;
 
