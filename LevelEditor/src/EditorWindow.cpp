@@ -25,11 +25,12 @@ EditorWindow::EditorWindow(QWidget *parent): QMainWindow(parent) {
   view->setMouseTracking(true);
 
   CreateMenu();
-
+  CreateToolbar();
 }
 
 // Deconstructor
 EditorWindow::~EditorWindow() {
+  delete toolbar;
   delete view;
   delete editor;
 }
@@ -66,6 +67,23 @@ void EditorWindow::CreateMenu() {
 
 }
 
+void EditorWindow::CreateToolbar() {
+  toolbar = new QToolBar();
+  addToolBar(toolbar);
+  const char names[][8] = { "Preview", "Insert", "Remove" };
+  // make sure that EditorMode::RemoveMode equals 2
+  for (int i = static_cast<int>(EditorMode::PreviewMode); i <= static_cast<int>(EditorMode::RemoveMode); i++) {
+    toolbarButtons[i] = new QPushButton(names[i], toolbar); // toolbar should now also delete memory allocated for buttons
+    toolbarButtons[i]->setProperty(PushButtonPropertyName, QVariant(i));
+    toolbarButtons[i]->setCheckable(true);
+    connect(toolbarButtons[i], SIGNAL(clicked()), this, SLOT(SetEditorModeSlot()) );
+    toolbar->addWidget(toolbarButtons[i]);
+  }
+  Editor::CurrentEditorMode = EditorMode::PreviewMode;
+  toolbarButtons[0]->setChecked(true);
+}
+
+
 // Save level to file, private slot
 void EditorWindow::SaveSlot() {
   QFileDialog save(this);
@@ -101,6 +119,22 @@ void EditorWindow::ChangeEditorImageSlot() {
   if (action) {
     AssetManager::ImageAssets imageAsset = qvariant_cast<AssetManager::ImageAssets>(action->data());
     Editor::LevelItemImageAsset = imageAsset;
-    editor->removeCurrentLevelItem(); // remove so that old assets isn't stored
+    editor->removeCurrentLevelItem(); // remove so that old asset isn't stored
+  }
+}
+
+// Change editor mode, private slot
+void EditorWindow::SetEditorModeSlot() {
+  QPushButton *button = qobject_cast<QPushButton*>(sender());
+  if (button) {
+    EditorMode editorMode = qvariant_cast<EditorMode>(button->property(PushButtonPropertyName));
+    Editor::CurrentEditorMode = editorMode;
+    editor->removeCurrentLevelItem(); // remove so that old asset isn't stored
+    // set other toolbarButtons not checked
+    for (int i = static_cast<int>(EditorMode::PreviewMode); i <= static_cast<int>(EditorMode::RemoveMode); i++) {
+      if (toolbarButtons[i] != button) {
+        toolbarButtons[i]->setChecked(false);
+      }
+    }
   }
 }

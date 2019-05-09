@@ -25,10 +25,10 @@
   *   @enum EditorMode
   *   @brief Used to detect current editor mode
   */
-enum class EditorMode {
-  PreviewMode, /**< No insertion or removal allowed */
-  InsertMode, /**< Possible to insert new LevelItems */
-  RemoveMode /**< Possible to remove existing LevelItems */
+enum class EditorMode: int {
+  PreviewMode = 0, /**< No insertion or removal allowed */
+  InsertMode = 1, /**< Possible to insert new LevelItems */
+  RemoveMode = 2 /**< Possible to remove existing LevelItems */
 };
 
 

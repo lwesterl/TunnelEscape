@@ -20,11 +20,15 @@
 #include <QString>
 #include <QStringList>
 #include <QMessageBox>
+#include <QToolBar>
+#include <QPushButton>
 
 #ifndef QTMetaTypes
 #define QTMetaTypes
 // These should be declared only once
 Q_DECLARE_METATYPE(AssetManager::ImageAssets)
+Q_DECLARE_METATYPE(EditorMode);
+#define PushButtonPropertyName "data" /**< used to store data using setProperty */
 #endif
 
 /**
@@ -66,6 +70,12 @@ class EditorWindow: public QMainWindow {
         */
       void ChangeEditorImageSlot();
 
+      /**
+        *   @brief Slot for setting editor mode
+        *   @details toolbarButtons are connected to this slot
+        */
+      void SetEditorModeSlot();
+
 
   private:
 
@@ -74,10 +84,16 @@ class EditorWindow: public QMainWindow {
       */
     void CreateMenu();
 
+    /**
+      *   @brief Create Toolbar for level editor
+      */
+    void CreateToolbar();
 
 
+
+    QToolBar *toolbar;
+    QPushButton* toolbarButtons[3];
     QGraphicsView *view;
     Editor *editor;
-
 
 };

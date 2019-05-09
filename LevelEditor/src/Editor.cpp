@@ -8,7 +8,7 @@
 
 // Init image asset for LevelItem creation
 AssetManager::ImageAssets Editor::LevelItemImageAsset = AssetManager::ImageAssets::BlackGround; // this just happens to be the first value
-EditorMode Editor::CurrentEditorMode = EditorMode::InsertMode; // change this to PreviewMode
+EditorMode Editor::CurrentEditorMode = EditorMode::PreviewMode;
 
 // Consructor
 Editor::Editor(QObject *parent): QGraphicsScene(parent) {
