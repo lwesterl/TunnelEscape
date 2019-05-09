@@ -18,6 +18,21 @@ class LevelItem: public QGraphicsPixmapItem {
   public:
 
     /**
+      *   @brief Convert left x coordinate to center coordinate
+      *   @param imageAsset tells correct pixmap for the conversion
+      *   @param x left edge coordinate
+      */
+    static float convertLeftXCenter(AssetManager::ImageAssets imageAsset, float x);
+
+    /**
+      *   @brief Convert upper y coordinate to center coordinate
+      *   @param imageAsset tells correct pixmap for the conversion
+      *   @param y upper edge coordinate
+      */
+    static float convertUpperYCenter(AssetManager::ImageAssets imageAsset, float y);
+
+
+    /**
       *   @brief Consructor
       *   @param imageAsset correct image for drawing
       *   @param x position x coordinate, this will convert mouse center coordinate

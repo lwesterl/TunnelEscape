@@ -6,6 +6,15 @@
 
 #include "../include/LevelItem.hpp"
 
+// static conversion, left coordinate to center
+float LevelItem::convertLeftXCenter(AssetManager::ImageAssets imageAsset, float x) {
+  return x + static_cast<float> (AssetManager::getPixmap(imageAsset)->width()/2);
+}
+
+// static conversion, upper coordinate to center
+float LevelItem::convertUpperYCenter(AssetManager::ImageAssets imageAsset, float y) {
+  return y + static_cast<float> (AssetManager::getPixmap(imageAsset)->height()/2);
+}
 
 // Consructor
 LevelItem::LevelItem(AssetManager::ImageAssets imageAsset, float x, float y):
