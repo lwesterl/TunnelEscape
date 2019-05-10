@@ -22,6 +22,8 @@
 #include <QMessageBox>
 #include <QToolBar>
 #include <QPushButton>
+#include <QKeyEvent>
+#include <QApplication>
 
 #ifndef QTMetaTypes
 #define QTMetaTypes
@@ -39,6 +41,7 @@ class EditorWindow: public QMainWindow {
   Q_OBJECT
 
   public:
+    static bool ControlPressed; /**< tells whether control is currently pressed */
 
     /**
       *   @brief Constructor
@@ -51,6 +54,20 @@ class EditorWindow: public QMainWindow {
       *   @brief Deconstructor
       */
     ~EditorWindow();
+
+  protected:
+
+    /**
+      *   @brief Implementation for key press events
+      *   @param event tells event info
+      */
+    void keyPressEvent(QKeyEvent *event) override;
+
+    /**
+      *   @brief Key release event implementation
+      *   @param event tells event info
+      */
+    void keyReleaseEvent(QKeyEvent *event) override;
 
     private slots:
 
@@ -76,6 +93,11 @@ class EditorWindow: public QMainWindow {
         */
       void SetEditorModeSlot();
 
+      /**
+        *   @brief Slot for clearing all LevelItems
+        *   @details toolbarButtons[3] is connected to this slot
+        */
+      void ClearLevelItemsSlot();
 
   private:
 
@@ -89,10 +111,15 @@ class EditorWindow: public QMainWindow {
       */
     void CreateToolbar();
 
+    /**
+      *   @brief Check if control is pressed
+      */
+    void CheckControlModifiers();
+
 
 
     QToolBar *toolbar;
-    QPushButton* toolbarButtons[3];
+    QPushButton* toolbarButtons[4];
     QGraphicsView *view;
     Editor *editor;
 

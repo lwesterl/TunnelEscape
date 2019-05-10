@@ -99,6 +99,11 @@ class Editor: public QGraphicsScene {
       */
     bool loadLevel(const QString &filename);
 
+    /**
+      *   @brief Clear all levelItems
+      */
+    void clearLevelItems();
+
 
   protected:
     /**
@@ -112,7 +117,6 @@ class Editor: public QGraphicsScene {
       *   @param mouseEvent mouse press event
       */
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
     /**
       *   @brief Move currentItem
@@ -124,7 +128,7 @@ class Editor: public QGraphicsScene {
 
     /**
       *   @brief Insert LevelItem
-      *   @details This is called from mousePressEvent. On the first click this
+      *   On the first click this
       *   creates a new currentItem and on the second click currentItem is
       *   added to levelItems. This is just basically a wrapper method
       *   @param x mouse center x coordinate
@@ -142,13 +146,8 @@ class Editor: public QGraphicsScene {
       */
     bool ValidateLevelName(const QString &levelName) const;
 
-    /**
-      *   @brief Clear all levelItems
-      */
-    void ClearLevelItems();
 
     std::deque<LevelItem*> levelItems; // use deque to push items front
     LevelItem *currentItem = nullptr;
-
 
 };

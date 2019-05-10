@@ -17,7 +17,7 @@ Editor::Editor(QObject *parent): QGraphicsScene(parent) {
 
 // Deconstructor
 Editor::~Editor() {
-  ClearLevelItems();
+  clearLevelItems();
 }
 
 // Mouse move event implementation, protected
@@ -50,11 +50,6 @@ void Editor::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
       break;
   }
 
-}
-
-// Mouse release event implementation, protected
-void Editor::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) {
-  //qDebug() << mouseEvent->pos();
 }
 
 // Add LevelItem
@@ -129,7 +124,7 @@ bool Editor::loadLevel(const QString &filename) {
     std::ifstream level(filename.toStdString(), std::ifstream::in);
     if (level.is_open()) {
       // clear all old LevelItems
-      ClearLevelItems();
+      clearLevelItems();
 
       std::string line;
       while (getline(level, line)) {
@@ -160,7 +155,7 @@ bool Editor::loadLevel(const QString &filename) {
           } catch (std::invalid_argument &e) {
             qDebug() << "File loading failed: " << e.what();
             // clear whole level
-            ClearLevelItems();
+            clearLevelItems();
             return false;
           }
         }
@@ -186,8 +181,8 @@ bool Editor::ValidateLevelName(const QString& levelName) const {
   return levelName.contains(QRegularExpression(regExpr));
 }
 
-// Clear all LevelItems, private method
-void Editor::ClearLevelItems() {
+// Clear all LevelItems
+void Editor::clearLevelItems() {
   for (auto it = levelItems.begin(); it != levelItems.end(); it++) {
     removeItem(*it); // remove from scene
     delete *it;

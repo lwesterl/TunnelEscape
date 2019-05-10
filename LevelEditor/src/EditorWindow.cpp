@@ -7,6 +7,9 @@
 
 #include "../include/EditorWindow.hpp"
 
+// Init ControlPressed
+bool EditorWindow::ControlPressed = false;
+
 
 // Constructor
 EditorWindow::EditorWindow(QWidget *parent): QMainWindow(parent) {
@@ -34,8 +37,6 @@ EditorWindow::~EditorWindow() {
   delete view;
   delete editor;
 }
-
-
 
 // Create menu, private method
 void EditorWindow::CreateMenu() {
@@ -67,6 +68,7 @@ void EditorWindow::CreateMenu() {
 
 }
 
+// Create toolbar
 void EditorWindow::CreateToolbar() {
   toolbar = new QToolBar();
   addToolBar(toolbar);
@@ -81,8 +83,12 @@ void EditorWindow::CreateToolbar() {
   }
   Editor::CurrentEditorMode = EditorMode::PreviewMode;
   toolbarButtons[0]->setChecked(true);
+  // create one extra buttons to clear whole level
+  toolbarButtons[3] = new QPushButton("Clear all", toolbar);
+  connect(toolbarButtons[3], SIGNAL(clicked()), this, SLOT(ClearLevelItemsSlot()) );
+  toolbar->addSeparator();
+  toolbar->addWidget(toolbarButtons[3]);
 }
-
 
 // Save level to file, private slot
 void EditorWindow::SaveSlot() {
@@ -96,6 +102,7 @@ void EditorWindow::SaveSlot() {
       QMessageBox::information(this, "Information", "Level successfully saved");
     } else QMessageBox::warning(this, "Warning", "Level saving failed");
   }
+  CheckControlModifiers();
 }
 
 // Load old level, private slot
@@ -111,6 +118,7 @@ void EditorWindow::LoadSlot() {
       QMessageBox::information(this, "Information", "Level successfully loaded");
     } else QMessageBox::warning(this, "Warning", "Level loading failed");
   }
+  CheckControlModifiers();
 }
 
 // Change image asset value in Editor, private slot
@@ -137,4 +145,31 @@ void EditorWindow::SetEditorModeSlot() {
       }
     }
   }
+}
+
+// Clear whole level, private slot
+void EditorWindow::ClearLevelItemsSlot() {
+  editor->clearLevelItems();
+}
+
+// Key press implementation, protected
+void EditorWindow::keyPressEvent(QKeyEvent *event) {
+  if (event->key() == Qt::Key_Control) EditorWindow::ControlPressed = true;
+  else if (event->key() == Qt::Key_S && EditorWindow::ControlPressed) SaveSlot();
+  else if (event->key() == Qt::Key_O && EditorWindow::ControlPressed) LoadSlot();
+  else if (event->key() == Qt::Key_Q && EditorWindow::ControlPressed) QCoreApplication::quit();
+  else if (event->key() == Qt::Key_Backspace) editor->removeCurrentLevelItem();
+}
+
+// Key release implementation, protected
+void EditorWindow::keyReleaseEvent(QKeyEvent *event) {
+  if (event->key() == Qt::Key_Control) EditorWindow::ControlPressed = false;
+}
+
+// Check whether control is pressed, private method
+void EditorWindow::CheckControlModifiers() {
+  Qt::KeyboardModifiers modifiers = QApplication::queryKeyboardModifiers();
+  if ((modifiers & Qt::ControlModifier) == Qt::ControlModifier) {
+    EditorWindow::ControlPressed = true;
+  } else EditorWindow::ControlPressed = false;
 }
