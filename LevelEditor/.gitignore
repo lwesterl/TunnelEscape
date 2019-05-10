@@ -3,3 +3,5 @@ LevelEditor
 moc_*
 # test levels should be ignored
 *.tescape
+# ignore scrapped objects
+scrapped_objects/
