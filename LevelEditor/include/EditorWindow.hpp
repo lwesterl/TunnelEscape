@@ -8,6 +8,7 @@
 #include "Editor.hpp"
 #include "AssetManager.hpp"
 #include "ComboBoxAction.hpp"
+#include "RectMap.hpp" // contains NON_COPYABLE macro
 
 #include <QMainWindow>
 #include <QObject>
@@ -106,6 +107,7 @@ class EditorWindow: public QMainWindow {
       void ClearLevelItemsSlot();
 
   private:
+    NON_COPYABLE(EditorWindow); /**< Make non-copyable */
 
     /**
       *   @brief Create Menu for level editor

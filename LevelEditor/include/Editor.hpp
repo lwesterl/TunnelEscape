@@ -142,6 +142,8 @@ class Editor: public QGraphicsScene {
 
   private:
 
+    NON_COPYABLE(Editor); /**< Make Editor non-copyable */
+
     /**
       *   @brief This checks that level name is valid (has correct extension)
       *   @param levelName to be validated
