@@ -52,13 +52,15 @@ SOURCES       = src/AssetManager.cpp \
 		src/Editor.cpp \
 		src/EditorWindow.cpp \
 		src/LevelItem.cpp \
-		src/main.cpp moc_Editor.cpp \
+		src/main.cpp \
+		src/RectMap.cpp moc_Editor.cpp \
 		moc_EditorWindow.cpp
 OBJECTS       = AssetManager.o \
 		Editor.o \
 		EditorWindow.o \
 		LevelItem.o \
 		main.o \
+		RectMap.o \
 		moc_Editor.o \
 		moc_EditorWindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -124,11 +126,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		LevelEditor.pro include/AssetManager.hpp \
 		include/Editor.hpp \
 		include/EditorWindow.hpp \
-		include/LevelItem.hpp src/AssetManager.cpp \
+		include/LevelItem.hpp \
+		include/RectMap.hpp src/AssetManager.cpp \
 		src/Editor.cpp \
 		src/EditorWindow.cpp \
 		src/LevelItem.cpp \
-		src/main.cpp
+		src/main.cpp \
+		src/RectMap.cpp
 QMAKE_TARGET  = LevelEditor
 DESTDIR       = 
 TARGET        = LevelEditor
@@ -283,8 +287,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents include/AssetManager.hpp include/Editor.hpp include/EditorWindow.hpp include/LevelItem.hpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/AssetManager.cpp src/Editor.cpp src/EditorWindow.cpp src/LevelItem.cpp src/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents include/AssetManager.hpp include/Editor.hpp include/EditorWindow.hpp include/LevelItem.hpp include/RectMap.hpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/AssetManager.cpp src/Editor.cpp src/EditorWindow.cpp src/LevelItem.cpp src/main.cpp src/RectMap.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -315,6 +319,7 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_Editor.cpp moc_EditorWindow.cpp
 moc_Editor.cpp: include/AssetManager.hpp \
 		include/LevelItem.hpp \
+		include/RectMap.hpp \
 		include/Editor.hpp \
 		/usr/lib/x86_64-linux-gnu/qt5/bin/moc
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/lauri/AndroidStudioProjects/TunnelEscape/LevelEditor -I/home/lauri/AndroidStudioProjects/TunnelEscape/LevelEditor -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include include/Editor.hpp -o moc_Editor.cpp
@@ -322,6 +327,7 @@ moc_Editor.cpp: include/AssetManager.hpp \
 moc_EditorWindow.cpp: include/Editor.hpp \
 		include/AssetManager.hpp \
 		include/LevelItem.hpp \
+		include/RectMap.hpp \
 		include/EditorWindow.hpp \
 		/usr/lib/x86_64-linux-gnu/qt5/bin/moc
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/lauri/AndroidStudioProjects/TunnelEscape/LevelEditor -I/home/lauri/AndroidStudioProjects/TunnelEscape/LevelEditor -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/6 -I/usr/include/x86_64-linux-gnu/c++/6 -I/usr/include/c++/6/backward -I/usr/lib/gcc/x86_64-linux-gnu/6/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/6/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include include/EditorWindow.hpp -o moc_EditorWindow.cpp
@@ -345,13 +351,15 @@ AssetManager.o: src/AssetManager.cpp include/AssetManager.hpp
 
 Editor.o: src/Editor.cpp include/Editor.hpp \
 		include/AssetManager.hpp \
-		include/LevelItem.hpp
+		include/LevelItem.hpp \
+		include/RectMap.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Editor.o src/Editor.cpp
 
 EditorWindow.o: src/EditorWindow.cpp include/EditorWindow.hpp \
 		include/Editor.hpp \
 		include/AssetManager.hpp \
-		include/LevelItem.hpp
+		include/LevelItem.hpp \
+		include/RectMap.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o EditorWindow.o src/EditorWindow.cpp
 
 LevelItem.o: src/LevelItem.cpp include/LevelItem.hpp \
@@ -361,8 +369,12 @@ LevelItem.o: src/LevelItem.cpp include/LevelItem.hpp \
 main.o: src/main.cpp include/EditorWindow.hpp \
 		include/Editor.hpp \
 		include/AssetManager.hpp \
-		include/LevelItem.hpp
+		include/LevelItem.hpp \
+		include/RectMap.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o src/main.cpp
+
+RectMap.o: src/RectMap.cpp include/RectMap.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RectMap.o src/RectMap.cpp
 
 moc_Editor.o: moc_Editor.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Editor.o moc_Editor.cpp
