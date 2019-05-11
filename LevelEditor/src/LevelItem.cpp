@@ -16,6 +16,16 @@ float LevelItem::convertUpperYCenter(AssetManager::ImageAssets imageAsset, float
   return y + static_cast<float> (AssetManager::getPixmap(imageAsset)->height()/2);
 }
 
+// static conversion, center x to left
+float LevelItem::convertCenterXLeft(AssetManager::ImageAssets imageAsset, float x) {
+  return x - static_cast<float> (AssetManager::getPixmap(imageAsset)->width()/2);
+}
+
+// static conversion, center y to upper edge
+float LevelItem::convertCenterYUpper(AssetManager::ImageAssets imageAsset, float y) {
+  return y - static_cast<float> (AssetManager::getPixmap(imageAsset)->height()/2);
+}
+
 // Consructor
 LevelItem::LevelItem(AssetManager::ImageAssets imageAsset, float x, float y):
 QGraphicsPixmapItem(*AssetManager::getPixmap(imageAsset)),

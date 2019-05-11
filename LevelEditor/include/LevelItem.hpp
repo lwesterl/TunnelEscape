@@ -31,6 +31,20 @@ class LevelItem: public QGraphicsPixmapItem {
       */
     static float convertUpperYCenter(AssetManager::ImageAssets imageAsset, float y);
 
+    /**
+      *   @brief Convert center x coordinate to left edge coordinate
+      *   @param imageAsset tells correct pixmap for the conversion
+      *   @param x center x coordinate
+      */
+    static float convertCenterXLeft(AssetManager::ImageAssets imageAsset, float x);
+
+    /**
+      *   @brief Convert center y coordinate to upper edge coordinate
+      *   @param imageAsset tells correct pixmap for the conversion
+      *   @param y center y coordinate
+      */
+    static float convertCenterYUpper(AssetManager::ImageAssets imageAsset, float y);
+
 
     /**
       *   @brief Consructor
