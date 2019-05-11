@@ -7,6 +7,7 @@
 #pragma once
 #include "AssetManager.hpp"
 #include "LevelItem.hpp"
+#include "RectMap.hpp"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -42,10 +43,12 @@ class Editor: public QGraphicsScene {
   Q_OBJECT
 
   public:
-    static const int ScreenWidth = 20000; /**< Screen width */
-    static const int ScreenHeight = 10000; /**< Screen height */
+    static const int ScreenWidth = SCREEN_WIDTH; /**< Screen width */
+    static const int ScreenHeight = SCREEN_HEIGHT; /**< Screen height */
     static AssetManager::ImageAssets LevelItemImageAsset; /**< image asset used to create LevelItems */
     static EditorMode CurrentEditorMode; /**< This should changed via EditorWindow */
+    static bool ConnectToPreviousItemsX; /**< This tells whether new LevelItems should be connected to previous items in x dimension */
+    static bool ConnectToPreviousItemsY; /**< This tells whether new LevelItems should be connected to previous items in y dimension */
 
     /**
       *   @brief Constructor
@@ -146,8 +149,26 @@ class Editor: public QGraphicsScene {
       */
     bool ValidateLevelName(const QString &levelName) const;
 
+    /**
+      *   @brief Connect LevelItem to previous one in x dimension
+      *   @param x mouse x coordinate
+      *   @param y mouse y coordinate
+      *   @param width LevelItem width
+      *   @return adjusted x coordinate, left coordinate, 0.f if not found matching previous item
+      */
+    float ConnectLevelItemX(float x, float y, float width);
+
+    /**
+      *   @brief Connect LevelItem to previous one in y dimension
+      *   @param x mouse x coordinate
+      *   @param y mouse y coordinate
+      *   @return adjusted y coordinate, upper edge, 0.f if not found matching previous item
+      */
+    float ConnectLevelItemY(float x, float y, float height);
+
 
     std::deque<LevelItem*> levelItems; // use deque to push items front
     LevelItem *currentItem = nullptr;
+    RectMap rectMap;
 
 };

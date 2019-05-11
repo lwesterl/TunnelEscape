@@ -9,6 +9,8 @@
 // Init image asset for LevelItem creation
 AssetManager::ImageAssets Editor::LevelItemImageAsset = AssetManager::ImageAssets::BlackGround; // this just happens to be the first value
 EditorMode Editor::CurrentEditorMode = EditorMode::PreviewMode;
+bool Editor::ConnectToPreviousItemsX = false;
+bool Editor::ConnectToPreviousItemsY = false;
 
 // Consructor
 Editor::Editor(QObject *parent): QGraphicsScene(parent) {
@@ -54,9 +56,21 @@ void Editor::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 
 // Add LevelItem
 void Editor::addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y) {
+  const int original_x = x;
+  if (Editor::ConnectToPreviousItemsX) {
+    float x_adjusted = ConnectLevelItemX(x, y, AssetManager::getPixmap(imageAsset)->width());
+    if (x_adjusted) x = x_adjusted;
+  }
+  if (Editor::ConnectToPreviousItemsY) {
+    float y_adjusted = ConnectLevelItemY(original_x, y, AssetManager::getPixmap(imageAsset)->height());
+    if (y_adjusted) y = y_adjusted;
+  }
   LevelItem *levelItem = new LevelItem(imageAsset, x, y);
   addItem(levelItem);
   levelItems.push_front(levelItem); // this way newer objects get removed first
+  // note: rectMap uses edge coordinates
+  rectMap.populateCells( std::pair<int,int> (static_cast<int>(levelItem->getX()), static_cast<int>(levelItem->getY())),
+  std::pair<int,int> (static_cast<int>(levelItem->getX() + levelItem->getWidth()), static_cast<int>(levelItem->getY() + levelItem->getHeight())) );
 }
 
 // Try to remove LevelItems
@@ -65,6 +79,9 @@ void Editor::removeLevelItem(float x, float y) {
     if ((*it)->isInside(x, y)) {
       // remove item
       removeItem(*it);
+      // note: rectMap uses edge coordinates
+      rectMap.depopulateCells( std::pair<int,int> (static_cast<int>((*it)->getX()), static_cast<int>((*it)->getY())),
+      std::pair<int,int> (static_cast<int>((*it)->getX() + (*it)->getWidth()), static_cast<int>((*it)->getY() + (*it)->getHeight())) );
       delete *it;
       it = levelItems.erase(it);
       return;
@@ -83,7 +100,16 @@ void Editor::removeCurrentLevelItem() {
 
 // Move current LevelItem, protected
 void Editor::MoveCurrentLevelItem(float x, float y) {
+  const int original_x = x;
   if (currentItem) {
+    if (Editor::ConnectToPreviousItemsX) {
+      float x_adjusted = ConnectLevelItemX(x, y, currentItem->getWidth());
+      if (x_adjusted) x = x_adjusted;
+    }
+    if (Editor::ConnectToPreviousItemsY) {
+      float y_adjusted = ConnectLevelItemY(original_x, y, currentItem->getHeight());
+      if (y_adjusted) y = y_adjusted;
+    }
     currentItem->setPosition(x, y);
   }
 }
@@ -188,4 +214,31 @@ void Editor::clearLevelItems() {
     delete *it;
   }
   levelItems.clear();
+  rectMap.clear();
+}
+
+// Connect LevelItem to another one in x dimension, private method
+float Editor::ConnectLevelItemX(float x, float y, float width) {
+  float x_adjusted = 0.f;
+  if (rectMap.isPopulated(static_cast<int>(x), static_cast<int>(y))) {
+    int new_x = rectMap.getClosestFreeX(static_cast<int>(x), static_cast<int>(y));
+    if (new_x > 0) {
+      if (new_x < static_cast<int>(x)) x_adjusted = static_cast<float>(new_x) - 0.5f * width;
+      else x_adjusted = static_cast<float>(new_x) + 0.5f * width;
+    }
+  }
+  return x_adjusted;
+}
+
+// Connect LevelItem to another one in y dimension, private method
+float Editor::ConnectLevelItemY(float x, float y, float height) {
+  float y_adjusted = 0.f;
+  if (rectMap.isPopulated(static_cast<int>(x), static_cast<int>(y))) {
+    int new_y = rectMap.getClosestFreeY(static_cast<int>(x), static_cast<int>(y));
+    if (new_y > 0) {
+      if (new_y < static_cast<int>(y)) y_adjusted = static_cast<float>(new_y) - 0.5f * height;
+      else y_adjusted = static_cast<float>(new_y) + 0.5 * height;
+    }
+  }
+  return y_adjusted;
 }
