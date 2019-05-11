@@ -33,6 +33,7 @@ EditorWindow::EditorWindow(QWidget *parent): QMainWindow(parent) {
 
 // Deconstructor
 EditorWindow::~EditorWindow() {
+  delete comboBoxAction;
   delete toolbar;
   delete view;
   delete editor;
@@ -48,7 +49,6 @@ void EditorWindow::CreateMenu() {
   QAction *load = new QAction("Load", this);
   connect(load, SIGNAL(triggered()), this, SLOT(LoadSlot()) );
   fileOptions->addAction(load);
-  // todo map editor actions for these
 
   QMenu *elementOptions;
   elementOptions = menuBar()->addMenu("Elements");
@@ -65,7 +65,14 @@ void EditorWindow::CreateMenu() {
 
   QMenu *settings;
   settings = menuBar()->addMenu("Settings");
-
+  comboBoxAction = new ComboBoxAction("Connect to previous items:", settings);
+  for (int i = static_cast<int>(ComboBox::ConnectMode::NoConnect); i <= static_cast<int>(ComboBox::ConnectMode::XYConnect); i++) {
+    comboBoxAction->addItem(ComboBox::ConnectModeToStr[static_cast<ComboBox::ConnectMode>(i)]);
+  }
+  settings->addAction(comboBoxAction);
+  QAction *saveSettings = new QAction("Save settings", this);
+  settings->addAction(saveSettings);
+  connect(saveSettings, SIGNAL(triggered()), this, SLOT(SettingsSavedSlot()) );
 }
 
 // Create toolbar
@@ -119,6 +126,12 @@ void EditorWindow::LoadSlot() {
     } else QMessageBox::warning(this, "Warning", "Level loading failed");
   }
   CheckControlModifiers();
+}
+
+// Save settings, private slot
+void EditorWindow::SettingsSavedSlot() {
+  int index = comboBoxAction->getComboIndex();
+  ComboBox::setConnectMode(static_cast<ComboBox::ConnectMode> (index));
 }
 
 // Change image asset value in Editor, private slot

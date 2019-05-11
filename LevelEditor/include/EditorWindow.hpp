@@ -7,6 +7,7 @@
 #pragma once
 #include "Editor.hpp"
 #include "AssetManager.hpp"
+#include "ComboBoxAction.hpp"
 
 #include <QMainWindow>
 #include <QObject>
@@ -82,6 +83,11 @@ class EditorWindow: public QMainWindow {
       void LoadSlot();
 
       /**
+        *   @brief Settings saved slot
+        */
+      void SettingsSavedSlot();
+
+      /**
         *   @brief Slot which is used to change Editor LevelItemImageAsset
         *   @details Elements actions are connected to this slot
         */
@@ -118,6 +124,7 @@ class EditorWindow: public QMainWindow {
 
 
 
+    ComboBoxAction *comboBoxAction;
     QToolBar *toolbar;
     QPushButton* toolbarButtons[4];
     QGraphicsView *view;
