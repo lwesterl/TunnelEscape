@@ -53,7 +53,7 @@ void EditorWindow::CreateMenu() {
   QMenu *elementOptions;
   elementOptions = menuBar()->addMenu("Elements");
   for (int i = static_cast<int>(AssetManager::ImageAssets::BlackGround);
-           i < static_cast<int>(AssetManager::ImageAssets::LightSky); i++) {
+           i <= static_cast<int>(AssetManager::ImageAssets::End); i++) {
     QAction *action = new QAction(
       QIcon( *AssetManager::getPixmap(static_cast<AssetManager::ImageAssets>(i))),
              QString::fromStdString(AssetManager::getImageAssetStr(static_cast<AssetManager::ImageAssets>(i))),

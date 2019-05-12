@@ -18,7 +18,9 @@ namespace AssetManager {
     { ImageAssets::GrassMarks, "img/GrassMarks.png" },
     { ImageAssets::Grass, "img/Grass.png" },
     { ImageAssets::GroundGrass, "img/GroundGrass.png" },
-    { ImageAssets::LightSky, "img/LightSky.png" }
+    { ImageAssets::LightSky, "img/LightSky.png" },
+    { ImageAssets::Player, "img/Player.png" },
+    { ImageAssets::End, "img/End.png" }
   };
 
   std::map<const std::string, const ImageAssets> strToImageAssets =
@@ -31,7 +33,9 @@ namespace AssetManager {
     { "GrassMarks", ImageAssets::GrassMarks },
     { "Grass", ImageAssets::Grass },
     { "GroundGrass", ImageAssets::GroundGrass },
-    { "LightSky", ImageAssets::LightSky }
+    { "LightSky", ImageAssets::LightSky },
+    { "Player", ImageAssets::Player },
+    { "End", ImageAssets::End }
   };
 
   const std::string getImagePath(const ImageAssets imageAsset) { return imagePaths[imageAsset]; }
@@ -57,7 +61,7 @@ namespace AssetManager {
   // Create QPixmaps
   std::map<ImageAssets, QPixmap*> pixmaps;
   void INIT() {
-    for (int i = static_cast<int> (ImageAssets::BlackGround); i <= static_cast<int> (ImageAssets::LightSky); i++) {
+    for (int i = static_cast<int> (ImageAssets::BlackGround); i <= static_cast<int> (ImageAssets::End); i++) {
       pixmaps.emplace(static_cast<ImageAssets>(i), new QPixmap(QString::fromStdString(getImagePath(static_cast<ImageAssets>(i)))));
     }
   }

@@ -21,6 +21,8 @@ namespace AssetManager {
   /**
     *   @enum ImageAssets
     *   @brief Defines constants for all image assets
+    *   @remark TO ADD IMAGES, ADD IMAGE TYPE NAME TO THIS ENUM, ADD IT INTO THE
+    *   MAPS AND CHANGE AssetManager.cpp line 62 and EditorWindow.cpp line 56 accordingly
     */
   enum class ImageAssets:int {
     BlackGround,
@@ -31,7 +33,9 @@ namespace AssetManager {
     GrassMarks,
     Grass,
     GroundGrass,
-    LightSky
+    LightSky,
+    Player,
+    End
   };
 
   extern std::map<const ImageAssets, const std::string> imagePaths; /**< stores paths of the images */
