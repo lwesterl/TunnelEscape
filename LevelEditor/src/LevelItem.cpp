@@ -27,21 +27,23 @@ float LevelItem::convertCenterYUpper(AssetManager::ImageAssets imageAsset, float
 }
 
 // Consructor
-LevelItem::LevelItem(AssetManager::ImageAssets imageAsset, float x, float y):
+LevelItem::LevelItem(AssetManager::ImageAssets imageAsset, float x, float y, bool imageObject):
 QGraphicsPixmapItem(*AssetManager::getPixmap(imageAsset)),
-imageAsset(imageAsset)
+imageAsset(imageAsset),
+imageObject(imageObject)
 {
   setPosition(x, y);
+  SetPixmapOpacity();
 }
 
 // Get item width
 int LevelItem::getWidth() const {
-  return pixmap().width();
+  return AssetManager::getPixmap(imageAsset)->width();
 }
 
 // Get item height
 int LevelItem::getHeight() const {
-  return pixmap().height();
+  return AssetManager::getPixmap(imageAsset)->height();
 }
 
 // Set position, convert coordinates
@@ -59,9 +61,24 @@ bool LevelItem::isInside(float x, float y) {
   return false;
 }
 
+// Toggle LevelItem mode
+void LevelItem::toggleMode() {
+   imageObject = !imageObject;
+   SetPixmapOpacity();
+}
+
+// Set opacity for LevelItem, private method
+void LevelItem::SetPixmapOpacity() {
+  if (imageObject) setOpacity(LevelItem::ImageOpacity);
+  else setOpacity(1.f);
+}
+
 // Print implementation
 std::ostream& operator<<(std::ostream &os, LevelItem &levelItem) {
   os << AssetManager::getImageAssetStr(levelItem.imageAsset) << "," << levelItem.x
-     << "," << levelItem.y << "," << levelItem.getWidth() << "," << levelItem.getHeight() << std::endl;
+     << "," << levelItem.y << "," << levelItem.getWidth() << "," << levelItem.getHeight() << ",";
+  if (levelItem.imageObject) os << "ImageObject";
+  else os << "PhysicalObject";
+  os << std::endl;
   return os;
 }

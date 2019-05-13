@@ -53,8 +53,10 @@ class LevelItem: public QGraphicsPixmapItem {
       *   to item left corner coordinate
       *   @param y position y coordinate, this will convert mouse center coordinate
       *   to item upper corner coordinate
+      *   @param imageObject Whether this is an actual physical object or just an image
+      *   if true this is just an image
       */
-    LevelItem(AssetManager::ImageAssets imageAsset, float x, float y);
+    LevelItem(AssetManager::ImageAssets imageAsset, float x, float y, bool imageObject = false);
 
     /**
       *   @brief Get item width
@@ -97,6 +99,11 @@ class LevelItem: public QGraphicsPixmapItem {
     bool isInside(float x, float y);
 
     /**
+      *   @brief Toggle imageObject value
+      */
+    void toggleMode();
+
+    /**
       *   @brief Print overload, used to create level file
       *   @return modified handle to the stream which has LevelItem printed out
       *   @details Print format:
@@ -106,7 +113,18 @@ class LevelItem: public QGraphicsPixmapItem {
     friend std::ostream& operator<<(std::ostream &os, LevelItem &levelItem);
 
   private:
+
+      static constexpr float ImageOpacity = 0.7f; /**< opacity value for LevelItems for which imageObject is true */
+
+    /**
+      *   @brief Set pixmap opacity
+      *   @details opacity is set based on imageObject value, true ->
+      *   LevelItem half clear
+      */
+    void SetPixmapOpacity();
+
     AssetManager::ImageAssets imageAsset;
     float x;
     float y;
+    bool imageObject; /**< if true means that this should be only created as image, no physical counterpart */
 };
