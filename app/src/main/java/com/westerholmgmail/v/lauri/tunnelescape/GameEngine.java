@@ -160,7 +160,7 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     private void CreateGameScreens() {
         View view = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
-        gameScreens.put(GameState.SinglePlayer, new SinglePlayer());
+        gameScreens.put(GameState.SinglePlayer, new SinglePlayer(context));
         // TODO add possible other game modes
     }
 
