@@ -66,8 +66,9 @@ class Editor: public QGraphicsScene {
       *   @param imageAsset tells which image is used for the LevelItem
       *   @param x mouse center x coordinate
       *   @param y mouse center y coordinate
+      *   @param imageObject whether object is just an image or not, default false
       */
-    void addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y);
+    void addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y, bool imageObject = false);
 
     /**
       *   @brief Try to remove LevelItem from the level
@@ -167,6 +168,17 @@ class Editor: public QGraphicsScene {
       *   @return adjusted y coordinate, upper edge, 0.f if not found matching previous item
       */
     float ConnectLevelItemY(float x, float y, float height);
+
+    /**
+      *   @brief Toggle LevelItem mode
+      *   @details Tries to find LevelItem matching the coordinates and then call its
+      *   toggleMode method
+      *   @param x mouse x coordinate
+      *   @param y mouse y coordinate
+      *   @remark Toggles the first found item, so this won't work well for multiple
+      *   items on top of each other
+      */
+    void ToggleLevelItemMode(float x, float y);
 
 
     std::deque<LevelItem*> levelItems; // use deque to push items front

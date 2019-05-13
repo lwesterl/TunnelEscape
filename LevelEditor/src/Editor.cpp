@@ -41,21 +41,24 @@ void Editor::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) {
 void Editor::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) {
   float x = mouseEvent->scenePos().x();
   float y = mouseEvent->scenePos().y();
-  switch (Editor::CurrentEditorMode) {
-    case EditorMode::InsertMode:
-      InsertLevelItem(x, y);
-      break;
-    case EditorMode::RemoveMode:
-      removeLevelItem(x, y);
-      break;
-    case EditorMode::PreviewMode:
-      break;
+  if (mouseEvent->button() == Qt::RightButton) {
+    ToggleLevelItemMode(x, y);
+  } else {
+    switch (Editor::CurrentEditorMode) {
+      case EditorMode::InsertMode:
+        InsertLevelItem(x, y);
+        break;
+      case EditorMode::RemoveMode:
+        removeLevelItem(x, y);
+        break;
+      case EditorMode::PreviewMode:
+        break;
+    }
   }
-
 }
 
 // Add LevelItem
-void Editor::addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y) {
+void Editor::addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y, bool imageObject) {
   const int original_x = x;
   if (Editor::ConnectToPreviousItemsX) {
     float x_adjusted = ConnectLevelItemX(x, y, AssetManager::getPixmap(imageAsset)->width());
@@ -65,7 +68,7 @@ void Editor::addLevelItem(AssetManager::ImageAssets imageAsset, float x, float y
     float y_adjusted = ConnectLevelItemY(original_x, y, AssetManager::getPixmap(imageAsset)->height());
     if (y_adjusted) y = y_adjusted;
   }
-  LevelItem *levelItem = new LevelItem(imageAsset, x, y);
+  LevelItem *levelItem = new LevelItem(imageAsset, x, y, imageObject);
   addItem(levelItem);
   levelItems.push_front(levelItem); // this way newer objects get removed first
   // note: rectMap uses edge coordinates
@@ -156,6 +159,7 @@ bool Editor::loadLevel(const QString &filename) {
       while (getline(level, line)) {
         std::istringstream lineStream(line);
         float x, y;
+        bool imageObject = false;
         std::string imageAssetName;
         int i = 0;
         std::string content;
@@ -175,6 +179,9 @@ bool Editor::loadLevel(const QString &filename) {
                 break; // width currently not used
               case 4:
                 break; // height currently not used
+              case 5:
+                if(content == "ImageObject") imageObject = true;
+                break;
             }
             i++;
             content.clear();
@@ -185,12 +192,12 @@ bool Editor::loadLevel(const QString &filename) {
             return false;
           }
         }
-        if (i == 5) {
+        if (i == 6) {
           // line read ok, create new LevelItem
           AssetManager::ImageAssets asset = AssetManager::getStrImageAsset(imageAssetName);
           float x_center = LevelItem::convertLeftXCenter(asset, x);
           float y_center = LevelItem::convertUpperYCenter(asset, y);
-          addLevelItem(asset, x_center, y_center);
+          addLevelItem(asset, x_center, y_center, imageObject);
         }
       }
     }
@@ -241,4 +248,18 @@ float Editor::ConnectLevelItemY(float x, float y, float height) {
     }
   }
   return y_adjusted;
+}
+
+// Toggle LevelItem mode, private method
+void Editor::ToggleLevelItemMode(float x, float y) {
+  // first find out if there is a object the position
+  if (rectMap.isPopulated(static_cast<int>(x), static_cast<int>(y))) {
+    // toggle the first object at the position
+    for (auto& item : levelItems) {
+      if (item->isInside(x, y)) {
+        item->toggleMode();
+        return;
+      }
+    }
+  }
 }
