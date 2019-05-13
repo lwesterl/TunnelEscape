@@ -23,11 +23,11 @@ public class PlayerObject extends GameObject {
 
     /**
      * @brief Constructor
-     * @details Uses PlayerImage and Player ObjectType to create GameObject
+     * @details Uses Player and Player ObjectType to create GameObject
      * @param objectId matching id for PhysicsObject given by WorldWrapper
      */
     public PlayerObject(long objectId) {
-        super(ImageType.PlayerImage, ObjectType.Player, objectId);
+        super(ImageType.Player, ObjectType.Player, objectId);
     }
 
     /**
