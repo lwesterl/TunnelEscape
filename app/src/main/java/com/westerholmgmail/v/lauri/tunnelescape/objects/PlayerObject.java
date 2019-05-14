@@ -3,6 +3,7 @@ package com.westerholmgmail.v.lauri.tunnelescape.objects;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.Menu;
 
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.Vector2f;
@@ -87,18 +88,16 @@ public class PlayerObject extends GameObject {
      * @return true if player destroyed, otherwise false
      */
     public boolean damagePlayer(@ObjectType.ObjectTypeDef final int opponentType) {
-        System.out.println("Opponent type: " + String.valueOf(opponentType));
         switch(opponentType) {
             case ObjectType.Barrier:
-                HP -= 1;
+                HP -= 5;
                 break;
             case ObjectType.Hazard:
-                HP -= 10;
+                HP -= 20;
                 break;
             default:
                 break;
         }
-        System.out.println("____________________________________________________HP: " + String.valueOf(HP));
         return HP <= 0;
     }
 

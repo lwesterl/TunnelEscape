@@ -16,4 +16,6 @@
     <string name="effect_music_description">Effect music volume</string>
     <string name="settings_button">Settings</string>
     <string name="settings_button_description">Settings button</string>
+    <string name="Hp_string">HP</string>
+    <string name="Hp_text_description">HP text</string>
 </resources>

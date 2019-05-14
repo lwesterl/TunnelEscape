@@ -1,9 +1,11 @@
 package com.westerholmgmail.v.lauri.tunnelescape;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.view.Menu;
 import android.view.MotionEvent;
 
 import com.westerholmgmail.v.lauri.UI.GameScreen;
@@ -283,10 +285,12 @@ SinglePlayer implements GameScreen {
                     PlayerObject player = (PlayerObject) firstObject;
                     player.enableExtraBoost();
                     if (player.damagePlayer(secondObject.getObjectType())) return false;
+                    UpdateHPBar(player.getPlayerHP());
                 } else if (secondObject.getObjectType() == ObjectType.Player) {
                     PlayerObject player = (PlayerObject) secondObject;
                     player.enableExtraBoost();
                     if (player.damagePlayer(firstObject.getObjectType())) return false;
+                    UpdateHPBar(player.getPlayerHP());
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
@@ -296,6 +300,21 @@ SinglePlayer implements GameScreen {
         return true;
     }
 
-
+    /**
+     * @brief Update HPBar progress based on Player HP
+     * @param HP Player HP
+     */
+    private void UpdateHPBar(int HP) {
+        MenuScreen menuScreen = (MenuScreen) context;
+        if (HP < 0) HP = 0;
+        else if (HP > 100) HP = 100;
+        final int HP_value = HP;
+        menuScreen.HPBar.post(() -> {
+            menuScreen.HPBar.setProgress(HP_value);
+            if (HP_value > 75) menuScreen.HPBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+            else if (HP_value > 40) menuScreen.HPBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+            else menuScreen.HPBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+        });
+    }
 
 }

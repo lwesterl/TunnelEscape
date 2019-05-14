@@ -1,6 +1,8 @@
 package com.westerholmgmail.v.lauri.UI;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -12,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
@@ -28,6 +31,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private ImageButton boostButton;
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
+    public ProgressBar HPBar;
     private ImageView mainMenuImage;
     private GameEngine gameEngine;
     public static int ScreenWidth; /**< tells screen width */
@@ -181,6 +185,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         boostButton.setOnTouchListener(this);
         leftArrowButton.setOnTouchListener(this);
         rightArrowButton.setOnTouchListener(this);
+        HPBar = findViewById(R.id.HPBar);
         android.view.ViewGroup.LayoutParams layoutParams = gameEngine.getLayoutParams();
         layoutParams.height = MenuScreen.ScreenHeight - SinglePlayer.UIBarHeight;
         layoutParams.width = MenuScreen.ScreenWidth;
@@ -246,7 +251,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         setContentView(R.layout.main_menu_layout);
-        if (gameEngine.getCurrentGameState() == GameState.SinglePlayer) {
+        if (gameEngine != null && gameEngine.getCurrentGameState() == GameState.SinglePlayer) {
             singlePlayerOver(false);
         }
         CreateMenuUI();
@@ -270,6 +275,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     public void createEndScreenUI() {
 
     }
+
 }
 
 
