@@ -73,7 +73,6 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
                 LoadSinglePlayerUI();
                 break;
             case R.id.exitButton:
-                //gameEngine.exitGame();
                 exit();
                 break;
             case R.id.settingsButton:
@@ -247,7 +246,29 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         setContentView(R.layout.main_menu_layout);
+        if (gameEngine.getCurrentGameState() == GameState.SinglePlayer) {
+            singlePlayerOver(false);
+        }
         CreateMenuUI();
+    }
+
+    /**
+     * @brief Single player over
+     * @details Game ended, return to menu and show win / lose screen. Reset SinglePlayer via GameEngine.
+     * Change to menu music
+     */
+    public void singlePlayerOver(boolean GameOver) {
+        gameEngine.exitGame();
+        AudioManager.playAudio(AudioType.SinglePlayerAudio, false);
+        AudioManager.playAudio(AudioType.MainMenuAudio, true);
+        if (GameOver) {
+            createEndScreenUI();
+        }
+
+    }
+
+    public void createEndScreenUI() {
+
     }
 }
 

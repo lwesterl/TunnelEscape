@@ -1,13 +1,11 @@
 package com.westerholmgmail.v.lauri.tunnelescape;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.graphics.Canvas;
-import android.view.View;
 
 import com.westerholmgmail.v.lauri.UI.GameState;
 import com.westerholmgmail.v.lauri.UI.GameScreen;
@@ -24,6 +22,9 @@ import java.util.HashMap;
  */
 
 public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
+
+    public static int score = 0;
+    public static String LevelName = "Level1.tescape";
 
     private GameLoop gameLoop; /**< another thread running the update and render loop */
     private GameState currentGameState = GameState.MainMenu;
@@ -156,19 +157,25 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     /**
+     * @brief Get current GameState
+     * @return currentGameState
+     */
+    public GameState getCurrentGameState() { return currentGameState; }
+
+    /**
      * @brief Create GameScreens and add those to gameScreens
      */
     private void CreateGameScreens() {
-        View view = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
+        //View view = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
         gameScreens.put(GameState.SinglePlayer, new SinglePlayer(context));
         // TODO add possible other game modes
     }
 
 
     public void exitGame() {
-        System.out.println("______________________Exit____________________ ");
-        // TODO clear game related stuff properly
-        menuScreen.exit();
+        //gameLoop.setRunning(false);
+        gameScreens.get(currentGameState).reset();
+        currentGameState = GameState.MainMenu;
     }
 
     /**

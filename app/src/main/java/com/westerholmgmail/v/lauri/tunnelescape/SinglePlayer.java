@@ -60,6 +60,8 @@ SinglePlayer implements GameScreen {
         PairDeque collided = worldWrapper.update();
         if (! GameLogicUpdate(collided)) {
             // exit single player
+            MenuScreen menuScreen = (MenuScreen) context;
+            menuScreen.singlePlayerOver(true);
         }
         // update GameObject positions
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
@@ -99,6 +101,8 @@ SinglePlayer implements GameScreen {
             worldWrapper.delete();
         }
         worldWrapper = new WorldWrapper();
+        gameObjects.clear();
+        imageObjects.clear();
     }
 
     @Override
@@ -165,7 +169,6 @@ SinglePlayer implements GameScreen {
     public boolean loadLevel(String levelName) {
         // set correct gravity values
         PhysicsProperties.setGravityY(20000.f);
-        //addObject(ObjectType.Player, ImageType.Player, 300.f, 0.f);
         try {
             InputStream inputStream = context.getAssets().open(levelName);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -275,14 +278,20 @@ SinglePlayer implements GameScreen {
             long secondKey = pair.getSecond();
             GameObject firstObject = gameObjects.get(firstKey);
             GameObject secondObject = gameObjects.get(secondKey);
-            if (firstObject.getObjectType() == ObjectType.Player) {
-                PlayerObject player = (PlayerObject) firstObject;
-                player.enableExtraBoost();
-            } else if (secondObject.getObjectType() == ObjectType.Player) {
-                PlayerObject player = (PlayerObject) secondObject;
-                player.enableExtraBoost();
+            try {
+                if (firstObject.getObjectType() == ObjectType.Player) {
+                    PlayerObject player = (PlayerObject) firstObject;
+                    player.enableExtraBoost();
+                    if (player.damagePlayer(secondObject.getObjectType())) return false;
+                } else if (secondObject.getObjectType() == ObjectType.Player) {
+                    PlayerObject player = (PlayerObject) secondObject;
+                    player.enableExtraBoost();
+                    if (player.damagePlayer(firstObject.getObjectType())) return false;
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                return false;
             }
-
         }
         return true;
     }

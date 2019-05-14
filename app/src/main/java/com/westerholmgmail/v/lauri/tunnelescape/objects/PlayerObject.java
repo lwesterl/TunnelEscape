@@ -25,6 +25,7 @@ public class PlayerObject extends GameObject {
     private static float ForceY = -500000.f; // upwards
 
     private boolean extraBoost = false; /**< used to detected when Player needs extra boost */
+    private int HP = 100;
 
     /**
      * @brief Constructor
@@ -79,4 +80,31 @@ public class PlayerObject extends GameObject {
      * @brief Enables extra boost for following boost cycle
      */
     public void enableExtraBoost() { extraBoost = true; }
+
+    /**
+     * @brief Damage player
+     * @param opponentType ObjectType for opponent object
+     * @return true if player destroyed, otherwise false
+     */
+    public boolean damagePlayer(@ObjectType.ObjectTypeDef final int opponentType) {
+        System.out.println("Opponent type: " + String.valueOf(opponentType));
+        switch(opponentType) {
+            case ObjectType.Barrier:
+                HP -= 1;
+                break;
+            case ObjectType.Hazard:
+                HP -= 10;
+                break;
+            default:
+                break;
+        }
+        System.out.println("____________________________________________________HP: " + String.valueOf(HP));
+        return HP <= 0;
+    }
+
+    /**
+     * @brief Get PlayerObject HP
+     * @return HP
+     */
+    public int getPlayerHP() { return HP; }
 }
