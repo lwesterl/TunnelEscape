@@ -65,7 +65,7 @@ public enum ImageType {
         map.put("DarkBrownGround", ImageType.DarkBrownGround);
         map.put("DarkBrownGroundMarks", ImageType.DarkBrownGroundMarks);
         map.put("DeepSky", ImageType.DeepSky);
-        map.put("ExhausFlames", ImageType.ExhaustFlames);
+        map.put("ExhaustFlames", ImageType.ExhaustFlames);
         map.put("Flames", ImageType.Flames);
         map.put("Grass", ImageType.Grass);
         map.put("GrassMarks", ImageType.GrassMarks);
