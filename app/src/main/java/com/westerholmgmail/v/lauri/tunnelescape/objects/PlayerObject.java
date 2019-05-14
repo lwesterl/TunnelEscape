@@ -6,6 +6,7 @@ import android.graphics.Paint;
 
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.Vector2f;
+import com.westerholmgmail.v.lauri.tunnelescape.WorldWrapper;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 
@@ -17,9 +18,13 @@ public class PlayerObject extends GameObject {
     public static volatile boolean boostPressed = false;
     public static volatile boolean lefPressed = false;
     public static volatile boolean rightPressed = false;
+    public static final float elasticity = 0.1f; /**< elasticity value, reduces bounciness a bit */
+    public static final float density = 1.f; /**< use the standard density value from WorldWrapper */
 
     private static float ForceX = 500000.f; // right
     private static float ForceY = -500000.f; // upwards
+
+    private boolean extraBoost = false; /**< used to detected when Player needs extra boost */
 
     /**
      * @brief Constructor
@@ -60,11 +65,18 @@ public class PlayerObject extends GameObject {
     @Override
     public Vector2f move() {
         Vector2f force = new Vector2f();
+        float forceY = extraBoost ? 20 * PlayerObject.ForceY : PlayerObject.ForceY;
         if (PlayerObject.boostPressed && PlayerObject.lefPressed && !PlayerObject.rightPressed) {
-            force.update(-PlayerObject.ForceX, PlayerObject.ForceY);
+            force.update(-PlayerObject.ForceX, forceY);
         } else if (PlayerObject.boostPressed && PlayerObject.rightPressed && !PlayerObject.lefPressed) {
-            force.update(PlayerObject.ForceX, PlayerObject.ForceY);
-        } else if (PlayerObject.boostPressed) force.update(0.f, PlayerObject.ForceY);
+            force.update(PlayerObject.ForceX, forceY);
+        } else if (PlayerObject.boostPressed) force.update(0.f, forceY);
+        if (force.getY() != 0.f) extraBoost = false;
         return force;
     }
+
+    /**
+     * @brief Enables extra boost for following boost cycle
+     */
+    public void enableExtraBoost() { extraBoost = true; }
 }

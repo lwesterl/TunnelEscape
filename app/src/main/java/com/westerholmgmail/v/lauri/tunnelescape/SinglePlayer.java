@@ -16,9 +16,10 @@ import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @class SinglePlayer
@@ -34,9 +35,9 @@ SinglePlayer implements GameScreen {
 
     private WorldWrapper worldWrapper;
     private Context context;
-    private ArrayList<GameObject> gameObjects = new ArrayList<>();
+    private HashMap<Long, GameObject> gameObjects = new HashMap<>();
     private ArrayList<GameObject> imageObjects = new ArrayList<>(); // these don't have PhysicsObject counterpart
-    private @ColorInt int backgroundColor = Color.BLACK;
+    private @ColorInt int backgroundColor = Color.WHITE;
     private int canvasMultiplierX = 0;
     private int canvasMultiplierY = 0;
 
@@ -47,7 +48,7 @@ SinglePlayer implements GameScreen {
     public SinglePlayer(Context context) {
         this.context = context;
         worldWrapper = new WorldWrapper();
-        loadLevel("test.tescape"); // TODO implement properly
+        loadLevel("Level1.tescape"); // TODO implement properly
     }
 
     /**
@@ -57,9 +58,12 @@ SinglePlayer implements GameScreen {
     public void update() {
         // update PhysicsWorld via WorldWrapper
         PairDeque collided = worldWrapper.update();
-        // TODO check collided
+        if (! GameLogicUpdate(collided)) {
+            // exit single player
+        }
         // update GameObject positions
-        for (GameObject gameObject : gameObjects) {
+        for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
+            GameObject gameObject = item.getValue();
             Vector2f position = worldWrapper.fetchPosition(gameObject.getObjectId()).getPosition();
             gameObject.updatePosition(position);
             // move also matching PhysicsObject
@@ -78,12 +82,13 @@ SinglePlayer implements GameScreen {
     public void render(Canvas canvas) {
         transferCanvas(canvas);
         canvas.drawColor(backgroundColor);
+        for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
+            item.getValue().draw(canvas);
+        }
         for (GameObject imageObject : imageObjects) {
             imageObject.draw(canvas);
         }
-        for (GameObject gameObject : gameObjects) {
-            gameObject.draw(canvas);
-        }
+
     }
 
     @Override
@@ -109,7 +114,7 @@ SinglePlayer implements GameScreen {
      * @param y Upper corner position
      */
     public void addObject(@ObjectType.ObjectTypeDef int objectType, ImageType imageType, float x, float y) {
-        long id;
+        long id = 0;
         // WorldWrapper needs object central coordinates
         float x_center = x + ResourceManager.getImageWidth(imageType)/2.f;
         float y_center = y + ResourceManager.getImageHeight(imageType)/2.f;
@@ -120,8 +125,14 @@ SinglePlayer implements GameScreen {
                         ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
                 setPlayerPosition(x, y);
                 gameObject = new PlayerObject(id);
+                worldWrapper.setObjectPhysicsProperties(id, PlayerObject.elasticity, PlayerObject.density);
                 break;
             case ObjectType.Ground:
+                id = worldWrapper.addObject(true, new Vector2f(x_center, y_center),
+                        ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
+                gameObject = new StaticObject(imageType, objectType, id);
+                break;
+            case ObjectType.Barrier:
                 id = worldWrapper.addObject(true, new Vector2f(x_center, y_center),
                         ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
                 gameObject = new StaticObject(imageType, objectType, id);
@@ -142,8 +153,8 @@ SinglePlayer implements GameScreen {
         }
         // add gameObject to gameObjects
         if (gameObject != null && objectType != ObjectType.Texture) {
-            gameObjects.add(gameObject);
-        } else if (imageObjects != null) imageObjects.add(gameObject);
+            gameObjects.put(id, gameObject);
+        } else imageObjects.add(gameObject);
     }
 
     /**
@@ -156,8 +167,8 @@ SinglePlayer implements GameScreen {
         PhysicsProperties.setGravityY(20000.f);
         //addObject(ObjectType.Player, ImageType.Player, 300.f, 0.f);
         try {
-            FileInputStream fileInputStream = context.openFileInput(levelName);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            InputStream inputStream = context.getAssets().open(levelName);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader br = new BufferedReader(inputStreamReader);
             String line;
             try {
@@ -170,7 +181,7 @@ SinglePlayer implements GameScreen {
                 e.printStackTrace();
             }
 
-        } catch (java.io.FileNotFoundException e) {
+        } catch (java.io.IOException e) {
             e.printStackTrace();
         }
         return false;
@@ -250,6 +261,30 @@ SinglePlayer implements GameScreen {
         canvas.translate((float) (-canvasMultiplierX * (MenuScreen.ScreenWidth - SinglePlayer.maxDiffX)),
                          (float) (-canvasMultiplierY * (MenuScreen.ScreenHeight - SinglePlayer.maxDiffY)));
 
+    }
+
+    /**
+     * @brief Update game based on collisions, todo
+     * @param collided deque of collision pairs
+     * @return
+     */
+    private boolean GameLogicUpdate(PairDeque collided) {
+        for (int i = 0; i < collided.size(); i++) {
+            Pair pair = collided.getitem(i);
+            long firstKey = pair.getFirst();
+            long secondKey = pair.getSecond();
+            GameObject firstObject = gameObjects.get(firstKey);
+            GameObject secondObject = gameObjects.get(secondKey);
+            if (firstObject.getObjectType() == ObjectType.Player) {
+                PlayerObject player = (PlayerObject) firstObject;
+                player.enableExtraBoost();
+            } else if (secondObject.getObjectType() == ObjectType.Player) {
+                PlayerObject player = (PlayerObject) secondObject;
+                player.enableExtraBoost();
+            }
+
+        }
+        return true;
     }
 
 
