@@ -32,6 +32,7 @@ SinglePlayer implements GameScreen {
 
     public static int UIBarHeight = 80; /**< tells the height of UI bar which is positioned on the lower edge of the screen, this must be match single_player_layout */
     public static boolean PlayerWon = false; /**< tells whether player won or lost */
+    public static int Score = 0; /**< Single player score */
     private static Vector2f playerPosition = new Vector2f(0.f, 0.f);
     private final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.Player); // used to detect when canvas should be transformed
     private final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.Player); // used to detect when canvas should be transformed
@@ -64,6 +65,7 @@ SinglePlayer implements GameScreen {
         if (! GameLogicUpdate(collided)) {
             // exit single player
             stopSinglePlayer();
+            return;
         }
         // update GameObject positions
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
@@ -175,6 +177,7 @@ SinglePlayer implements GameScreen {
         // set correct gravity values
         PhysicsProperties.setGravityY(20000.f);
         SinglePlayer.PlayerWon = false;
+        SinglePlayer.Score = 0;
         try {
             InputStream inputStream = context.getAssets().open(levelName);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -334,6 +337,8 @@ SinglePlayer implements GameScreen {
     }
 
     private void stopSinglePlayer() {
+        if (! SinglePlayer.PlayerWon) SinglePlayer.Score = 0;
+        //SinglePlayer.PlayerWon = true;
         // Get a handler that can be used to post to the main thread
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
