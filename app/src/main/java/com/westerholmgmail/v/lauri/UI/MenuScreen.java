@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
@@ -85,7 +86,13 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
             case R.id.MenuButton:
                 CreateMenuUI();
                 break;
+            case R.id.WinScreenMenuButton:
+                CreateMenuUI();
+                break;
             case R.id.TryAgainButton:
+                // todo implement
+                break;
+            case R.id.NextLevelButton:
                 // todo implement
                 break;
             default:
@@ -283,6 +290,19 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         // todo replace SinglePlayer.PlayerWon if other game modes are created
         if (SinglePlayer.PlayerWon) {
             // create win screen
+            setContentView(R.layout.win_screen_layout);
+            VideoView videoView = findViewById(R.id.win_screen_videoView);
+            if (videoView != null) {
+                String uri = "android.resource://" + getPackageName() + "/" + R.raw.win_video;
+                videoView.setVideoURI(Uri.parse(uri));
+                videoView.start();
+            }
+            Button WinScreenButton = findViewById(R.id.WinScreenMenuButton);
+            WinScreenButton.setOnClickListener(this);
+            Button NextLevelButton = findViewById(R.id.NextLevelButton);
+            NextLevelButton.setOnClickListener(this);
+            TextView ScoreView = findViewById(R.id.LevelScore);
+            ScoreView.setText("Level score: " + String.valueOf(SinglePlayer.Score));
         } else {
             // create lose screen
             setContentView(R.layout.lose_screen_layout);
