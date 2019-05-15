@@ -18,4 +18,8 @@
     <string name="settings_button_description">Settings button</string>
     <string name="Hp_string">HP</string>
     <string name="Hp_text_description">HP text</string>
+    <string name="try_again_resource">Try again</string>
+    <string name="try_again_descriptor">Try again button</string>
+    <string name="main_menu_button">Main menu</string>
+    <string name="main_menu_description">Main menu button</string>
 </resources>
