@@ -88,15 +88,7 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // stop gameLoop
-        while (true) {
-            try {
-                gameLoop.setRunning(false);
-                gameLoop.join();
-                break;
-            } catch (InterruptedException e) {
-                System.out.println(e.getStackTrace());
-            }
-        }
+        JoinGameLoop();
     }
 
     /**
@@ -173,7 +165,7 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
 
 
     public void exitGame() {
-        //gameLoop.setRunning(false);
+        JoinGameLoop();
         gameScreens.get(currentGameState).reset();
         currentGameState = GameState.MainMenu;
     }
@@ -202,5 +194,20 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     public void rightButtonClicked(boolean pressed) {
         PlayerObject.rightPressed = pressed;
+    }
+
+    /**
+     * @brief Join GameLoop, i.e. kill the worker thread
+     */
+    private void JoinGameLoop() {
+        while (true) {
+            try {
+                gameLoop.setRunning(false);
+                gameLoop.join();
+                break;
+            } catch (InterruptedException e) {
+                System.out.println(e.getStackTrace());
+            }
+        }
     }
 }

@@ -31,6 +31,7 @@ public class
 SinglePlayer implements GameScreen {
 
     public static int UIBarHeight = 80; /**< tells the height of UI bar which is positioned on the lower edge of the screen, this must be match single_player_layout */
+    public static boolean PlayerWon = false; /**< tells whether player won or lost */
     private static Vector2f playerPosition = new Vector2f(0.f, 0.f);
     private final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.Player); // used to detect when canvas should be transformed
     private final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.Player); // used to detect when canvas should be transformed
@@ -62,8 +63,7 @@ SinglePlayer implements GameScreen {
         PairDeque collided = worldWrapper.update();
         if (! GameLogicUpdate(collided)) {
             // exit single player
-            MenuScreen menuScreen = (MenuScreen) context;
-            menuScreen.singlePlayerOver(true);
+            stopSinglePlayer();
         }
         // update GameObject positions
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
@@ -97,6 +97,9 @@ SinglePlayer implements GameScreen {
 
     @Override
     public void reset() {
+        PlayerObject.lefPressed = false;
+        PlayerObject.rightPressed = false;
+        PlayerObject.boostPressed = false;
         //TODO implement properly
         // create new WorldWrapper
         if (worldWrapper != null) {
@@ -171,6 +174,7 @@ SinglePlayer implements GameScreen {
     public boolean loadLevel(String levelName) {
         // set correct gravity values
         PhysicsProperties.setGravityY(20000.f);
+        SinglePlayer.PlayerWon = false;
         try {
             InputStream inputStream = context.getAssets().open(levelName);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -282,21 +286,33 @@ SinglePlayer implements GameScreen {
             GameObject secondObject = gameObjects.get(secondKey);
             try {
                 if (firstObject.getObjectType() == ObjectType.Player) {
-                    PlayerObject player = (PlayerObject) firstObject;
-                    player.enableExtraBoost();
-                    if (player.damagePlayer(secondObject.getObjectType())) return false;
-                    UpdateHPBar(player.getPlayerHP());
+                    if (! PlayerLogicUpdate((PlayerObject) firstObject, secondObject)) return false;
                 } else if (secondObject.getObjectType() == ObjectType.Player) {
-                    PlayerObject player = (PlayerObject) secondObject;
-                    player.enableExtraBoost();
-                    if (player.damagePlayer(firstObject.getObjectType())) return false;
-                    UpdateHPBar(player.getPlayerHP());
+                    if (! PlayerLogicUpdate((PlayerObject) secondObject, firstObject)) return false;
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();
                 return false;
             }
         }
+        return true;
+    }
+
+
+    /**
+     * @brief Update PlayerObject and whole game based on collision
+     * @param player PlayerObject
+     * @param otherObject Other GameObject PlayerObject collided with
+     * @return true if game still on, false if game should be stopped
+     */
+    private boolean PlayerLogicUpdate(PlayerObject player, GameObject otherObject) {
+        if (otherObject.getObjectType() == ObjectType.End) {
+            SinglePlayer.PlayerWon = true;
+            return false;
+        }
+        player.enableExtraBoost();
+        if (player.damagePlayer(otherObject.getObjectType())) return false;
+        UpdateHPBar(player.getPlayerHP());
         return true;
     }
 
@@ -315,6 +331,17 @@ SinglePlayer implements GameScreen {
             else if (HP_value > 40) menuScreen.HPBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
             else menuScreen.HPBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
         });
+    }
+
+    private void stopSinglePlayer() {
+        // Get a handler that can be used to post to the main thread
+        android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
+
+        Runnable myRunnable = () -> {
+            MenuScreen menuScreen = (MenuScreen) context;
+            menuScreen.singlePlayerOver(true);
+        };
+        mainHandler.post(myRunnable);
     }
 
 }

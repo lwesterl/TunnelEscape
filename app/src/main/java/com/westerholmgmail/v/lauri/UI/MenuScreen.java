@@ -1,8 +1,8 @@
 package com.westerholmgmail.v.lauri.UI;
 
+import android.app.UiAutomation;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.VideoView;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
@@ -60,7 +61,6 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.main_menu_layout);
         InitScreenSize();
         CreateMenuUI();
     }
@@ -81,6 +81,12 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.settingsButton:
                 CreateSettingsUI();
+                break;
+            case R.id.MenuButton:
+                CreateMenuUI();
+                break;
+            case R.id.TryAgainButton:
+                // todo implement
                 break;
             default:
                 System.out.println("Unhandled click");
@@ -125,6 +131,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
      * @brief Create UI for TunnelEscape
      */
     private void CreateMenuUI() {
+        setContentView(R.layout.main_menu_layout);
         // create Buttons
         singlePlayerButton = findViewById(R.id.singlePlayerButton);
         singlePlayerButton.setOnClickListener(this);
@@ -250,7 +257,6 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
      */
     @Override
     public void onBackPressed() {
-        setContentView(R.layout.main_menu_layout);
         if (gameEngine != null && gameEngine.getCurrentGameState() == GameState.SinglePlayer) {
             singlePlayerOver(false);
         }
@@ -265,6 +271,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     public void singlePlayerOver(boolean GameOver) {
         gameEngine.exitGame();
         AudioManager.playAudio(AudioType.SinglePlayerAudio, false);
+        AudioManager.playAudio(AudioType.BoostAudio, false);
         AudioManager.playAudio(AudioType.MainMenuAudio, true);
         if (GameOver) {
             createEndScreenUI();
@@ -273,6 +280,23 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     }
 
     public void createEndScreenUI() {
+        // todo replace SinglePlayer.PlayerWon if other game modes are created
+        if (SinglePlayer.PlayerWon) {
+            // create win screen
+        } else {
+            // create lose screen
+            setContentView(R.layout.lose_screen_layout);
+            VideoView videoView = findViewById(R.id.lose_screen_videoView);
+            if (videoView != null) {
+                String uri = "android.resource://" + getPackageName() + "/" + R.raw.fail_video;
+                videoView.setVideoURI(Uri.parse(uri));
+                videoView.start();
+            }
+            Button mainMenuButton = findViewById(R.id.MenuButton);
+            mainMenuButton.setOnClickListener(this);
+            Button tryAgain = findViewById(R.id.TryAgainButton);
+            tryAgain.setOnClickListener(this);
+        }
 
     }
 
