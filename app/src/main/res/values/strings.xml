@@ -22,4 +22,8 @@
     <string name="try_again_descriptor">Try again button</string>
     <string name="main_menu_button">Main menu</string>
     <string name="main_menu_description">Main menu button</string>
+    <string name="next_level_button">Next level</string>
+    <string name="next_level_description">Next level button</string>
+    <string name="score_text">Score text</string>
+    <string name="score_text_description">Level score</string>
 </resources>
