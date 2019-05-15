@@ -1,5 +1,6 @@
 package com.westerholmgmail.v.lauri.tunnelescape.objects;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -53,8 +54,12 @@ public class PlayerObject extends GameObject {
             Bitmap flamesBitmap = ResourceManager.getBitmap(ImageType.ExhaustFlames);
             if (flamesBitmap != null) {
                 // center the flames on the lower edge of the PlayerObject
-                float exhaustFlamesX = x + 0.5f * getObjectWidth() - 0.5f * flamesBitmap.getWidth();
-                canvas.drawBitmap(flamesBitmap, exhaustFlamesX, y + getObjectHeight(), new Paint());
+                float exhaustFlamesY = y + 0.66f * getObjectHeight(); // all of these value are pretty much defined based trial and error
+                //float exhaustFlamesX = x + 0.5f * getObjectWidth() - 0.5f * flamesBitmap.getWidth();
+                float exhaustFlamesX = x - flamesBitmap.getWidth() * 0.5f + 5.f;
+                //canvas.drawBitmap(flamesBitmap, exhaustFlamesX, y + getObjectHeight(), new Paint());
+                canvas.drawBitmap(flamesBitmap, exhaustFlamesX, exhaustFlamesY, new Paint());
+                canvas.drawBitmap(flamesBitmap, x + getObjectWidth() - flamesBitmap.getWidth() + 5.f, exhaustFlamesY, new Paint());
             }
         }
     }
