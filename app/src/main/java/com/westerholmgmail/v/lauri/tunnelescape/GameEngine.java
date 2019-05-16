@@ -23,9 +23,6 @@ import java.util.HashMap;
 
 public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
 
-    public static int score = 0;
-    public static String LevelName = "Level1.tescape";
-
     private GameLoop gameLoop; /**< another thread running the update and render loop */
     private GameState currentGameState = GameState.MainMenu;
     private HashMap<GameState, GameScreen> gameScreens = new HashMap<>();

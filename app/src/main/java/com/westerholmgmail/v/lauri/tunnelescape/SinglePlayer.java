@@ -2,15 +2,19 @@ package com.westerholmgmail.v.lauri.tunnelescape;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.support.annotation.ColorInt;
-import android.view.Menu;
 import android.view.MotionEvent;
 
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.GameObject;
+import com.westerholmgmail.v.lauri.tunnelescape.objects.ImageObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.ObjectType;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.StaticObject;
@@ -33,15 +37,17 @@ SinglePlayer implements GameScreen {
     public static int UIBarHeight = 80; /**< tells the height of UI bar which is positioned on the lower edge of the screen, this must be match single_player_layout */
     public static boolean PlayerWon = false; /**< tells whether player won or lost */
     public static int Score = 0; /**< Single player score */
+    public static boolean HardDifficulty = false;
     private static Vector2f playerPosition = new Vector2f(0.f, 0.f);
     private final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.Player); // used to detect when canvas should be transformed
     private final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.Player); // used to detect when canvas should be transformed
+    private final static float PlayerCircleRadius = 100.f;
 
     private WorldWrapper worldWrapper;
     private Context context;
     private HashMap<Long, GameObject> gameObjects = new HashMap<>();
     private ArrayList<GameObject> imageObjects = new ArrayList<>(); // these don't have PhysicsObject counterpart
-    private @ColorInt int backgroundColor = Color.WHITE;
+    private @ColorInt int backgroundColor = Color.argb(255, 20, 20, 20);
     private int canvasMultiplierX = 0;
     private int canvasMultiplierY = 0;
 
@@ -88,11 +94,25 @@ SinglePlayer implements GameScreen {
     public void render(Canvas canvas) {
         transferCanvas(canvas);
         canvas.drawColor(backgroundColor);
+        for (GameObject imageObject : imageObjects) {
+            imageObject.draw(canvas);
+        }
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
             item.getValue().draw(canvas);
         }
-        for (GameObject imageObject : imageObjects) {
-            imageObject.draw(canvas);
+        if (SinglePlayer.HardDifficulty) {
+            // create only circle as visible area
+            Bitmap tmpBitmap = Bitmap.createBitmap(MenuScreen.ScreenWidth, MenuScreen.ScreenHeight, Bitmap.Config.ARGB_8888); // this creates a MUTABLE bitmap
+            Canvas tmpCanvas = new Canvas(tmpBitmap);
+            // counterTransform must match values in transferCanvas
+            float xCounterTransform = canvasMultiplierX * (MenuScreen.ScreenWidth - SinglePlayer.maxDiffX);
+            float yCounterTransform = canvasMultiplierY * (MenuScreen.ScreenHeight - SinglePlayer.maxDiffY);
+            tmpCanvas.drawColor(Color.BLACK);
+            Paint p = new Paint();
+            p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            tmpCanvas.drawCircle(playerPosition.getX() - xCounterTransform + ResourceManager.getImageWidth(ImageType.Player) * 0.5f,
+                    playerPosition.getY() - yCounterTransform + ResourceManager.getImageHeight(ImageType.Player) * 0.5f, SinglePlayer.PlayerCircleRadius, p);
+            canvas.drawBitmap(tmpBitmap, xCounterTransform, yCounterTransform, null);
         }
 
     }
@@ -165,7 +185,7 @@ SinglePlayer implements GameScreen {
         // add gameObject to gameObjects
         if (gameObject != null && objectType != ObjectType.Texture) {
             gameObjects.put(id, gameObject);
-        } else imageObjects.add(gameObject);
+        } else if (gameObject != null) imageObjects.add(gameObject);
     }
 
     /**

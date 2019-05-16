@@ -1,12 +1,10 @@
 package com.westerholmgmail.v.lauri.UI;
 
-import android.app.UiAutomation;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -23,6 +22,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
@@ -56,6 +56,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         // load resources during start up
         ResourceManager.loadResources(this);
         AudioManager.init(this);
+        SinglePlayer.HardDifficulty = FileType.loadDifficulty(this);
 
         // hide title and make window full-sized
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -225,6 +226,11 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         seekBar = findViewById(R.id.effectsVolumeSeekBar);
         seekBar.setOnSeekBarChangeListener(this);
         seekBar.setProgress(AudioManager.EffectVolume);
+        Switch DifficultySwitch = findViewById(R.id.DifficultySwitch);
+        DifficultySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SinglePlayer.HardDifficulty = isChecked ? true : false;
+            FileType.saveDifficulty(this, SinglePlayer.HardDifficulty);
+        });
     }
 
     @Override
