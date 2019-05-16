@@ -2,7 +2,6 @@ package com.westerholmgmail.v.lauri.tunnelescape.resources;
 
 import android.support.annotation.IntDef;
 
-import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
