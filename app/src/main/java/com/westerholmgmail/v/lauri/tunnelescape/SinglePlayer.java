@@ -18,6 +18,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.objects.ImageObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.ObjectType;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.StaticObject;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 
@@ -38,6 +39,7 @@ SinglePlayer implements GameScreen {
     public static boolean PlayerWon = false; /**< tells whether player won or lost */
     public static int Score = 0; /**< Single player score */
     public static boolean HardDifficulty = false;
+    public static @FileType.FileTypeRef int CurrentLevel = FileType.Intro;
     private static Vector2f playerPosition = new Vector2f(0.f, 0.f);
     private final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.Player); // used to detect when canvas should be transformed
     private final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.Player); // used to detect when canvas should be transformed
@@ -58,7 +60,7 @@ SinglePlayer implements GameScreen {
     public SinglePlayer(Context context) {
         this.context = context;
         worldWrapper = new WorldWrapper();
-        loadLevel("Level1.tescape"); // TODO implement properly
+        loadLevel(FileType.getFilePath(SinglePlayer.CurrentLevel));
     }
 
     /**
@@ -122,7 +124,6 @@ SinglePlayer implements GameScreen {
         PlayerObject.lefPressed = false;
         PlayerObject.rightPressed = false;
         PlayerObject.boostPressed = false;
-        //TODO implement properly
         // create new WorldWrapper
         if (worldWrapper != null) {
             worldWrapper.delete();
