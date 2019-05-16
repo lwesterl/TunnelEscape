@@ -19,20 +19,21 @@
         android:singleLine="false"
         android:text="@string/settings_string"
         android:textAlignment="center"
+        android:textColor="@android:color/black"
         tools:text="@string/settings_string" />
 
     <TextView
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:contentDescription="@string/menu_volume_decription"
         android:ems="10"
         android:inputType="text|textPersonName"
         android:singleLine="false"
         android:text="@string/menu_volume_text"
         android:textAlignment="textStart"
-        android:layout_marginStart="50dp"
-        android:textColor="@color/colorAccent"
+        android:textColor="@android:color/holo_red_dark"
         android:textSize="14sp" />
 
     <SeekBar
@@ -52,6 +53,7 @@
         android:contentDescription="@string/background_settings_description"
         android:text="@string/background_musics_settings"
         android:textAlignment="viewStart"
+        android:textColor="@android:color/holo_red_dark"
         tools:text="@string/background_musics_settings" />
 
     <SeekBar
@@ -65,10 +67,11 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:contentDescription="@string/effect_music_description"
         android:text="@string/effect_music_settings"
         android:textAlignment="viewStart"
-        android:layout_marginStart="50dp"
+        android:textColor="@android:color/holo_red_dark"
         tools:text="@string/effect_music_settings" />
 
     <SeekBar
@@ -77,4 +80,22 @@
         android:layout_height="wrap_content"
         android:max="100"
         android:progress="5" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Switch
+            android:id="@+id/DifficultySwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:checked="false"
+            android:contentDescription="@string/difficulty_switch_description"
+            android:text="@string/difficulty_switch_text"
+            android:textColor="@android:color/black"
+            tools:text="@string/difficulty_switch_text" />
+    </RelativeLayout>
+
 </LinearLayout>

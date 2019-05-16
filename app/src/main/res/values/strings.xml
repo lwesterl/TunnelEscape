@@ -26,4 +26,6 @@
     <string name="next_level_description">Next level button</string>
     <string name="score_text">Score text</string>
     <string name="score_text_description">Level score</string>
+    <string name="difficulty_switch_text">Alone in the dark mode </string>
+    <string name="difficulty_switch_description">Toggle \'alone in the dark mode\'</string>
 </resources>
