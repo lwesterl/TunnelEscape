@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
@@ -23,6 +24,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
@@ -35,6 +37,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private ImageButton rightArrowButton;
     public ProgressBar HPBar;
     private ImageView mainMenuImage;
+    private TextView levelNameView;
+    private TextView levelDescriptionView;
+    private ImageView levelSelectImage;
     private GameEngine gameEngine;
     public static int ScreenWidth; /**< tells screen width */
     public static int ScreenHeight; /**< tells screen height */
@@ -76,7 +81,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         switch(v.getId()) {
             case R.id.singlePlayerButton:
                 hideMenu();
-                LoadSinglePlayerUI();
+                CreateLevelSelectUI();
                 break;
             case R.id.exitButton:
                 exit();
@@ -90,11 +95,25 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
             case R.id.WinScreenMenuButton:
                 CreateMenuUI();
                 break;
+            case R.id.LevelSelectMenuButton:
+                CreateMenuUI();
+                break;
             case R.id.TryAgainButton:
-                // todo implement
+                LoadSinglePlayerUI();
                 break;
             case R.id.NextLevelButton:
-                // todo implement
+                @FileType.FileTypeRef int currentLevel = SinglePlayer.CurrentLevel;
+                SinglePlayer.CurrentLevel = FileType.changeLevel(currentLevel, true);
+                if (SinglePlayer.CurrentLevel > currentLevel) {
+                    LoadSinglePlayerUI();
+                } else {
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(this, "All levels completed!\nRemember to try 'Alone in the dark mode'", duration);
+                    toast.show();
+                }
+                break;
+            case R.id.SelectLevelButton:
+                LoadSinglePlayerUI();
                 break;
             default:
                 System.out.println("Unhandled click");
@@ -227,6 +246,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         seekBar.setOnSeekBarChangeListener(this);
         seekBar.setProgress(AudioManager.EffectVolume);
         Switch DifficultySwitch = findViewById(R.id.DifficultySwitch);
+        if (SinglePlayer.HardDifficulty) DifficultySwitch.setChecked(true);
         DifficultySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SinglePlayer.HardDifficulty = isChecked ? true : false;
             FileType.saveDifficulty(this, SinglePlayer.HardDifficulty);
@@ -292,6 +312,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    /**
+     * @brief Create UI for end screen based on SinglePlayer result
+     */
     public void createEndScreenUI() {
         // todo replace SinglePlayer.PlayerWon if other game modes are created
         if (SinglePlayer.PlayerWon) {
@@ -326,6 +349,44 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    /**
+     * @brief Create Level select UI
+     */
+    private void CreateLevelSelectUI() {
+        setContentView(R.layout.level_select_layout);
+        Button MenuButton = findViewById(R.id.LevelSelectMenuButton);
+        MenuButton.setOnClickListener(this);
+        Button PlayButton = findViewById(R.id.SelectLevelButton);
+        PlayButton.setOnClickListener(this);
+        levelNameView = findViewById(R.id.LevelName);
+        levelNameView.setText(FileType.getFileName(SinglePlayer.CurrentLevel));
+        levelDescriptionView = findViewById(R.id.LevelDescription);
+        levelDescriptionView.setText(FileType.getDescription(SinglePlayer.CurrentLevel));
+        levelSelectImage = findViewById(R.id.LevelImage);
+        levelSelectImage.setImageBitmap(ResourceManager.getBitmap(ImageType.Player));
+        levelSelectImage.setOnTouchListener(new OnSwipeListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                SinglePlayer.CurrentLevel = FileType.changeLevel(SinglePlayer.CurrentLevel, false);
+                UpdateLevelSelectUI();
+            }
+
+            @Override
+            public void onSwipeRight() {
+                SinglePlayer.CurrentLevel = FileType.changeLevel(SinglePlayer.CurrentLevel, true);
+                UpdateLevelSelectUI();
+            }
+        });
+
+    }
+
+    /**
+     * @brief Update Level select UI to have correct texts and image after swipe
+     */
+    private void UpdateLevelSelectUI() {
+        levelDescriptionView.setText(FileType.getDescription(SinglePlayer.CurrentLevel));
+        levelNameView.setText(FileType.getFileName(SinglePlayer.CurrentLevel));
+    }
 }
 
 
