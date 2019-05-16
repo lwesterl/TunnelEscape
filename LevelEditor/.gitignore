@@ -5,3 +5,4 @@ moc_*
 *.tescape
 # ignore scrapped objects
 scrapped_objects/
+/.qmake.stash
