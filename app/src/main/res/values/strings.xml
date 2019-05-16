@@ -28,4 +28,10 @@
     <string name="score_text_description">Level score</string>
     <string name="difficulty_switch_text">Alone in the dark mode </string>
     <string name="difficulty_switch_description">Toggle \'alone in the dark mode\'</string>
+    <string name="select_level_button">Play</string>
+    <string name="select_level_description">Select level button</string>
+    <string name="level_name">Level name</string>
+    <string name="level_name_description">Level name text</string>
+    <string name="level_imageview">Level image</string>
+    <string name="level_description_description">Level description</string>
 </resources>

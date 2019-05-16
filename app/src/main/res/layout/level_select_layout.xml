@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/LevelImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:contentDescription="@string/level_imageview"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <Button
+        android:id="@+id/LevelSelectMenuButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="152dp"
+        android:layout_marginBottom="0dp"
+        android:contentDescription="@string/main_menu_description"
+        android:text="@string/main_menu_button"
+        tools:text="@string/main_menu_button" />
+
+    <Button
+        android:id="@+id/SelectLevelButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="150dp"
+        android:contentDescription="@string/select_level_description"
+        android:text="@string/select_level_button"
+        tools:text="@string/select_level_button" />
+
+    <TextView
+        android:id="@+id/LevelName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:contentDescription="@string/level_name_description"
+        android:text="@string/level_name"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        tools:text="@string/level_name" />
+
+    <TextView
+        android:id="@+id/LevelDescription"
+        android:layout_width="368dp"
+        android:layout_height="115dp"
+        android:layout_alignEnd="@+id/SelectLevelButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="59dp"
+        android:contentDescription="@string/level_description_description"
+        android:fontFamily="cursive"
+        android:text="TextView"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="22sp" />
 
 </RelativeLayout>
