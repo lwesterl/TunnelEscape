@@ -13,26 +13,52 @@ import java.util.Map;
  */
 public enum ImageType {
 
-    BlackGround,
-    DarkBrownGround,
-    DarkBrownGroundMarks,
-    DeepSky,
-    ExhaustFlames,
-    Flames,
-    Grass,
-    GrassMarks,
-    GroundGrass,
-    LightSky,
-    Player,
-    End;
+    BlackGround (0),
+    DarkBrownGround (1),
+    DarkBrownGroundMarks (2),
+    DeepSky (3),
+    ExhaustFlames (4),
+    Flames (5),
+    Grass (6),
+    GrassMarks (7),
+    GroundGrass (8),
+    LightSky (9),
+    Player (10),
+    End (11),
+    Coin (12),
+    Diamond (13);
 
+    private final int value;
 
+    /**
+     * @brief Constructor
+     * @param value int value used, make sure these are increased by one
+     */
+    ImageType(int value) { this.value = value;}
+
+    /**
+     * @brief Get ImageType as int
+     * @return matching int value
+     */
+    public int toInt() { return value; }
+
+    /**
+     * @brief Convert int value to ImageType, use only valid int values (otherwise returns null)
+     * @param value valid int constant used for an ImageType
+     * @return correct ImageType or null if no match for value
+     */
+    public static ImageType fromInt(int value) {
+        for (ImageType imageType : ImageType.values()) {
+            if (imageType.value == value) return imageType;
+        }
+        return null;
+    }
 
     /**< Map from ImageType values to asset paths */
     private final static Map<ImageType, String> imageTypeToStr = Collections.unmodifiableMap( Init() );
 
     /**
-     * @@brief Create imageTypeToStr map
+     * @brief Create imageTypeToStr map
      * @return created map between ImageType values and image paths in assets
      */
     private static HashMap<ImageType, String> Init() {
@@ -49,6 +75,8 @@ public enum ImageType {
         map.put(ImageType.LightSky, "LightSky.png");
         map.put(ImageType.Player, "Player.png");
         map.put(ImageType.End, "End.png");
+        map.put(ImageType.Coin, "Coin.png");
+        map.put(ImageType.Diamond, "Diamond.png");
         return map;
     }
 
@@ -73,6 +101,8 @@ public enum ImageType {
         map.put("LightSky", ImageType.LightSky);
         map.put("Player", ImageType.Player);
         map.put("End", ImageType.End);
+        map.put("Coin", ImageType.Coin);
+        map.put("Diamond", ImageType.Diamond);
         return map;
     }
 
@@ -105,6 +135,7 @@ public enum ImageType {
         if (imageType == BlackGround || imageType == DarkBrownGround || imageType == DarkBrownGroundMarks) return ObjectType.Barrier;
         if (imageType == Player) return ObjectType.Player;
         if (imageType == End) return ObjectType.End;
+        if (imageType == Coin || imageType == Diamond) return ObjectType.Treasure;
         return ObjectType.Ground;
     }
 

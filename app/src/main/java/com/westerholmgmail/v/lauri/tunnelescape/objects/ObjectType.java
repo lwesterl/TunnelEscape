@@ -11,7 +11,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class ObjectType {
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef ({Player, Ground, Barrier, Hazard, Enemy, Texture, End})
+    @IntDef ({Player, Ground, Barrier, Hazard, Enemy, Texture, End, Treasure})
     public @interface ObjectTypeDef {}
 
     public static final int Player = 0;
@@ -21,6 +21,7 @@ public class ObjectType {
     public static final int Enemy = 4;
     public static final int Texture = 5;
     public static final int End = 6;
+    public static final int Treasure = 7;
 
     public final int objectType;
 
