@@ -36,6 +36,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private ImageButton leftArrowButton;
     private ImageButton rightArrowButton;
     public ProgressBar HPBar;
+    public TextView CurrentScoreView;
     private ImageView mainMenuImage;
     private TextView levelNameView;
     private TextView levelDescriptionView;
@@ -220,6 +221,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         leftArrowButton.setOnTouchListener(this);
         rightArrowButton.setOnTouchListener(this);
         HPBar = findViewById(R.id.HPBar);
+        CurrentScoreView = findViewById(R.id.CurrentScoreView);
         android.view.ViewGroup.LayoutParams layoutParams = gameEngine.getLayoutParams();
         layoutParams.height = MenuScreen.ScreenHeight - SinglePlayer.UIBarHeight;
         layoutParams.width = MenuScreen.ScreenWidth;

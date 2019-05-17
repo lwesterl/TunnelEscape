@@ -55,6 +55,8 @@ SinglePlayer implements GameScreen {
     private int canvasMultiplierY = 0;
     private float[] maxPoint = {Float.MIN_VALUE, Float.MIN_VALUE}; // this must have format x, y
     private float[] minPoint = {Float.MAX_VALUE, Float.MAX_VALUE}; // this must have format x, y
+    private long startTime = 0; // this should be in seconds
+    private int prevTimeScore = 0;
 
 
     /**
@@ -89,6 +91,7 @@ SinglePlayer implements GameScreen {
                 worldWrapper.setObjectForce(gameObject.getObjectId(), force);
             }
         }
+        CalculateScore();
     }
 
     /**
@@ -225,6 +228,7 @@ SinglePlayer implements GameScreen {
                     ParseLevelContent(content);
                 }
                 CreateTreasures();
+                startTime = System.currentTimeMillis()/1000;
                 return true;
             } catch (java.io.IOException e) {
                 e.printStackTrace();
@@ -381,6 +385,7 @@ SinglePlayer implements GameScreen {
 
     private void stopSinglePlayer() {
         if (! SinglePlayer.PlayerWon) SinglePlayer.Score = 0;
+        else CalculateScore();
         //SinglePlayer.PlayerWon = true;
         // Get a handler that can be used to post to the main thread
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
@@ -425,6 +430,23 @@ SinglePlayer implements GameScreen {
             addObject(ObjectType.Treasure, TreasureObject.getCurrentImageType(),
                     TreasureObject.getRandomX(minPoint[0] + 100.f, maxPoint[0] - 100.f), TreasureObject.getRandomY(minPoint[1] + 100.f, maxPoint[1] - 100.f));
         }
+    }
+
+    /**
+     * @brief Calculate time based score when level is successfully completed
+     */
+    private void CalculateScore() {
+        // timeElapsed in seconds
+        Score -= prevTimeScore;
+        double timeElapsed = (double) (System.currentTimeMillis()/1000 - startTime);
+        int timeBonus = (int) (100.d * (600.d / (600.d + timeElapsed)));
+        Score += timeBonus;
+        prevTimeScore = timeBonus;
+        MenuScreen menuScreen = (MenuScreen) context;
+        menuScreen.CurrentScoreView.post(()-> {
+            menuScreen.CurrentScoreView.setText(String.valueOf(SinglePlayer.Score));
+        });
+
     }
 
 }
