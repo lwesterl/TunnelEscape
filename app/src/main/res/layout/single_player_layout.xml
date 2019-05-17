@@ -69,12 +69,12 @@
             android:layout_alignEnd="@+id/singlePlayerImageView"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="317dp"
-            android:layout_marginEnd="318dp"
+            android:layout_marginStart="255dp"
+            android:layout_marginEnd="380dp"
             android:layout_marginBottom="20dp"
+            android:clickable="false"
             android:max="100"
             android:progress="100"
-            android:clickable="false"
             android:progressTint="@android:color/holo_green_dark"
             android:visibility="visible" />
 
@@ -82,14 +82,39 @@
             android:id="@+id/HPText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
+            android:layout_marginStart="265dp"
+            android:layout_marginBottom="43dp"
             android:contentDescription="@string/Hp_text_description"
             android:text="@string/Hp_string"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             android:visibility="visible"
             tools:text="@string/Hp_string" />
+
+        <TextView
+            android:id="@+id/CurrentScoreView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/HPBar"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="283dp"
+            android:contentDescription="@string/current_score_view"
+            android:textColor="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/ScoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/CurrentScoreView"
+            android:layout_alignTop="@+id/HPText"
+            android:layout_marginStart="-8dp"
+            android:layout_marginTop="0dp"
+            android:text="@string/score_textview"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            tools:text="@string/score_textview" />
     </RelativeLayout>
 </FrameLayout>

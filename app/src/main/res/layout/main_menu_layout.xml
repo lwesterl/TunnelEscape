@@ -4,17 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/menu_frame"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark">
 
     <ImageView
         android:id="@+id/mainMenuImage"
-        android:layout_width="572dp"
-        android:layout_height="252dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:contentDescription="Test image"
-        app:srcCompat="@mipmap/ic_launcher_round"
-        tools:srcCompat="@mipmap/ic_launcher_round" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/menu_image"
+        app:srcCompat="@drawable/tunnelescape_title"
+        tools:srcCompat="@drawable/tunnelescape_title" />
 
     <RelativeLayout
         android:id="@+id/linearLayout"
@@ -31,7 +30,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="50dp"
             android:layout_marginBottom="0dp"
+            android:background="@android:color/holo_red_dark"
             android:text="@string/SinglePlayer"
+            android:textColor="@android:color/black"
             android:visibility="visible" />
 
         <Button
@@ -41,11 +42,12 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="39dp"
-            android:layout_marginEnd="221dp"
+
+            android:layout_marginEnd="50dp"
             android:layout_marginBottom="0dp"
-            android:layout_toEndOf="@+id/singlePlayerButton"
+            android:background="@android:color/holo_red_dark"
             android:text="@string/Exit"
+            android:textColor="@android:color/black"
             tools:text="@string/Exit" />
 
         <Button
@@ -54,11 +56,15 @@
             android:layout_width="140dp"
             android:layout_height="50dp"
             android:layout_alignTop="@+id/singlePlayerButton"
+            android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="272dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="51dp"
+            android:layout_marginEnd="270dp"
+            android:background="@android:color/holo_red_dark"
             android:contentDescription="@string/settings_button_description"
             android:text="@string/settings_button"
+            android:textColor="@android:color/black"
             tools:text="@string/settings_button" />
 
 

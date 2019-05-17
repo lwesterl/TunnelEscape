@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:showDividers="middle"
-    android:divider="@drawable/layout_divider">
+    android:divider="@drawable/layout_divider"
+    android:background="@android:color/background_dark">
 
 
     <EditText
@@ -19,7 +20,8 @@
         android:singleLine="false"
         android:text="@string/settings_string"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
         tools:text="@string/settings_string" />
 
     <TextView
@@ -94,7 +96,7 @@
             android:checked="false"
             android:contentDescription="@string/difficulty_switch_description"
             android:text="@string/difficulty_switch_text"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/holo_red_dark"
             tools:text="@string/difficulty_switch_text" />
     </RelativeLayout>
 

@@ -34,4 +34,7 @@
     <string name="level_name_description">Level name text</string>
     <string name="level_imageview">Level image</string>
     <string name="level_description_description">Level description</string>
+    <string name="score_textview">Score</string>
+    <string name="current_score_view">Current score</string>
+    <string name="menu_image">Menu image</string>
 </resources>
