@@ -1,14 +1,12 @@
 package com.westerholmgmail.v.lauri.tunnelescape.objects;
 
-import android.content.res.AssetManager;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.Menu;
 
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.Vector2f;
-import com.westerholmgmail.v.lauri.tunnelescape.WorldWrapper;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 
@@ -23,11 +21,12 @@ public class PlayerObject extends GameObject {
     public static final float elasticity = 0.1f; /**< elasticity value, reduces bounciness a bit */
     public static final float density = 1.f; /**< use the standard density value from WorldWrapper */
 
-    private static float ForceX = 500000.f; // right
+    private static float ForceX = 300000.f; // right
     private static float ForceY = -500000.f; // upwards
 
     private boolean extraBoost = false; /**< used to detected when Player needs extra boost */
     private int HP = 100;
+    private boolean externalBoost = false;
 
     /**
      * @brief Constructor
@@ -72,12 +71,23 @@ public class PlayerObject extends GameObject {
     @Override
     public Vector2f move() {
         Vector2f force = new Vector2f();
+        if (externalBoost) {
+            // this tries to fix force caused by the collision which typically pushes player significantly downward
+            force.update(0.f, 15 * ForceY);
+            externalBoost = false;
+        }
         float forceY = extraBoost ? 20 * PlayerObject.ForceY : PlayerObject.ForceY;
-        if (PlayerObject.boostPressed && PlayerObject.lefPressed && !PlayerObject.rightPressed) {
+        // use these for phone
+        /*if (PlayerObject.boostPressed && PlayerObject.lefPressed && !PlayerObject.rightPressed) {
             force.update(-PlayerObject.ForceX, forceY);
         } else if (PlayerObject.boostPressed && PlayerObject.rightPressed && !PlayerObject.lefPressed) {
             force.update(PlayerObject.ForceX, forceY);
-        } else if (PlayerObject.boostPressed) force.update(0.f, forceY);
+        } else if (PlayerObject.boostPressed) force.update(0.f, forceY);*/
+
+        // Use these for emulator
+        if (PlayerObject.lefPressed) force.update(-PlayerObject.ForceX, forceY);
+        else if (PlayerObject.rightPressed) force.update(PlayerObject.ForceX, forceY);
+        else if (PlayerObject.boostPressed) force.update(0.f, forceY);
         if (force.getY() != 0.f) extraBoost = false;
         return force;
     }
@@ -111,4 +121,11 @@ public class PlayerObject extends GameObject {
      * @return HP
      */
     public int getPlayerHP() { return HP; }
+
+    /**
+     * @brief Boost PlayerObject externally
+     * @details This should be applied when object collides to TreasureObject to reduce collision
+     * force
+     */
+    public void boost() { externalBoost = true; }
 }

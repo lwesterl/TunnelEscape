@@ -18,6 +18,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.objects.ImageObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.ObjectType;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.StaticObject;
+import com.westerholmgmail.v.lauri.tunnelescape.objects.TreasureObject;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
@@ -52,6 +53,8 @@ SinglePlayer implements GameScreen {
     private @ColorInt int backgroundColor = Color.argb(255, 20, 20, 20);
     private int canvasMultiplierX = 0;
     private int canvasMultiplierY = 0;
+    private float[] maxPoint = {Float.MIN_VALUE, Float.MIN_VALUE}; // this must have format x, y
+    private float[] minPoint = {Float.MAX_VALUE, Float.MAX_VALUE}; // this must have format x, y
 
 
     /**
@@ -174,10 +177,21 @@ SinglePlayer implements GameScreen {
                         ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
                 gameObject = new StaticObject(imageType, objectType, id);
                 break;
+            case ObjectType.End:
+                id = worldWrapper.addObject(true, new Vector2f(x_center, y_center),
+                        ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
+                gameObject = new StaticObject(imageType, objectType, id);
+                break;
             case ObjectType.Texture:
                 gameObject = new ImageObject(imageType, x, y); // this has no PhysicsObject in PhysicsWorld
                 break;
             case ObjectType.Enemy:
+                break;
+            case ObjectType.Treasure:
+                id = worldWrapper.addObject(true, new Vector2f(x_center, y_center),
+                        ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
+                worldWrapper.setObjectPhysicsProperties(id, TreasureObject.Elasticity, TreasureObject.Density);
+                gameObject = new TreasureObject(id);
                 break;
             default:
                 // gameObject remains null if this scope is entered
@@ -199,6 +213,7 @@ SinglePlayer implements GameScreen {
         PhysicsProperties.setGravityY(20000.f);
         SinglePlayer.PlayerWon = false;
         SinglePlayer.Score = 0;
+        InitMinMaxPoints();
         try {
             InputStream inputStream = context.getAssets().open(levelName);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -209,6 +224,7 @@ SinglePlayer implements GameScreen {
                     String[] content = line.split(",");
                     ParseLevelContent(content);
                 }
+                CreateTreasures();
                 return true;
             } catch (java.io.IOException e) {
                 e.printStackTrace();
@@ -260,6 +276,7 @@ SinglePlayer implements GameScreen {
             ImageType imageType = ImageType.getImageType(imageTypeStr);
             @ObjectType.ObjectTypeDef int objectType = ImageType.convertImageTypeToObjectType(imageType, imageObject);
             addObject(objectType, imageType, x, y);
+            UpdateMinMaxPoints(x, y);
         }
     }
 
@@ -333,6 +350,11 @@ SinglePlayer implements GameScreen {
         if (otherObject.getObjectType() == ObjectType.End) {
             SinglePlayer.PlayerWon = true;
             return false;
+        } else if (otherObject.getObjectType() == ObjectType.Treasure) {
+            SinglePlayer.Score += 10;
+            worldWrapper.removeObject(otherObject.getObjectId());
+            gameObjects.remove(otherObject.getObjectId());
+            player.boost();
         }
         player.enableExtraBoost();
         if (player.damagePlayer(otherObject.getObjectType())) return false;
@@ -368,6 +390,41 @@ SinglePlayer implements GameScreen {
             menuScreen.singlePlayerOver(true);
         };
         mainHandler.post(myRunnable);
+    }
+
+
+    /**
+     * @brief Update minPoint and maxPoint
+     * @param x item x coordinate in level
+     * @param y item y coordinate in level
+     */
+    private void UpdateMinMaxPoints(float x, float y) {
+        if (x < minPoint[0]) minPoint[0] = x;
+        else if (x > maxPoint[0]) maxPoint[0] = x;
+        if (y < minPoint[1]) minPoint[1] = y;
+        else if (y > maxPoint[1]) maxPoint[1] = y;
+    }
+
+    /**
+     * @brief Init MinPoints and MaxPoints
+     */
+    private void InitMinMaxPoints() {
+        maxPoint[0] = Float.MIN_VALUE;
+        maxPoint[1] = Float.MIN_VALUE;
+        minPoint[0] = Float.MAX_VALUE;
+        minPoint[1] = Float.MAX_VALUE;
+    }
+
+    /**
+     * @brief Wrapper call for creating treasures to the level
+     */
+    private void CreateTreasures() {
+        // the constant values are just result of trial and error
+        int treasureAmount = (int) ((maxPoint[0] - minPoint[0]) * 0.000005 * (maxPoint[1] - minPoint[1]));
+        for (int i = 0; i < treasureAmount; i++) {
+            addObject(ObjectType.Treasure, TreasureObject.getCurrentImageType(),
+                    TreasureObject.getRandomX(minPoint[0] + 100.f, maxPoint[0] - 100.f), TreasureObject.getRandomY(minPoint[1] + 100.f, maxPoint[1] - 100.f));
+        }
     }
 
 }
