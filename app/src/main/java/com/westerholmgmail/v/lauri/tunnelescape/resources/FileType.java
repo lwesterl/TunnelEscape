@@ -41,7 +41,7 @@ public class FileType {
      */
     private static HashMap<Integer, String> Init() {
         HashMap<Integer, String> map = new HashMap<>();
-        map.put(new Integer(FileType.Intro), "Intro.tespace");
+        map.put(new Integer(FileType.Intro), "Intro.tescape");
         map.put(new Integer(FileType.Level1), "Level1.tescape");
         map.put(new Integer(FileType.DifficultySettingsFile), "DifficultySetting");
         return map;
@@ -70,7 +70,7 @@ public class FileType {
 
     /**
      * Get matching description for level
-     * @param fileType Filetype key, this should be used only for level files
+     * @param fileType FileType key, this should be used only for level files
      * @return description as String
      */
     public static String getDescription(@FileTypeRef int fileType) {
