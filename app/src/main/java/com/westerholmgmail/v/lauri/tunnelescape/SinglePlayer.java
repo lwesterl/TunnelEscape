@@ -57,6 +57,7 @@ SinglePlayer implements GameScreen {
     private float[] minPoint = {Float.MAX_VALUE, Float.MAX_VALUE}; // this must have format x, y
     private long startTime = 0; // this should be in seconds
     private int prevTimeScore = 0;
+    private ArrayList<Long> gameObjectsToBeRemoved = new ArrayList<>();
 
 
     /**
@@ -79,6 +80,11 @@ SinglePlayer implements GameScreen {
             // exit single player
             stopSinglePlayer();
             return;
+        }
+        // remove collided objects
+        for (Long i : gameObjectsToBeRemoved) {
+            worldWrapper.removeObject(i);
+            gameObjects.remove(i);
         }
         // update GameObject positions
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
@@ -356,8 +362,7 @@ SinglePlayer implements GameScreen {
             return false;
         } else if (otherObject.getObjectType() == ObjectType.Treasure) {
             SinglePlayer.Score += 10;
-            worldWrapper.removeObject(otherObject.getObjectId());
-            gameObjects.remove(otherObject.getObjectId());
+            gameObjectsToBeRemoved.add(new Long(otherObject.getObjectId()));
             player.boost();
         }
         player.enableExtraBoost();
