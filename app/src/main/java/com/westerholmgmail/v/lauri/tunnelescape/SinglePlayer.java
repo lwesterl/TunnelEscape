@@ -58,7 +58,7 @@ SinglePlayer implements GameScreen {
     private long startTime = 0; // this should be in seconds
     private int prevTimeScore = 0;
     private ArrayList<Long> gameObjectsToBeRemoved = new ArrayList<>();
-
+    private boolean gameRunning;
 
     /**
      * @brief Constructor
@@ -67,6 +67,7 @@ SinglePlayer implements GameScreen {
         this.context = context;
         worldWrapper = new WorldWrapper();
         loadLevel(FileType.getFilePath(SinglePlayer.CurrentLevel));
+        gameRunning = true;
     }
 
     /**
@@ -74,30 +75,33 @@ SinglePlayer implements GameScreen {
      */
     @Override
     public void update() {
-        // update PhysicsWorld via WorldWrapper
-        PairDeque collided = worldWrapper.update();
-        if (! GameLogicUpdate(collided)) {
-            // exit single player
-            stopSinglePlayer();
-            return;
-        }
-        // remove collided objects
-        for (Long i : gameObjectsToBeRemoved) {
-            worldWrapper.removeObject(i);
-            gameObjects.remove(i);
-        }
-        // update GameObject positions
-        for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
-            GameObject gameObject = item.getValue();
-            Vector2f position = worldWrapper.fetchPosition(gameObject.getObjectId()).getPosition();
-            gameObject.updatePosition(position);
-            // move also matching PhysicsObject
-            Vector2f force = gameObject.move();
-            if (force.getX() != 0.f || force.getY() != 0.f) {
-                worldWrapper.setObjectForce(gameObject.getObjectId(), force);
+        if (gameRunning) {
+            // update PhysicsWorld via WorldWrapper
+            PairDeque collided = worldWrapper.update();
+            if (! GameLogicUpdate(collided)) {
+                // exit single player
+                stopSinglePlayer();
+                return;
             }
+            // remove collided objects
+            for (Long i : gameObjectsToBeRemoved) {
+                worldWrapper.removeObject(i);
+                gameObjects.remove(i);
+            }
+            // update GameObject positions
+            for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
+                GameObject gameObject = item.getValue();
+                Vector2f position = worldWrapper.fetchPosition(gameObject.getObjectId()).getPosition();
+                gameObject.updatePosition(position);
+                // move also matching PhysicsObject
+                Vector2f force = gameObject.move();
+                if (force.getX() != 0.f || force.getY() != 0.f) {
+                    worldWrapper.setObjectForce(gameObject.getObjectId(), force);
+                }
+            }
+            CalculateScore();
         }
-        CalculateScore();
+
     }
 
     /**
@@ -389,6 +393,7 @@ SinglePlayer implements GameScreen {
     }
 
     private void stopSinglePlayer() {
+        gameRunning = false;
         if (! SinglePlayer.PlayerWon) SinglePlayer.Score = 0;
         else CalculateScore();
         //SinglePlayer.PlayerWon = true;

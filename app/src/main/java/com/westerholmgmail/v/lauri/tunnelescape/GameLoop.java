@@ -12,7 +12,7 @@ import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread {
 
-    static final long FrameRate = 60;
+    static final long FrameRate = 45;
     private static Canvas canvas;
     SurfaceHolder surfaceHolder;
     private GameEngine gameEngine;
