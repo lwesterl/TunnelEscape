@@ -93,4 +93,10 @@ public class GameLoop extends Thread {
         this.running = running;
     }
 
+    /**
+     * @brief Get whether thread is running or not
+     * @return running
+     */
+    public boolean getRunning() { return running; }
+
 }

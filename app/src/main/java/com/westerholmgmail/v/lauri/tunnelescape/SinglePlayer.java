@@ -137,7 +137,7 @@ SinglePlayer implements GameScreen {
         PlayerObject.rightPressed = false;
         PlayerObject.boostPressed = false;
         // create new WorldWrapper
-        if (worldWrapper != null) {
+       if (worldWrapper != null) {
             worldWrapper.delete();
         }
         worldWrapper = new WorldWrapper();
