@@ -401,6 +401,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private int GetLevelSelectImageResource() {
         if (FileType.isAvailable(SinglePlayer.CurrentLevel)) {
             switch(SinglePlayer.CurrentLevel) {
+                case FileType.Bonus:
+                    return R.drawable.bonus;
                 case FileType.Intro:
                     return R.drawable.intro;
                 case FileType.Level1:

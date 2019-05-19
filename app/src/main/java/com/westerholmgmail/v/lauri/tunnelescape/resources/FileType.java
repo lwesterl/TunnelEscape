@@ -17,9 +17,10 @@ import java.util.Map;
  */
 public class FileType {
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({Intro, Level1, Level2, Level3, Level4, DifficultySettingsFile, CompletedLevelsFile})
+    @IntDef({Bonus, Intro, Level1, Level2, Level3, Level4, DifficultySettingsFile, CompletedLevelsFile})
     public @interface FileTypeRef {}
 
+    public static final int Bonus = -1;
     public static final int Intro = 0;
     public static final int Level1 = 1;
     public static final int Level2 = 2;
@@ -45,6 +46,7 @@ public class FileType {
      */
     private static HashMap<Integer, String> Init() {
         HashMap<Integer, String> map = new HashMap<>();
+        map.put(new Integer(FileType.Bonus), "Bonus level: free flying.tescape");
         map.put(new Integer(FileType.Intro), "Intro.tescape");
         map.put(new Integer(FileType.Level1), "Escape begins.tescape");
         map.put(new Integer(FileType.Level2), "Tunnel darkens.tescape");
@@ -61,6 +63,7 @@ public class FileType {
      */
     private static HashMap<Integer, String> Init2() {
         HashMap<Integer, String> map = new HashMap<>();
+        map.put(new Integer(FileType.Bonus), "This time no tunnels!\nJust free flying!");
         map.put(new Integer(FileType.Intro), "An easy intro level!\nAvoid collision with tunnel edges\nFind the end of the tunnel as fast as you can!");
         map.put(new Integer(FileType.Level1), "Be ready, prepare!\nThe first challenge\nRemember, treasures give a score bonus!");
         map.put(new Integer(FileType.Level2), "Tunnels get narrower\nMultiple paths, choose the correct one!\nAvoid flames!");
@@ -141,7 +144,7 @@ public class FileType {
      */
     public static @FileTypeRef int changeLevel(@FileTypeRef int currentLevel, boolean increase) {
         if (increase && currentLevel < FileType.DifficultySettingsFile - 1) currentLevel++;
-        else if (!increase && currentLevel > 0) currentLevel--;
+        else if (!increase && currentLevel > -1) currentLevel--;
         return currentLevel;
     }
 
