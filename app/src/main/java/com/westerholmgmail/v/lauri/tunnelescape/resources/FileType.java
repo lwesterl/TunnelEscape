@@ -5,7 +5,6 @@ import android.support.annotation.IntDef;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
@@ -18,16 +17,21 @@ import java.util.Map;
  */
 public class FileType {
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({Intro, Level1, DifficultySettingsFile})
+    @IntDef({Intro, Level1, Level2, Level3, Level4, DifficultySettingsFile, CompletedLevelsFile})
     public @interface FileTypeRef {}
 
     public static final int Intro = 0;
     public static final int Level1 = 1;
-    public static final int DifficultySettingsFile = 2;
+    public static final int Level2 = 2;
+    public static final int Level3 = 3;
+    public static final int Level4 = 4;
+    public static final int DifficultySettingsFile = 5;
+    public static final int CompletedLevelsFile = 6;
 
     public final int fileType;
     private static final Map<Integer, String> fileTypeToStr = Collections.unmodifiableMap( Init() );
     private static final Map<Integer, String> fileTypeToDescription = Collections.unmodifiableMap( Init2() );
+    private static int maxCompletedLevel = -1; // no levels completed
 
     /**
      * Validate int value
@@ -42,8 +46,12 @@ public class FileType {
     private static HashMap<Integer, String> Init() {
         HashMap<Integer, String> map = new HashMap<>();
         map.put(new Integer(FileType.Intro), "Intro.tescape");
-        map.put(new Integer(FileType.Level1), "Level1.tescape");
+        map.put(new Integer(FileType.Level1), "Escape begins.tescape");
+        map.put(new Integer(FileType.Level2), "Tunnel darkens.tescape");
+        map.put(new Integer(FileType.Level3), "Inferno.tescape");
+        map.put(new Integer(FileType.Level4), "The final escape.tescape");
         map.put(new Integer(FileType.DifficultySettingsFile), "DifficultySetting");
+        map.put(new Integer(FileType.CompletedLevelsFile), "CompletedLevels");
         return map;
     }
 
@@ -54,8 +62,12 @@ public class FileType {
     private static HashMap<Integer, String> Init2() {
         HashMap<Integer, String> map = new HashMap<>();
         map.put(new Integer(FileType.Intro), "An easy intro level!\nAvoid collision with tunnel edges\nFind the end of the tunnel as fast as you can!");
-        map.put(new Integer(FileType.Level1), "Be ready, prepare!\nThe first challenge\nRemember to avoid flames!");
+        map.put(new Integer(FileType.Level1), "Be ready, prepare!\nThe first challenge\nRemember, treasures give a score bonus!");
+        map.put(new Integer(FileType.Level2), "Tunnels get narrower\nMultiple paths, choose the correct one!\nAvoid flames!");
+        map.put(new Integer(FileType.Level3), "Flames, flames and flames!\nBe determined and fast!");
+        map.put(new Integer(FileType.Level4), "This is the final!\nBoost, boost , boost!");
         map.put(new Integer(FileType.DifficultySettingsFile), "");
+        map.put(new Integer(FileType.CompletedLevelsFile), "");
         return map;
     }
 
@@ -132,4 +144,49 @@ public class FileType {
         else if (!increase && currentLevel > 0) currentLevel--;
         return currentLevel;
     }
+
+    /**
+     * Save completed level value, call this after single player is successfully finished
+     * @param context pass MenuScreen instance
+     * @param completedLevel level which is completed
+     */
+    public static void saveCompletedLevels(Context context, @FileTypeRef int completedLevel) {
+        if (completedLevel > maxCompletedLevel) {
+            maxCompletedLevel = completedLevel;
+            try {
+                FileOutputStream os = context.openFileOutput(getFilePath(FileType.CompletedLevelsFile), Context.MODE_PRIVATE);
+                os.write(completedLevel);
+                os.close();
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Load maxCompletedLevel value to detect which levels user is allowed to play
+     * @param context pass MenuScreen instance
+     */
+    public static void loadCompletedLevels(Context context) {
+        int completedLevel;
+        try {
+            FileInputStream is = context.openFileInput(getFilePath(FileType.CompletedLevelsFile));
+            completedLevel = is.read();
+            if (completedLevel > maxCompletedLevel) maxCompletedLevel = completedLevel;
+            is.close();
+        } catch(java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check whether level is available
+     * @details Only the following level and already completed levels should be available
+     * @param level level FileType constant value
+     * @return whether level is available
+     */
+    public static boolean isAvailable(@FileTypeRef int level) {
+        return (level < maxCompletedLevel + 2);
+    }
+
 }

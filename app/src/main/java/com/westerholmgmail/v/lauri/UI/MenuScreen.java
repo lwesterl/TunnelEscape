@@ -1,6 +1,7 @@
 package com.westerholmgmail.v.lauri.UI;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
+import java.io.File;
+
 public class MenuScreen extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
     private Button singlePlayerButton;
     private Button exitButton;
@@ -41,6 +44,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private TextView levelNameView;
     private TextView levelDescriptionView;
     private ImageView levelSelectImage;
+    private Button PlayButton;
     private GameEngine gameEngine;
     public static int ScreenWidth; /**< tells screen width */
     public static int ScreenHeight; /**< tells screen height */
@@ -63,6 +67,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         ResourceManager.loadResources(this);
         AudioManager.init(this);
         SinglePlayer.HardDifficulty = FileType.loadDifficulty(this);
+        FileType.loadCompletedLevels(this);
 
         // hide title and make window full-sized
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -288,7 +293,6 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     /**
      * @brief Overload for Android back button
      * @details Return to main menu
-     * @Todo change so that it works also when user returns from single player
      */
     @Override
     public void onBackPressed() {
@@ -320,6 +324,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     public void createEndScreenUI() {
         // todo replace SinglePlayer.PlayerWon if other game modes are created
         if (SinglePlayer.PlayerWon) {
+            FileType.saveCompletedLevels(this, SinglePlayer.CurrentLevel);
             // create win screen
             setContentView(R.layout.win_screen_layout);
             VideoView videoView = findViewById(R.id.win_screen_videoView);
@@ -358,24 +363,24 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.level_select_layout);
         Button MenuButton = findViewById(R.id.LevelSelectMenuButton);
         MenuButton.setOnClickListener(this);
-        Button PlayButton = findViewById(R.id.SelectLevelButton);
+        PlayButton = findViewById(R.id.SelectLevelButton);
         PlayButton.setOnClickListener(this);
         levelNameView = findViewById(R.id.LevelName);
         levelNameView.setText(FileType.getFileName(SinglePlayer.CurrentLevel));
         levelDescriptionView = findViewById(R.id.LevelDescription);
         levelDescriptionView.setText(FileType.getDescription(SinglePlayer.CurrentLevel));
         levelSelectImage = findViewById(R.id.LevelImage);
-        levelSelectImage.setImageBitmap(ResourceManager.getBitmap(ImageType.Player));
+        levelSelectImage.setImageResource(GetLevelSelectImageResource());
         levelSelectImage.setOnTouchListener(new OnSwipeListener(this) {
             @Override
             public void onSwipeLeft() {
-                SinglePlayer.CurrentLevel = FileType.changeLevel(SinglePlayer.CurrentLevel, false);
+                SinglePlayer.CurrentLevel = FileType.changeLevel(SinglePlayer.CurrentLevel, true);
                 UpdateLevelSelectUI();
             }
 
             @Override
             public void onSwipeRight() {
-                SinglePlayer.CurrentLevel = FileType.changeLevel(SinglePlayer.CurrentLevel, true);
+                SinglePlayer.CurrentLevel = FileType.changeLevel(SinglePlayer.CurrentLevel, false);
                 UpdateLevelSelectUI();
             }
         });
@@ -388,6 +393,28 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private void UpdateLevelSelectUI() {
         levelDescriptionView.setText(FileType.getDescription(SinglePlayer.CurrentLevel));
         levelNameView.setText(FileType.getFileName(SinglePlayer.CurrentLevel));
+        if (FileType.isAvailable(SinglePlayer.CurrentLevel)) PlayButton.setVisibility(View.VISIBLE);
+        else PlayButton.setVisibility(View.INVISIBLE);
+        levelSelectImage.setImageResource(GetLevelSelectImageResource());
+    }
+
+    private int GetLevelSelectImageResource() {
+        if (FileType.isAvailable(SinglePlayer.CurrentLevel)) {
+            switch(SinglePlayer.CurrentLevel) {
+                case FileType.Intro:
+                    return R.drawable.intro;
+                case FileType.Level1:
+                    return R.drawable.level1;
+                case FileType.Level2:
+                    return R.drawable.level2;
+                case FileType.Level3:
+                    return R.drawable.inferno;
+                case FileType.Level4:
+                    return R.drawable.the_final_level;
+            }
+
+        }
+        return R.drawable.locked;
     }
 }
 
