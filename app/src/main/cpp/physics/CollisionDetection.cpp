@@ -12,6 +12,8 @@
 
     // Calculate possible collision between objects
     bool calculateCollision(PhysicsObject* obj1, PhysicsObject* obj2) {
+        // add this to reduce unnecessary calculations
+      if (obj1->getObjectType() == ObjectType::StaticObject && obj2->getObjectType() == ObjectType::StaticObject) return false;
 
       // check if objects are even relatively close to one another
       if ((!objectsClose(obj1, obj2)) || (!canCollide(obj1, obj2))) return false;
