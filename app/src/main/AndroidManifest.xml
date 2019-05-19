@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/tunnelescape_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/tunnelescape_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden" android:name="com.westerholmgmail.v.lauri.UI.MenuScreen">
