@@ -37,4 +37,5 @@
     <string name="score_textview">Score</string>
     <string name="current_score_view">Current score</string>
     <string name="menu_image">Menu image</string>
+    <string name="app_description">Game where the objective is to guide object through tunnels without touching the tunnel edges. Score is awarded based on time and collected treasures.</string>
 </resources>
