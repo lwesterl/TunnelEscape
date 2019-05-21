@@ -3,62 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark">
 
     <com.westerholmgmail.v.lauri.tunnelescape.GameEngine
         android:id="@+id/gameEngine"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout">
 
         <ImageView
             android:id="@+id/singlePlayerImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
             android:layout_marginBottom="0dp"
             android:adjustViewBounds="false"
             android:contentDescription="@string/UIBarDescription"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/ui_bar" />
+            app:srcCompat="@drawable/ui_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@android:color/background_dark"/>
 
         <ImageButton
             android:id="@+id/boostButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginStart="60dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/BoostButtonDescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/boost" />
 
         <ImageButton
             android:id="@+id/leftArrowButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="150dp"
+            android:layout_marginEnd="130dp"
+            android:layout_marginBottom="15dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/LeftButtonDescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/left_arrow" />
 
         <ImageButton
             android:id="@+id/rightArrowButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginEnd="30dp"
+            android:layout_marginBottom="15dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/RightButtonDescription"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/right_arrow" />
 
         <ProgressBar
@@ -66,55 +70,59 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/singlePlayerImageView"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="255dp"
-            android:layout_marginEnd="380dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="20dp"
             android:clickable="false"
             android:max="100"
             android:progress="100"
             android:progressTint="@android:color/holo_green_dark"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/HPText"
+            app:layout_constraintStart_toStartOf="@+id/HPText"
+            app:layout_constraintTop_toBottomOf="@+id/HPText" />
 
         <TextView
             android:id="@+id/HPText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="265dp"
-            android:layout_marginBottom="43dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="44dp"
             android:contentDescription="@string/Hp_text_description"
             android:text="@string/Hp_string"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="@string/Hp_string" />
 
         <TextView
             android:id="@+id/CurrentScoreView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/HPBar"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="-1dp"
-            android:layout_marginEnd="283dp"
+            android:layout_marginTop="4dp"
             android:contentDescription="@string/current_score_view"
-            android:textColor="@android:color/holo_green_dark" />
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintEnd_toEndOf="@+id/ScoreText"
+            app:layout_constraintStart_toStartOf="@+id/ScoreText"
+            app:layout_constraintTop_toBottomOf="@+id/ScoreText" />
 
         <TextView
             android:id="@+id/ScoreText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/CurrentScoreView"
-            android:layout_alignTop="@+id/HPText"
-            android:layout_marginStart="-8dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/score_textview"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/leftArrowButton"
+            app:layout_constraintStart_toEndOf="@+id/HPText"
+            app:layout_constraintTop_toTopOf="@+id/HPText"
             tools:text="@string/score_textview" />
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 </FrameLayout>
