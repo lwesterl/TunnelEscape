@@ -10,14 +10,11 @@
     android:background="@android:color/background_dark">
 
 
-    <EditText
+    <TextView
         android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="@string/settings_decription"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:singleLine="false"
         android:text="@string/settings_string"
         android:textAlignment="center"
         android:textColor="@android:color/holo_red_dark"
@@ -30,8 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:contentDescription="@string/menu_volume_decription"
-        android:ems="10"
-        android:inputType="text|textPersonName"
         android:singleLine="false"
         android:text="@string/menu_volume_text"
         android:textAlignment="textStart"
