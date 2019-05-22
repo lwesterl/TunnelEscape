@@ -78,16 +78,16 @@ public class PlayerObject extends GameObject {
         }
         float forceY = extraBoost ? 20 * PlayerObject.ForceY : PlayerObject.ForceY;
         // use these for phone
-        /*if (PlayerObject.boostPressed && PlayerObject.lefPressed && !PlayerObject.rightPressed) {
+        if (PlayerObject.boostPressed && PlayerObject.lefPressed && !PlayerObject.rightPressed) {
             force.update(-PlayerObject.ForceX, forceY);
         } else if (PlayerObject.boostPressed && PlayerObject.rightPressed && !PlayerObject.lefPressed) {
             force.update(PlayerObject.ForceX, forceY);
-        } else if (PlayerObject.boostPressed) force.update(0.f, forceY);*/
+        } else if (PlayerObject.boostPressed) force.update(0.f, forceY);
 
         // Use these for emulator
-        if (PlayerObject.lefPressed) force.update(-PlayerObject.ForceX, forceY);
+        /*if (PlayerObject.lefPressed) force.update(-PlayerObject.ForceX, forceY);
         else if (PlayerObject.rightPressed) force.update(PlayerObject.ForceX, forceY);
-        else if (PlayerObject.boostPressed) force.update(0.f, forceY);
+        else if (PlayerObject.boostPressed) force.update(0.f, forceY);*/
         if (force.getY() != 0.f) extraBoost = false;
         return force;
     }
