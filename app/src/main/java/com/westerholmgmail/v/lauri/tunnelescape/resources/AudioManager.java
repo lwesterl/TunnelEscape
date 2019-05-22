@@ -94,16 +94,16 @@ public class AudioManager {
      * @param context android app context
      */
     private static void ReadAudioFiles(Context context) {
-        try {
-            for (int i = 0; i < AudioType.getAmountOfAudios(); i++) {
+        for (int i = 0; i < AudioType.getAmountOfAudios(); i++) {
+            try {
                 FileInputStream isStream = context.openFileInput(AudioType.getAudioFileName(i));
                 byte volume = (byte) isStream.read();
                 UpdateAudioVolume(i, volume);
-            }
-        } catch(IOException e) {
+            } catch(IOException e) {
                 e.printStackTrace();
+                continue; // audio file not yet written
+            }
         }
-
     }
 
     /**
