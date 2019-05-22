@@ -414,7 +414,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
             }
 
         }
-        return R.drawable.locked;
+        return R.drawable.ic_locked;
     }
 }
 
