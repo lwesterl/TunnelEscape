@@ -216,7 +216,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private void LoadSinglePlayerUI() {
         setContentView(R.layout.single_player_layout);
         gameEngine = findViewById(R.id.gameEngine);
-        gameEngine.setGameState(GameState.SinglePlayer);
+        //gameEngine.setGameState(GameState.SinglePlayer);
+        gameEngine.setGameState(GameState.AIPlayer);
         boostButton = findViewById(R.id.boostButton);
         leftArrowButton = findViewById(R.id.leftArrowButton);
         rightArrowButton = findViewById(R.id.rightArrowButton);
@@ -310,9 +311,10 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         AudioManager.playAudio(AudioType.SinglePlayerAudio, false);
         AudioManager.playAudio(AudioType.BoostAudio, false);
         AudioManager.playAudio(AudioType.MainMenuAudio, true);
-        if (GameOver) {
+       /* if (GameOver) {
             createEndScreenUI();
-        }
+        }*/
+        LoadSinglePlayerUI(); // uncomment previous and remove this when training completed
 
     }
 
