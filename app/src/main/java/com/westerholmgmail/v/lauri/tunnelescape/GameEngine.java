@@ -85,7 +85,6 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // stop gameLoop
-        //JoinGameLoop();
         JoinGameLoop();
         gameScreens.get(currentGameState).reset();
         currentGameState = GameState.MainMenu;
@@ -111,7 +110,6 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      */
     private void init() {
         this.menuScreen = (MenuScreen) context;
-        //setZOrderOnTop(false);
         getHolder().addCallback(this);
         setFocusable(true);
         CreateGameScreens();
@@ -158,8 +156,8 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
      * @brief Create GameScreens and add those to gameScreens
      */
     private void CreateGameScreens() {
-        //View view = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
         gameScreens.put(GameState.SinglePlayer, new SinglePlayer(context));
+        gameScreens.put(GameState.AIPlayer, new AIPlayer(context));
         // TODO add possible other game modes
     }
 

@@ -3,13 +3,17 @@ package com.westerholmgmail.v.lauri.tunnelescape;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.view.MotionEvent;
+import android.view.PixelCopy;
+import android.view.SurfaceView;
 
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
@@ -59,6 +63,7 @@ SinglePlayer implements GameScreen {
     private int prevTimeScore = 0;
     private ArrayList<Long> gameObjectsToBeRemoved = new ArrayList<>();
     private boolean gameRunning;
+    private int renderCycles = 0;
 
     /**
      * @brief Constructor
@@ -110,17 +115,28 @@ SinglePlayer implements GameScreen {
      */
     @Override
     public void render(Canvas canvas) {
+        Canvas surfaceCanvas = null;
+        Bitmap surfaceBitmap = null;
+        renderCycles ++;
+        if (renderCycles % 10 == 0) {
+            surfaceBitmap = Bitmap.createBitmap(MenuScreen.ScreenWidth, MenuScreen.ScreenHeight, Bitmap.Config.ARGB_8888);
+            surfaceCanvas = new Canvas(surfaceBitmap);
+            transferCanvas(surfaceCanvas);
+            renderCycles = 0;
+        }
         transferCanvas(canvas);
         canvas.drawColor(backgroundColor);
         for (GameObject imageObject : imageObjects) {
             imageObject.draw(canvas);
+            if (surfaceCanvas != null) imageObject.draw(surfaceCanvas);
         }
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
             item.getValue().draw(canvas);
+            if (surfaceCanvas != null) item.getValue().draw(surfaceCanvas);
         }
         if (SinglePlayer.HardDifficulty) {
             // create only circle as visible area
-            Bitmap tmpBitmap = Bitmap.createBitmap(MenuScreen.ScreenWidth, MenuScreen.ScreenHeight, Bitmap.Config.ARGB_8888); // this creates a MUTABLE bitmap
+            Bitmap tmpBitmap = Bitmap.createBitmap(MenuScreen.ScreenWidth, MenuScreen.ScreenHeight, Bitmap.Config.ARGB_8888); // this creates a mutable bitmap
             Canvas tmpCanvas = new Canvas(tmpBitmap);
             // counterTransform must match values in transferCanvas
             float xCounterTransform = canvasMultiplierX * (MenuScreen.ScreenWidth - SinglePlayer.maxDiffX);
@@ -132,6 +148,14 @@ SinglePlayer implements GameScreen {
                     playerPosition.getY() - yCounterTransform + ResourceManager.getImageHeight(ImageType.Player) * 0.5f, SinglePlayer.PlayerCircleRadius, p);
             canvas.drawBitmap(tmpBitmap, xCounterTransform, yCounterTransform, null);
         }
+        if (surfaceBitmap != null) {
+            Bitmap scaled = Bitmap.createScaledBitmap(surfaceBitmap, 200, 100, false);
+            ProcessCanvasBitmap(scaled);
+        }
+
+    }
+
+    protected void ProcessCanvasBitmap(Bitmap bitmap) {
 
     }
 
@@ -394,8 +418,18 @@ SinglePlayer implements GameScreen {
 
     private void stopSinglePlayer() {
         gameRunning = false;
-        if (! SinglePlayer.PlayerWon) SinglePlayer.Score = 0;
-        else CalculateScore();
+        if (! SinglePlayer.PlayerWon) {
+            SinglePlayer.Score = 0;
+            // update possible AIPlayer reward
+            AIPlayer.reward = AIPlayer.LevelFailedReward;
+            ProcessCanvasBitmap(null);
+        }
+        else {
+            CalculateScore();
+            // update possible AIPlayer reward
+            AIPlayer.reward = AIPlayer.LevelCompletedReward;
+            ProcessCanvasBitmap(null);
+        }
         //SinglePlayer.PlayerWon = true;
         // Get a handler that can be used to post to the main thread
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.westerholmgmail.v.lauri.tunnelescape.AIPlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.Vector2f;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
@@ -106,11 +107,14 @@ public class PlayerObject extends GameObject {
         switch(opponentType) {
             case ObjectType.Barrier:
                 HP -= 5;
+                AIPlayer.reward = AIPlayer.EdgeHitReward;
                 break;
             case ObjectType.Hazard:
                 HP -= 20;
+                AIPlayer.reward = AIPlayer.HazardHitReward;
                 break;
             default:
+                AIPlayer.reward = AIPlayer.TimeReward;
                 break;
         }
         return HP <= 0;

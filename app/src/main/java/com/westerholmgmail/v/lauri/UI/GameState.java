@@ -6,6 +6,7 @@ package com.westerholmgmail.v.lauri.UI;
  */
 public enum GameState {
     MainMenu,
-    SinglePlayer
+    SinglePlayer,
+    AIPlayer
     // TODO add other screen types
 }
