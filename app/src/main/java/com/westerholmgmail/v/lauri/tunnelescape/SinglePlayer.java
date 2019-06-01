@@ -3,17 +3,13 @@ package com.westerholmgmail.v.lauri.tunnelescape;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.view.MotionEvent;
-import android.view.PixelCopy;
-import android.view.SurfaceView;
 
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
@@ -45,25 +41,26 @@ SinglePlayer implements GameScreen {
     public static int Score = 0; /**< Single player score */
     public static boolean HardDifficulty = false;
     public static @FileType.FileTypeRef int CurrentLevel = FileType.Intro;
-    private static Vector2f playerPosition = new Vector2f(0.f, 0.f);
-    private final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.Player); // used to detect when canvas should be transformed
-    private final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.Player); // used to detect when canvas should be transformed
-    private final static float PlayerCircleRadius = 100.f;
+    protected static Vector2f playerPosition = new Vector2f(0.f, 0.f);
+    protected final static int maxDiffX = 2 * (int) ResourceManager.getImageWidth(ImageType.Player); // used to detect when canvas should be transformed
+    protected final static int maxDiffY = UIBarHeight + 2 * (int) ResourceManager.getImageHeight(ImageType.Player); // used to detect when canvas should be transformed
+    protected final static float PlayerCircleRadius = 100.f;
 
-    private WorldWrapper worldWrapper;
-    private Context context;
-    private HashMap<Long, GameObject> gameObjects = new HashMap<>();
-    private ArrayList<GameObject> imageObjects = new ArrayList<>(); // these don't have PhysicsObject counterpart
-    private @ColorInt int backgroundColor = Color.argb(255, 20, 20, 20);
-    private int canvasMultiplierX = 0;
-    private int canvasMultiplierY = 0;
+    protected WorldWrapper worldWrapper;
+    protected Context context;
+    protected HashMap<Long, GameObject> gameObjects = new HashMap<>();
+    protected ArrayList<GameObject> imageObjects = new ArrayList<>(); // these don't have PhysicsObject counterpart
+    protected ArrayList<Vector2fDoublePair> endDistance = new ArrayList<>(); // AIPlayer uses this
+    protected @ColorInt int backgroundColor = Color.argb(255, 20, 20, 20);
+    protected int canvasMultiplierX = 0;
+    protected int canvasMultiplierY = 0;
+    protected boolean gameRunning;
     private float[] maxPoint = {Float.MIN_VALUE, Float.MIN_VALUE}; // this must have format x, y
     private float[] minPoint = {Float.MAX_VALUE, Float.MAX_VALUE}; // this must have format x, y
     private long startTime = 0; // this should be in seconds
     private int prevTimeScore = 0;
     private ArrayList<Long> gameObjectsToBeRemoved = new ArrayList<>();
-    private boolean gameRunning;
-    private int renderCycles = 0;
+
 
     /**
      * @brief Constructor
@@ -115,24 +112,13 @@ SinglePlayer implements GameScreen {
      */
     @Override
     public void render(Canvas canvas) {
-        Canvas surfaceCanvas = null;
-        Bitmap surfaceBitmap = null;
-        renderCycles ++;
-        if (renderCycles % 10 == 0) {
-            surfaceBitmap = Bitmap.createBitmap(MenuScreen.ScreenWidth, MenuScreen.ScreenHeight, Bitmap.Config.ARGB_8888);
-            surfaceCanvas = new Canvas(surfaceBitmap);
-            transferCanvas(surfaceCanvas);
-            renderCycles = 0;
-        }
         transferCanvas(canvas);
         canvas.drawColor(backgroundColor);
         for (GameObject imageObject : imageObjects) {
             imageObject.draw(canvas);
-            if (surfaceCanvas != null) imageObject.draw(surfaceCanvas);
         }
         for (HashMap.Entry<Long, GameObject> item : gameObjects.entrySet()) {
             item.getValue().draw(canvas);
-            if (surfaceCanvas != null) item.getValue().draw(surfaceCanvas);
         }
         if (SinglePlayer.HardDifficulty) {
             // create only circle as visible area
@@ -148,14 +134,6 @@ SinglePlayer implements GameScreen {
                     playerPosition.getY() - yCounterTransform + ResourceManager.getImageHeight(ImageType.Player) * 0.5f, SinglePlayer.PlayerCircleRadius, p);
             canvas.drawBitmap(tmpBitmap, xCounterTransform, yCounterTransform, null);
         }
-        if (surfaceBitmap != null) {
-            Bitmap scaled = Bitmap.createScaledBitmap(surfaceBitmap, 200, 100, false);
-            ProcessCanvasBitmap(scaled);
-        }
-
-    }
-
-    protected void ProcessCanvasBitmap(Bitmap bitmap) {
 
     }
 
@@ -218,6 +196,7 @@ SinglePlayer implements GameScreen {
                 id = worldWrapper.addObject(true, new Vector2f(x_center, y_center),
                         ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
                 gameObject = new StaticObject(imageType, objectType, id);
+                endDistance.add(new Vector2fDoublePair(new Vector2f(x-x_center, y_center), Float.MAX_VALUE));
                 break;
             case ObjectType.Texture:
                 gameObject = new ImageObject(imageType, x, y); // this has no PhysicsObject in PhysicsWorld
@@ -333,7 +312,7 @@ SinglePlayer implements GameScreen {
      * @param canvas to be transformed
      * @remark change maxDiffY and maxDiffX if needed
      */
-    private void transferCanvas(Canvas canvas) {
+    protected void transferCanvas(Canvas canvas) {
         if ((int) playerPosition.getX() > ((canvasMultiplierX + 1) * (MenuScreen.ScreenWidth - SinglePlayer.maxDiffX))) {
             canvasMultiplierX++;
         }
@@ -416,20 +395,11 @@ SinglePlayer implements GameScreen {
         });
     }
 
-    private void stopSinglePlayer() {
+    protected void stopSinglePlayer() {
         gameRunning = false;
-        if (! SinglePlayer.PlayerWon) {
-            SinglePlayer.Score = 0;
-            // update possible AIPlayer reward
-            AIPlayer.reward = AIPlayer.LevelFailedReward;
-            ProcessCanvasBitmap(null);
-        }
-        else {
-            CalculateScore();
-            // update possible AIPlayer reward
-            AIPlayer.reward = AIPlayer.LevelCompletedReward;
-            ProcessCanvasBitmap(null);
-        }
+        if (! SinglePlayer.PlayerWon) SinglePlayer.Score = 0;
+        else CalculateScore();
+
         //SinglePlayer.PlayerWon = true;
         // Get a handler that can be used to post to the main thread
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
@@ -479,7 +449,7 @@ SinglePlayer implements GameScreen {
     /**
      * @brief Calculate time based score when level is successfully completed
      */
-    private void CalculateScore() {
+    protected void CalculateScore() {
         // timeElapsed in seconds
         Score -= prevTimeScore;
         double timeElapsed = (double) (System.currentTimeMillis()/1000 - startTime);
