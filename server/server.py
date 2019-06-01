@@ -5,14 +5,16 @@ import sys
 import base64
 import tensorflow as tf
 from MLManager import MLManager
+from data import Data
 
+TensorFlowModelPath = 'model.ckpt'
 
 '''
 Basic server
 Do NOT USE this in production
 '''
 class BasicServer(BaseHTTPRequestHandler):
-    IP = '192.168.0.14'
+    IP = '192.168.43.124'
     PORT = 10000
     reward = 0
     mlManager = None
@@ -35,8 +37,8 @@ class BasicServer(BaseHTTPRequestHandler):
             field_data = self.rfile.read(length)
             # ends to \n, filter it out
             data = field_data[:-1].decode('utf-8')
-            action = BasicServer.mlManager.update(data, BasicServer.reward)
-            print('action: ', action)
+            (action, from_model) = BasicServer.mlManager.update(data)
+            print('action: {}, from model: {}'.format(action, from_model))
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -49,15 +51,25 @@ Main: create server instance and init tensorflow session. Create also MLManager
 '''
 def main():
     httpd = None
-    sess = tf.Session()
-    BasicServer.mlManager = MLManager(sess)
-    try:
-        httpd = socketserver.TCPServer((BasicServer.IP, BasicServer.PORT), BasicServer)
-        httpd.serve_forever()
-    finally:
-        if httpd:
-            httpd.server_close()
-        sess.close()
+    with tf.Session() as sess:
+        Data.init_ImageNum()
+        BasicServer.mlManager = MLManager(sess)
+        saver = tf.train.Saver()
+        try:
+            saver.restore(sess, TensorFlowModelPath)
+        except ValueError as e:
+            print(e)
+        finally:
+            try:
+                httpd = socketserver.TCPServer((BasicServer.IP, BasicServer.PORT), BasicServer)
+                httpd.serve_forever()
+            except Exception as e:
+                print(e)
+            finally:
+                if httpd:
+                    httpd.server_close()
+                Data.store_ImageNum()
+                save_path = saver.save(sess, TensorFlowModelPath)
 
 
 
