@@ -8,6 +8,7 @@ class Data:
 
     ImageNum = 0
     IMAGENAME_PREFIX = 'training/data'
+    ImageNumFile = 'ImageNum.txt'
 
     '''
     Create image file from base64 encoded string, static method
@@ -24,6 +25,26 @@ class Data:
         return filename
 
     '''
+    Call this to update ImageNum to match previous value
+    (this should be called when server is started)
+    '''
+    @staticmethod
+    def init_ImageNum():
+        with open(Data.ImageNumFile, 'r') as file:
+            imageNumStr = file.read()
+            Data.ImageNum = int(imageNumStr.strip('\n'))
+            print('Starting from image nro: ', Data.ImageNum)
+
+    '''
+    Call this to store ImageNum value to file
+    (this should be called when server quits)
+    '''
+    @staticmethod
+    def store_ImageNum():
+        with open(Data.ImageNumFile, 'w') as file:
+            file.write(str(Data.ImageNum + 1))
+
+    '''
     Init Data object, remember to keep this object alive (create when program starts)
     Data object contains all data needed to train the network
     '''
@@ -31,6 +52,7 @@ class Data:
         self.__max_data = 10000
         self.__data = []
         self.__current_imagename = ''
+        self.__prev_imagename = ''
         self.__rewards = {}
         self.__actions = {}
         random.seed(None)
@@ -41,10 +63,11 @@ class Data:
     imageStr: image in base64 string format
     '''
     def add_data(self, imageStr):
+        self.__prev_imagename = self.__current_imagename
         self.__current_imagename = Data.create_image(imageStr)
         self.__data.append(self.__current_imagename)
         if len(self.__data) > self.__max_data:
-            imagename = self.__data.pop[0]
+            imagename = self.__data.pop(0)
             self.__rewards.pop(imagename, None)
             self.__actions.pop(imagename, None)
 
@@ -61,8 +84,11 @@ class Data:
     reward: latest response to the executed action
     '''
     def add_reward(self, reward):
-        if self.__current_imagename != '':
+        if self.__current_imagename != '' and self.__current_imagename not in self.__rewards:
+            # allow only reward insertion once
             self.__rewards[self.__current_imagename] = reward
+        if self.__prev_imagename != '':
+            self.__rewards[self.__prev_imagename] += reward # strong correlation between previous and current state
 
     '''
     Get random data sample as tuple (state(filename), action, reward, next state(filename))
@@ -113,9 +139,26 @@ class Data:
         length = data_amount
         if data_amount > len(self.__data) - 2:
             length = len(self.__data) - 2
-        for _ in range(length):
-            data_array.append(self.get_random_data())
+        #for _ in range(length):
+        #data_array.append(self.get_random_data())
+        if len(self.__data) - 2 > 0:
+            states = random.sample(self.__data[: - 2], length)
+            for state in states:
+                data_array.append((state, self.__actions[state], self.__rewards[state], self.get_next_state(state)))
+
         return data_array
+
+    '''
+    Get the next state, slow but should work
+    '''
+    def get_next_state(self, cmpState):
+        for i, state in enumerate(self.__data):
+            if state == cmpState:
+                try:
+                    return self.__data[i + 1]
+                except KeyError as e:
+                    print(e)
+                    return cmpState # no good options left
 
     '''
     Get current state
