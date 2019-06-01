@@ -107,14 +107,13 @@ public class PlayerObject extends GameObject {
         switch(opponentType) {
             case ObjectType.Barrier:
                 HP -= 5;
-                AIPlayer.reward = AIPlayer.EdgeHitReward;
+                AIPlayer.EdgeHit = true;
                 break;
             case ObjectType.Hazard:
                 HP -= 20;
-                AIPlayer.reward = AIPlayer.HazardHitReward;
+                AIPlayer.HazardHit = true;
                 break;
             default:
-                AIPlayer.reward = AIPlayer.TimeReward;
                 break;
         }
         return HP <= 0;
