@@ -26,7 +26,8 @@ public class PlayerObject extends GameObject {
     private static float ForceY = -500000.f; // upwards
 
     private boolean extraBoost = false; /**< used to detected when Player needs extra boost */
-    private int HP = 100;
+    //private int HP = 100;
+    private int HP = 300;
     private boolean externalBoost = false;
 
     /**

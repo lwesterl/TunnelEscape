@@ -196,7 +196,7 @@ SinglePlayer implements GameScreen {
                 id = worldWrapper.addObject(true, new Vector2f(x_center, y_center),
                         ResourceManager.getImageWidth(imageType), ResourceManager.getImageHeight(imageType));
                 gameObject = new StaticObject(imageType, objectType, id);
-                endDistance.add(new Vector2fDoublePair(new Vector2f(x-x_center, y_center), Float.MAX_VALUE));
+                endDistance.add(new Vector2fDoublePair(new Vector2f(x_center, y_center), Float.MAX_VALUE));
                 break;
             case ObjectType.Texture:
                 gameObject = new ImageObject(imageType, x, y); // this has no PhysicsObject in PhysicsWorld

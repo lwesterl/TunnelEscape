@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.westerholmgmail.v.lauri.tunnelescape.AIPlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
@@ -314,6 +315,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
        /* if (GameOver) {
             createEndScreenUI();
         }*/
+        //AIPlayer.loopLevels(); // remove this also
         LoadSinglePlayerUI(); // uncomment previous and remove this when training completed
 
     }
