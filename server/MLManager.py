@@ -10,9 +10,9 @@ import numpy as np
 
 class MLManager:
 
-    MIN_EPS = 0.01 # min epsilon value. when close to this, the learned model is heavily utilized
+    MIN_EPS = 0.45 # min epsilon value. when close to this, the learned model is heavily utilized
     MAX_EPS = 0.99 # max epsilon value. when close to this, actions are completely random
-    GAMMA = 0.80 # tells how much upcoming rewards are valued (1.0 next rewards as important as current)
+    GAMMA = 0.70 # tells how much upcoming rewards are valued (1.0 next rewards as important as current)
     '''
     Init MLManager
     In the beginning actions should be choosen completely randomly
@@ -20,9 +20,10 @@ class MLManager:
     def __init__(self, sess):
         self.__sess = sess
         self.__eps = MLManager.MAX_EPS # set to something more correct
-        self.__learning_rate = 0.00025 # adjust this to affect how fast the network learns
-        self.__updates = 0
-        self.__batch_size = 300
+        self.__learning_rate = 0.00001 # adjust this to affect how fast the network learns
+        self.__updates = Data.ImageNum # init ImageNum first in server
+        self.__batch_size = 10
+        self.__replay_batch_size = 3
         self.__model = Model(sess, self.__learning_rate)
         self.__data = Data()
 
@@ -30,15 +31,19 @@ class MLManager:
     Get next action for the AI player
     state: string, path to state image
     return: action string constant, this should be returned to the game itself and whether it came from the model or not
-    NOTICE: actins are stored as int value in the dict but this returs the matching string
+    NOTICE: actions are stored as int value in the dict but this returs the matching string
     '''
     def __get_next_action(self, state):
         if random.random() < self.__eps:
+            prediction = self.__model.predict_one(Model.get_image_array(state), self.__sess)
+            print(prediction)
             index = random.randrange(0, len(model.ACTIONS))
             self.__data.add_action(index)
             return (model.ACTIONS[index], False)
         else:
-            action = np.argmax(self.__model.predict_one(Model.get_image_array(state), self.__sess))
+            prediction = self.__model.predict_one(Model.get_image_array(state), self.__sess)
+            print(prediction)
+            action = np.argmax(prediction)
             self.__data.add_action(action)
             return (model.ACTIONS[action], True)
 
@@ -80,7 +85,7 @@ class MLManager:
     This is called from train_network
     '''
     def __train(self):
-        batch_data = self.__data.get_training_data(self.__batch_size)
+        batch_data = self.__data.get_training_data(self.__batch_size, self.__replay_batch_size)
         if batch_data != []:
             # be sure to filter out possible None values (currently won't do it)
             states = np.array([Model.get_image_array(item[0]) for item in batch_data])
@@ -93,7 +98,10 @@ class MLManager:
             length = len(batch_data)
             # training arrays
             # training1 = np.zeros((length, self.__model.get_num_states()))
-            training = np.zeros((length, model.IMAGE_HEIGHT, model.IMAGE_WIDTH, model.IMAGE_LAYERS))
+            if (model.IMAGE_LAYERS > 1):
+                training = np.zeros((length, model.IMAGE_HEIGHT, model.IMAGE_WIDTH, model.IMAGE_LAYERS))
+            else:
+                training = np.zeros((length, model.IMAGE_HEIGHT, model.IMAGE_WIDTH))
             target = np.zeros((length, self.__model.get_num_actions()))
 
             for index, data in enumerate(batch_data):

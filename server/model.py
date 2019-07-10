@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 
 ACTIONS = { 0: 'hold', 1: 'up', 2: 'left', 3: 'right'}
-IMAGE_WIDTH =  50
-IMAGE_HEIGHT = 50
-IMAGE_LAYERS = 1
+IMAGE_WIDTH =  40
+IMAGE_HEIGHT = 40
+IMAGE_LAYERS = 4
 
 #class Model
 
@@ -20,12 +20,10 @@ class Model:
     '''
     @staticmethod
     def get_image_array(imagename):
-        image = Image.open(imagename).convert('L')
+        image = Image.open(imagename)#.convert('LA')
         # convert to 2D array (int 0 - 255)
-        image_array = np.array(image)
+        image_array = np.array(image) / 255
         return image_array
-        #imgplot = plt.imshow(image)
-        #plt.show()
 
     '''
     Init model, create essentials
@@ -48,15 +46,21 @@ class Model:
         self.__states = tf.placeholder(shape=[None, IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_LAYERS], dtype=tf.float32)
         self.__q_training = tf.placeholder(shape=[None, self.__num_actions], dtype=tf.float32)
         # fully-connected layers
-        conv1 = tf.layers.conv2d(self.__states, filters=32, kernel_size=(5, 5), activation=tf.nn.relu, padding='same')
-        pooling = tf.layers.max_pooling2d(conv1, pool_size=(2, 2), strides=2)
-        conv2 = tf.layers.conv2d(pooling, filters=64, kernel_size=(5, 5), activation=tf.nn.relu, padding='same')
-        flatten = tf.layers.flatten(conv2)
+        #conv1 = tf.layers.conv2d(self.__states, filters=6, kernel_size=(5, 5), padding='same')
+        #pooling = tf.layers.max_pooling2d(conv1, pool_size=(2, 2), strides=2)
+
+        #conv2 = tf.layers.conv2d(pooling, filters=12, kernel_size=(4, 4), padding='same')
+        '''pooling2 = tf.layers.max_pooling2d(conv2, pool_size=(2, 2), strides=2)
+        conv3 = tf.layers.conv2d(pooling2, filters=12, kernel_size=(3, 3), padding='same')
+        flatten = tf.layers.flatten(conv3)
         #full1 = tf.layers.(self.__states, 1000, activation=tf.nn.relu)
         #full2 = tf.layers.dense(full1, 100, activation=tf.nn.relu)
-        full = tf.layers.dense(flatten, 500, activation=tf.nn.relu)
-        dropout = tf.layers.dropout(full, rate=0.5)
-        self.__output = tf.layers.dense(dropout, self.__num_actions)
+        full1 = tf.layers.dense(flatten, 500, activation=tf.nn.relu)'''
+        flatten = tf.layers.flatten(self.__states)
+        full = tf.layers.dense(flatten, 500)
+        full2 = tf.layers.dense(full, 100)
+        full3 = tf.layers.dense(full2, 100)
+        self.__output = tf.layers.dense(full3, self.__num_actions)
         loss = tf.losses.mean_squared_error(self.__q_training, self.__output)
         self.__optimizer = tf.train.GradientDescentOptimizer(learning_rate=__learning_rate).minimize(loss)
         init = tf.global_variables_initializer()
@@ -105,3 +109,12 @@ class Model:
     def train_batch(self, sess, states, rewarded_states):
         #sess.run(self.__optimizer, feed_dict={self.__states: states, self.__q_training: rewarded_states})
         sess.run(self.__optimizer, feed_dict={self.__states: states.reshape(len(states), IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_LAYERS), self.__q_training: rewarded_states})
+
+if __name__ == '__main__':
+    imagename = 'training/data0.png'
+    image = Image.open(imagename)#.convert('LA')
+    # convert to 2D array (int 0 - 255)
+    image_array = np.array(image)
+
+    imgplot = plt.imshow(image)
+    plt.show()

@@ -87,8 +87,8 @@ class Data:
         if self.__current_imagename != '' and self.__current_imagename not in self.__rewards:
             # allow only reward insertion once
             self.__rewards[self.__current_imagename] = reward
-        if self.__prev_imagename != '':
-            self.__rewards[self.__prev_imagename] += reward # strong correlation between previous and current state
+        '''if self.__prev_imagename != '':
+            self.__rewards[self.__prev_imagename] += reward # strong correlation between previous and current state'''
 
     '''
     Get random data sample as tuple (state(filename), action, reward, next state(filename))
@@ -134,15 +134,17 @@ class Data:
     training data available, empty list is returned
     NOTICE: the last data item won't have next_state available so it can't be yet used for training
     '''
-    def get_training_data(self, data_amount):
+    def get_training_data(self, data_amount, replay_batch_size):
         data_array = []
         length = data_amount
-        if data_amount > len(self.__data) - 2:
-            length = len(self.__data) - 2
+        if data_amount > len(self.__data) - 1:
+            length = len(self.__data) - 1
         #for _ in range(length):
         #data_array.append(self.get_random_data())
-        if len(self.__data) - 2 > 0:
-            states = random.sample(self.__data[: - 2], length)
+        if len(self.__data) - 1 > 0:
+            states = self.__data[-length - 1: - 1]
+            if replay_batch_size < len(self.__data) - length - 1:
+                states = states + random.sample(self.__data[: -length - 1], replay_batch_size)
             for state in states:
                 data_array.append((state, self.__actions[state], self.__rewards[state], self.get_next_state(state)))
 

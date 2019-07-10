@@ -14,7 +14,8 @@ Basic server
 Do NOT USE this in production
 '''
 class BasicServer(BaseHTTPRequestHandler):
-    IP = '192.168.43.124'
+    IP = '192.168.0.14'
+    #IP = '192.168.43.124'
     PORT = 10000
     reward = 0
     mlManager = None
