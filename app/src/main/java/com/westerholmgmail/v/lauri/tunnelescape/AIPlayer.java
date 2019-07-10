@@ -9,6 +9,7 @@ import android.util.Base64;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.GameObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 
@@ -30,18 +31,32 @@ public class AIPlayer extends SinglePlayer {
     static public boolean HazardHit = false;
     static public final int LevelCompletedReward = 50;
     static public final int LevelFailedReward = -10;
-    static public final int TimeReward = 1;
-    static public final int EdgeHitReward = -5;
+    static public final int TimeReward = 0;
+    static public final int EdgeHitReward = -20;//-5;
     static public final int HazardHitReward = -10;
-    static private String RewardURL = "http://192.168.43.124:10000/reward";
-    static private String StateURL = "http://192.168.43.124:10000/update";
+    static public final int ProgressReward = 10; // 5
+    static private String RewardURL = "http://192.168.0.14:10000/reward";//"http://192.168.43.124:10000/reward";//;
+    static private String StateURL = "http://192.168.0.14:10000/update";//"http://192.168.43.124:10000/update";//;
     private int renderCycles = 0;
+    private static int games = 0;
 
     public AIPlayer(Context context) {
         super(context);
         AIPlayer.reward = 0;
     }
 
+    /**
+     * Loops all levels, this must be called prior starting new AIPlayer game
+     */
+    public static void loopLevels() {
+        AIPlayer.games ++;
+        if (AIPlayer.games > 5) {
+            // loop around levels (not bonus level because it isn't a proper one)
+            if (SinglePlayer.CurrentLevel == FileType.Level4) SinglePlayer.CurrentLevel = FileType.Intro;
+            else SinglePlayer.CurrentLevel ++;
+            AIPlayer.games = 0;
+        }
+    }
 
     @Override
     public void render(Canvas canvas) {
@@ -52,7 +67,7 @@ public class AIPlayer extends SinglePlayer {
             PlayerObject.boostPressed = false;
             PlayerObject.rightPressed = false;
             PlayerObject.lefPressed = false;
-        } else if (renderCycles %  30 == 0) {
+        } else if (renderCycles %  20 == 0) {
             surfaceBitmap = Bitmap.createBitmap(MenuScreen.ScreenWidth, MenuScreen.ScreenHeight, Bitmap.Config.ARGB_8888);
             surfaceCanvas = new Canvas(surfaceBitmap);
             transferCanvas(surfaceCanvas);
@@ -77,9 +92,16 @@ public class AIPlayer extends SinglePlayer {
             float yCounterTransform = canvasMultiplierY * (MenuScreen.ScreenHeight - SinglePlayer.maxDiffY);
             float playerWidth = ResourceManager.getImageWidth(ImageType.Player);
             float playerHeight = ResourceManager.getImageHeight(ImageType.Player);
-            Bitmap cropped = Bitmap.createBitmap(surfaceBitmap, (int) (playerPosition.getX() - xCounterTransform - 2.f * playerWidth),
-                    (int) (playerPosition.getY() - yCounterTransform - 2.f * playerHeight), (int) (5.f * playerWidth), (int) (5.f * playerHeight));
-            Bitmap scaled = Bitmap.createScaledBitmap(cropped, 50, 50, false);
+            int x = (int) (playerPosition.getX() - xCounterTransform - 4.5f * playerWidth);
+            int y = (int) (playerPosition.getY() - yCounterTransform - 4.5f * playerHeight);
+            int width = (int) (10.f * playerWidth);
+            int height = (int) (10.f * playerHeight);
+            x = x < 0 ? 0 : x;
+            y = y < 0 ? 0 : y;
+            if (width > MenuScreen.ScreenWidth - x) width = MenuScreen.ScreenWidth - x;
+            if (height > MenuScreen.ScreenHeight - y) height = MenuScreen.ScreenHeight -y;
+            Bitmap cropped = Bitmap.createBitmap(surfaceBitmap, x, y, width, height);
+            Bitmap scaled = Bitmap.createScaledBitmap(cropped, 40, 40, false);
             ProcessCanvasBitmap(scaled);
         }
 
@@ -130,8 +152,8 @@ public class AIPlayer extends SinglePlayer {
      */
 
     private void ProcessCanvasBitmap(Bitmap bitmap) {
-        if (CheckWhetherProgressed()) AIPlayer.reward += 1;
-        else AIPlayer.reward -= 1;
+        if (CheckWhetherProgressed() && AIPlayer.reward > -1) AIPlayer.reward += ProgressReward;
+        else AIPlayer.reward -= 2;
         new UpdateAITask().execute(AIPlayer.RewardURL, String.valueOf(AIPlayer.reward));
         if (bitmap != null) new UpdateAITask().execute(AIPlayer.StateURL, BitmapToBase64(bitmap));
 
@@ -153,6 +175,7 @@ public class AIPlayer extends SinglePlayer {
             if (distance < cmpDistance) {
                 closingEnd = true;
                 pair.second = distance; // update, do not update otherwise so that agent isn't rewarded from going back and forth
+
             }
 
         }
