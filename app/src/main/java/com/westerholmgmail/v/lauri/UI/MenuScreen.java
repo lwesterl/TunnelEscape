@@ -27,6 +27,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.MLManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
@@ -67,6 +68,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         // load resources during start up
         ResourceManager.loadResources(this);
         AudioManager.init(this);
+        MLManager.loadModel(this);
         SinglePlayer.HardDifficulty = FileType.loadDifficulty(this);
         FileType.loadCompletedLevels(this);
 
