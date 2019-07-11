@@ -2,6 +2,7 @@ package com.westerholmgmail.v.lauri.tunnelescape;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.util.Base64;
@@ -11,6 +12,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.objects.GameObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.MLManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 
 import java.io.BufferedOutputStream;
@@ -154,9 +156,11 @@ public class AIPlayer extends SinglePlayer {
     private void ProcessCanvasBitmap(Bitmap bitmap) {
         if (CheckWhetherProgressed() && AIPlayer.reward > -1) AIPlayer.reward += ProgressReward;
         else AIPlayer.reward -= 2;
-        new UpdateAITask().execute(AIPlayer.RewardURL, String.valueOf(AIPlayer.reward));
+        //new UpdateAITask().execute(AIPlayer.RewardURL, String.valueOf(AIPlayer.reward));
         if (bitmap != null) new UpdateAITask().execute(AIPlayer.StateURL, BitmapToBase64(bitmap));
-
+        // Use tensorflow lite model
+        /*String action = MLManager.getAction(bitmap);
+        TakeAction(action);*/
     }
 
     /**
@@ -182,6 +186,21 @@ public class AIPlayer extends SinglePlayer {
         return closingEnd;
     }
 
+    private void TakeAction(String action) {
+        PlayerObject.boostPressed = false;
+        PlayerObject.rightPressed = false;
+        PlayerObject.lefPressed = false;
+        if (action.equals("up")) PlayerObject.boostPressed = true;
+        else if (action.equals("left")) {
+            PlayerObject.boostPressed = true;
+            PlayerObject.lefPressed = true;
+        }
+        else if (action.equals("right")) {
+            PlayerObject.boostPressed = true;
+            PlayerObject.rightPressed = true;
+        }
+    }
+
     private class UpdateAITask extends AsyncTask<String, String, String> {
         @Override
         protected void onPreExecute() {
@@ -192,7 +211,7 @@ public class AIPlayer extends SinglePlayer {
         protected String doInBackground(String... params) {
             String urlStr = params[0];
             String data = params[1];
-            OutputStream os;
+            /*OutputStream os;
             try {
                 URL url = new URL(urlStr);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -216,7 +235,11 @@ public class AIPlayer extends SinglePlayer {
             } catch (Exception e) {
                 System.out.println(e.getStackTrace());
                 return "fail";
-            }
+            }*/
+            byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            String action = MLManager.getAction(bitmap);
+            CheckResponse(action);
             return "success";
         }
 
