@@ -63,12 +63,25 @@ SinglePlayer implements GameScreen {
 
 
     /**
-     * @brief Constructor
+     * @brief Default constructor
+     * @param context app context, MainMenu instance
      */
     public SinglePlayer(Context context) {
         this.context = context;
         worldWrapper = new WorldWrapper();
         loadLevel(FileType.getFilePath(SinglePlayer.CurrentLevel));
+        gameRunning = true;
+    }
+
+    /**
+     * @brief Another constructor, which allows to pass level to be loaded (AIPlayer uses this)
+     * @param context app context, MainMenu instance
+     * @param level to be loaded
+     */
+    public SinglePlayer(Context context, @FileType.FileTypeRef int level) {
+        this.context = context;
+        worldWrapper = new WorldWrapper();
+        loadLevel(FileType.getFilePath(level));
         gameRunning = true;
     }
 

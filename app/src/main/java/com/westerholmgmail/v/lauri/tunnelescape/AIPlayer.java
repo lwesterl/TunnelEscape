@@ -37,18 +37,20 @@ public class AIPlayer extends SinglePlayer {
     static public final int EdgeHitReward = -20;//-5;
     static public final int HazardHitReward = -10;
     static public final int ProgressReward = 10; // 5
-    static private String RewardURL = "http://192.168.0.14:10000/reward";//"http://192.168.43.124:10000/reward";//;
-    static private String StateURL = "http://192.168.0.14:10000/update";//"http://192.168.43.124:10000/update";//;
+    static private String RewardURL = "http://192.168.0.14:10000/reward";// these all only for the ML training
+    static private String StateURL = "http://192.168.0.14:10000/update";
     private int renderCycles = 0;
     private static int games = 0;
+    private static final @FileType.FileTypeRef int AIPlayerLevel = FileType.Intro; // only this level is allowed for AIPlayer
 
     public AIPlayer(Context context) {
-        super(context);
+        super(context, AIPlayer.AIPlayerLevel);
         AIPlayer.reward = 0;
     }
 
     /**
      * Loops all levels, this must be called prior starting new AIPlayer game
+     * This is used only for ML training
      */
     public static void loopLevels() {
         AIPlayer.games ++;
@@ -60,6 +62,10 @@ public class AIPlayer extends SinglePlayer {
         }
     }
 
+    /**
+     * Customize render so that current screen content is saved as a bitmap to be fed to the ML model
+     * @param canvas drawing surface
+     */
     @Override
     public void render(Canvas canvas) {
         Canvas surfaceCanvas = null;
@@ -109,9 +115,14 @@ public class AIPlayer extends SinglePlayer {
 
     }
 
+    /**
+     * Customize stopSinglePlayer to suite AIPlayer. Update AIPlayer reward, which is basically redundant
+     * when the pre-trained model is used in production
+     */
     @Override
     protected void stopSinglePlayer() {
         gameRunning = false;
+        // the lines below are used only for training the ML
         if (! SinglePlayer.PlayerWon) {
             SinglePlayer.Score = 0;
             // update AIPlayer reward
@@ -156,11 +167,9 @@ public class AIPlayer extends SinglePlayer {
     private void ProcessCanvasBitmap(Bitmap bitmap) {
         if (CheckWhetherProgressed() && AIPlayer.reward > -1) AIPlayer.reward += ProgressReward;
         else AIPlayer.reward -= 2;
+        // When training ML, uncomment the line below
         //new UpdateAITask().execute(AIPlayer.RewardURL, String.valueOf(AIPlayer.reward));
         if (bitmap != null) new UpdateAITask().execute(AIPlayer.StateURL, BitmapToBase64(bitmap));
-        // Use tensorflow lite model
-        /*String action = MLManager.getAction(bitmap);
-        TakeAction(action);*/
     }
 
     /**
@@ -179,26 +188,10 @@ public class AIPlayer extends SinglePlayer {
             if (distance < cmpDistance) {
                 closingEnd = true;
                 pair.second = distance; // update, do not update otherwise so that agent isn't rewarded from going back and forth
-
             }
 
         }
         return closingEnd;
-    }
-
-    private void TakeAction(String action) {
-        PlayerObject.boostPressed = false;
-        PlayerObject.rightPressed = false;
-        PlayerObject.lefPressed = false;
-        if (action.equals("up")) PlayerObject.boostPressed = true;
-        else if (action.equals("left")) {
-            PlayerObject.boostPressed = true;
-            PlayerObject.lefPressed = true;
-        }
-        else if (action.equals("right")) {
-            PlayerObject.boostPressed = true;
-            PlayerObject.rightPressed = true;
-        }
     }
 
     private class UpdateAITask extends AsyncTask<String, String, String> {
@@ -207,10 +200,18 @@ public class AIPlayer extends SinglePlayer {
             super.onPreExecute();
         }
 
+        /**
+         * This updates AIPlayer as a background task. The current configuration is for production
+         * (uses pre-trained Tensoflow lite model). For training the model, uncomment server related
+         * lines.
+         * @param params URL (basically unnecessary for production) and current screen image capture as base64 string
+         * @return string whether update was successful
+         */
         @Override
         protected String doInBackground(String... params) {
             String urlStr = params[0];
             String data = params[1];
+            // for training, uncomment lines below
             /*OutputStream os;
             try {
                 URL url = new URL(urlStr);

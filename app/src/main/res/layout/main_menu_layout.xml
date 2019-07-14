@@ -7,15 +7,16 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_dark">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/mainMenuImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="false"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/menu_image"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_tunnelescape_title"
-        tools:srcCompat="@drawable/ic_tunnelescape_title" />
+        android:src="@drawable/ic_tunnelescape_title"
+        tools:src="@drawable/ic_tunnelescape_title" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout"

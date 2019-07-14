@@ -1,7 +1,5 @@
 package com.westerholmgmail.v.lauri.UI;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,18 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.westerholmgmail.v.lauri.tunnelescape.AIPlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.GameEngine;
 import com.westerholmgmail.v.lauri.tunnelescape.SinglePlayer;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.AudioType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
-import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.MLManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
 
-import java.io.File;
+
 
 public class MenuScreen extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
     private Button singlePlayerButton;
@@ -42,7 +38,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
     private ImageButton rightArrowButton;
     public ProgressBar HPBar;
     public TextView CurrentScoreView;
-    private ImageView mainMenuImage;
+    private ImageButton mainMenuImage;
     private TextView levelNameView;
     private TextView levelDescriptionView;
     private ImageView levelSelectImage;
@@ -98,6 +94,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
             case R.id.settingsButton:
                 CreateSettingsUI();
                 break;
+            case R.id.mainMenuImage:
+                LoadSinglePlayerUI(false);
+                break;
             case R.id.MenuButton:
                 CreateMenuUI();
                 break;
@@ -108,13 +107,13 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
                 CreateMenuUI();
                 break;
             case R.id.TryAgainButton:
-                LoadSinglePlayerUI();
+                LoadSinglePlayerUI(true);
                 break;
             case R.id.NextLevelButton:
                 @FileType.FileTypeRef int currentLevel = SinglePlayer.CurrentLevel;
                 SinglePlayer.CurrentLevel = FileType.changeLevel(currentLevel, true);
                 if (SinglePlayer.CurrentLevel > currentLevel) {
-                    LoadSinglePlayerUI();
+                    LoadSinglePlayerUI(true);
                 } else {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(this, "All levels completed!\nRemember to try 'Alone in the dark mode'", duration);
@@ -122,7 +121,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
                 }
                 break;
             case R.id.SelectLevelButton:
-                LoadSinglePlayerUI();
+                LoadSinglePlayerUI(true);
                 break;
             default:
                 System.out.println("Unhandled click");
@@ -175,8 +174,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         exitButton.setOnClickListener(this);
         settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(this);
-        // create other UI related object
         mainMenuImage = findViewById(R.id.mainMenuImage);
+        mainMenuImage.setOnClickListener(this);
         // start main_menu_audio
         AudioManager.playAudio(AudioType.MainMenuAudio, true);
     }
@@ -213,14 +212,15 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
 
     /**
      * @brief Load UI for single player
+     * @param startSinglePlayer whether to start SinglePlayer or AIPlayer (true start SinglePlayer)
      * @details Changes view to SinglePlayer.
      * Creates boostButton, leftArrowButton and rightArrowButton
      */
-    private void LoadSinglePlayerUI() {
+    private void LoadSinglePlayerUI(boolean startSinglePlayer) {
         setContentView(R.layout.single_player_layout);
         gameEngine = findViewById(R.id.gameEngine);
-        //gameEngine.setGameState(GameState.SinglePlayer);
-        gameEngine.setGameState(GameState.AIPlayer);
+        if (startSinglePlayer) gameEngine.setGameState(GameState.SinglePlayer);
+        else gameEngine.setGameState(GameState.AIPlayer);
         boostButton = findViewById(R.id.boostButton);
         leftArrowButton = findViewById(R.id.leftArrowButton);
         rightArrowButton = findViewById(R.id.rightArrowButton);
@@ -237,6 +237,7 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         AudioManager.playAudio(AudioType.MainMenuAudio, false);
         AudioManager.playAudio(AudioType.SinglePlayerAudio, true);
     }
+
 
     /**
      * @brief Create screen for settings menu
@@ -314,11 +315,12 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         AudioManager.playAudio(AudioType.SinglePlayerAudio, false);
         AudioManager.playAudio(AudioType.BoostAudio, false);
         AudioManager.playAudio(AudioType.MainMenuAudio, true);
-       /* if (GameOver) {
-            createEndScreenUI();
-        }*/
+        if (GameOver) {
+            if (gameEngine.getCurrentGameState() == GameState.SinglePlayer) createEndScreenUI();
+            else CreateMenuUI(); // AIPlayer, demo, over
+        }
         //AIPlayer.loopLevels(); // remove this also
-        LoadSinglePlayerUI(); // uncomment previous and remove this when training completed
+        //LoadSinglePlayerUI(); // uncomment previous and remove this when training completed
 
     }
 
