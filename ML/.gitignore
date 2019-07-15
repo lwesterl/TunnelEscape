@@ -4,3 +4,5 @@ checkpoint
 ImageNum.txt
 model_*
 model.ckpt*
+output_graph.pb
+__tb/
