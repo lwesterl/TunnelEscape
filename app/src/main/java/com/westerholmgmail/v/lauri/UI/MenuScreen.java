@@ -1,6 +1,10 @@
 package com.westerholmgmail.v.lauri.UI;
 
+import android.app.Dialog;
 import android.net.Uri;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -74,6 +78,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitScreenSize();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DialogFragment dialogFragment = new RegisterDialogFragment();
+        dialogFragment.show(fragmentTransaction, "dialog");
         CreateMenuUI();
     }
 
