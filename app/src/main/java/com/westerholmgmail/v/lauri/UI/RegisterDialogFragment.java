@@ -9,8 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.westerholmgmail.v.lauri.tunnelescape.R;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ApiStatus;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ScoreServerHandler;
+
+import java.util.concurrent.Callable;
 
 /**
  * @class RegisterDialogFragment
@@ -18,7 +25,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.R;
  */
 public class RegisterDialogFragment extends DialogFragment {
 
-    public static String Username = "";
+    private String username;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -29,16 +36,11 @@ public class RegisterDialogFragment extends DialogFragment {
         // create buttons
                 .setPositiveButton(R.string.user_register_button, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // try to register user
-
-                    }
+                    public void onClick(DialogInterface dialogInterface, int i) {}
                 })
                 .setNegativeButton(R.string.skip_registration_button, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // skip user registration
-                    }
+                    public void onClick(DialogInterface dialogInterface, int i) {}
                 });
 
         return builder.create();
@@ -54,11 +56,37 @@ public class RegisterDialogFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     EditText nameEdit = getDialog().getWindow().findViewById(R.id.username);
-                    RegisterDialogFragment.Username = nameEdit.getText().toString();
-                    System.out.println("____________________________Username______: " + RegisterDialogFragment.Username);
-                    // TODO test if username is ok and save it to a file
-                    // close the dialog
-                    dismiss();
+                    username = nameEdit.getText().toString();
+                    ProgressBar registerProgress = dialog.getWindow().findViewById(R.id.registerProgress);
+                    registerProgress.setVisibility(View.VISIBLE);
+                    try {
+                        ScoreServerHandler.createUser(username, new Callable<Void>() {
+                            @Override
+                            public Void call() {
+                                @ApiStatus.ApiStatusRef int status = ScoreServerHandler.getApiStatus();
+                                if (status == ApiStatus.UserExists) {
+                                   TextView errorTextView = dialog.getWindow().findViewById(R.id.errorTextView);
+                                   errorTextView.setVisibility(View.VISIBLE);
+                                   registerProgress.setVisibility(View.INVISIBLE);
+                                   return null;
+                                } else if (status == ApiStatus.Error) {
+                                    Toast toast = Toast.makeText(getContext(), "Error\nTry Stats to create an user later on", Toast.LENGTH_LONG);
+                                    toast.show();
+                                } else if (status == ApiStatus.Ok) {
+                                    ScoreServerHandler.saveUser(getContext(), username, ScoreServerHandler.UserID);
+                                    String text = username + " successfully created";
+                                    Toast toast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                                registerProgress.setVisibility(View.INVISIBLE);
+                                dialog.dismiss();
+                                return null;
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
             });
@@ -66,11 +94,11 @@ public class RegisterDialogFragment extends DialogFragment {
             negativeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO save to the file that user doesn't want to create a user
-                    // close the dialog
+                    ScoreServerHandler.saveUser(getContext(), "", "-1");
                     dismiss();
                 }
             });
         }
     }
+
 }

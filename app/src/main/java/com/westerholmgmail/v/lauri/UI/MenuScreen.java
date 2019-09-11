@@ -30,7 +30,7 @@ import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.MLManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.R;
-
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ScoreServerHandler;
 
 
 public class MenuScreen extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener {
@@ -79,8 +79,10 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitScreenSize();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        DialogFragment dialogFragment = new RegisterDialogFragment();
-        dialogFragment.show(fragmentTransaction, "dialog");
+        if (!ScoreServerHandler.userFileExists(this)) {
+            DialogFragment dialogFragment = new RegisterDialogFragment();
+            dialogFragment.show(fragmentTransaction, "dialog");
+        }
         CreateMenuUI();
     }
 

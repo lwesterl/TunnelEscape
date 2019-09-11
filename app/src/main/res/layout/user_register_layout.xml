@@ -44,4 +44,12 @@
         android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ _.-"
         android:hint="@string/enter_username_hint" />
 
+    <ProgressBar
+        android:id="@+id/registerProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        tools:visibility="invisible" />
+
 </LinearLayout>
