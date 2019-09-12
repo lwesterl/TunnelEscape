@@ -78,12 +78,20 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                              WindowManager.LayoutParams.FLAG_FULLSCREEN);
         InitScreenSize();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         if (!ScoreServerHandler.userFileExists(this)) {
-            DialogFragment dialogFragment = new RegisterDialogFragment();
-            dialogFragment.show(fragmentTransaction, "dialog");
+            ShowUserRegistrationDialog();
         }
         CreateMenuUI();
+    }
+
+    /**
+     * @brief Show a dialog where user can register an username
+     */
+    private void ShowUserRegistrationDialog() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DialogFragment dialogFragment = new RegisterDialogFragment();
+        dialogFragment.show(fragmentTransaction, "dialog");
     }
 
     /**
@@ -96,6 +104,9 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
             case R.id.singlePlayerButton:
                 hideMenu();
                 CreateLevelSelectUI();
+                break;
+            case R.id.statsButton:
+                if (! StatsView.showStats(this)) ShowUserRegistrationDialog();
                 break;
             case R.id.exitButton:
                 exit();
@@ -185,6 +196,8 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         settingsButton.setOnClickListener(this);
         mainMenuImage = findViewById(R.id.mainMenuImage);
         mainMenuImage.setOnClickListener(this);
+        Button statsButton = findViewById(R.id.statsButton);
+        statsButton.setOnClickListener(this);
         // start main_menu_audio
         AudioManager.playAudio(AudioType.MainMenuAudio, true);
     }
