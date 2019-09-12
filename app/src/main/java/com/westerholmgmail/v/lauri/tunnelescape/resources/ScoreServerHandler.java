@@ -15,6 +15,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Calendar;
 import java.util.concurrent.Callable;
 
 
@@ -26,9 +32,10 @@ public class ScoreServerHandler {
 
     private static String GetUserURL = "http://192.168.0.16/api/users/user/"; // TODO add correct addresses
     private static String AddUserURL = "http://192.168.0.16/api/users/add_user/";
-    private static String ScoreURL = "http://192.168.0.16/api/add_score/";
+    private static String ScoreURL = "http://192.168.0.16/api/scores/add_score/";
     private static String UserFile = "UserFile";
     private static @ApiStatus.ApiStatusRef int apiStatus;
+    private static @ApiStatus.ApiStatusRef int scoreStatus;
     private static Callable<Void> callable;
     public static String UserID;
 
@@ -45,10 +52,56 @@ public class ScoreServerHandler {
     }
 
     /**
+     * Async task which adds scores to the server
+     * @param context should be the main activity
+     * @param callable function executed after the operation is finished
+     * @param score level score
+     * @param completed 1 or 0: whether the level was completed
+     * @param level name of the played level
+     * @return null if user not valid, otherwise return the async task which need to be executed
+     */
+    public static AsyncTask<Void, Void, Void> addScore(Context context, Callable<Void> callable, int score, int completed, String level, int gameMode) {
+        String[] user = ScoreServerHandler.ReadUser(context);
+        int userID = (Integer.valueOf(user[1]));
+        if ((! user[0].equals("")) &&  (userID > -1)) {
+            // valid user, try to add the score to the server
+            return new AsyncTask<Void,Void, Void>() {
+                @Override
+                protected Void doInBackground(Void ...params) {
+                    try {
+                        if (ScoreServerHandler.AddScore(userID, score, completed, level, gameMode)) ScoreServerHandler.scoreStatus = ApiStatus.Ok;
+                        else ScoreServerHandler.scoreStatus = ApiStatus.Error;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        ScoreServerHandler.scoreStatus = ApiStatus.Error;
+                    }
+                    return null;
+                }
+                @Override
+                protected void onPostExecute(Void notUsed) {
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+        }
+        return null;
+    }
+
+    /**
      * Get api status
      * @return apiStatus
      */
     public static @ApiStatus.ApiStatusRef int getApiStatus() { return ScoreServerHandler.apiStatus; }
+
+    /**
+     * Get score status
+     * @return scoreStatus
+     */
+    public static @ApiStatus.ApiStatusRef int getScoreStatus() { return ScoreServerHandler.scoreStatus; }
 
     /**
      * Save username to file
@@ -155,6 +208,40 @@ public class ScoreServerHandler {
             ScoreServerHandler.UserID = message.toString();
             return true;
         }
+        return false;
+    }
+
+    /**
+     * Add score to ScoresServer using the api
+     * @param userID user ID, should be stored in the UserFile
+     * @param score level score
+     * @param completed 1, 0: whether the level was completed or not
+     * @param level name of the played level
+     * @return true on success, otherwise false
+     * @throws Exception
+     */
+    private static boolean AddScore(int userID, int score, int completed, String level, int gameMode) throws Exception {
+        java.net.URL url = new URL(ScoreServerHandler.ScoreURL);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("POST");
+        urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+        urlConnection.setRequestProperty("Accept", "application/json");
+        urlConnection.setDoOutput(true);
+        DataOutputStream os = new DataOutputStream(urlConnection.getOutputStream());
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+        JSONObject json = new JSONObject();
+        json.put("score", score);
+        json.put("time", dateFormat.format(Calendar.getInstance().getTime()));
+        json.put("completed", completed);
+        json.put("level", level);
+        json.put("userID", userID);
+        json.put("gameMode", gameMode);
+        os.writeBytes(json.toString());
+        os.flush();
+        os.close();
+        int statusCode = urlConnection.getResponseCode();
+        if (statusCode == 200) return true;
         return false;
     }
 
