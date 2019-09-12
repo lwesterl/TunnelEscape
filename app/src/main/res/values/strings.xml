@@ -46,4 +46,6 @@
     <string name="register_user_button_description">Register user button</string>
     <string name="skip_registration_button">Skip\n (scores not saved)</string>
     <string name="skip_registration_button_description">Skip user registration button</string>
+    <string name="statsButtonText">Stats</string>
+    <string name="statsButton_description">Stats button</string>
 </resources>
