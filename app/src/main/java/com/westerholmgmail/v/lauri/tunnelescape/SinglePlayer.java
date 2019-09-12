@@ -8,8 +8,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.westerholmgmail.v.lauri.UI.GameScreen;
 import com.westerholmgmail.v.lauri.UI.MenuScreen;
@@ -19,15 +21,18 @@ import com.westerholmgmail.v.lauri.tunnelescape.objects.ObjectType;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.PlayerObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.StaticObject;
 import com.westerholmgmail.v.lauri.tunnelescape.objects.TreasureObject;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ApiStatus;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.FileType;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ResourceManager;
 import com.westerholmgmail.v.lauri.tunnelescape.resources.ImageType;
+import com.westerholmgmail.v.lauri.tunnelescape.resources.ScoreServerHandler;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 /**
  * @class SinglePlayer
@@ -408,12 +413,15 @@ SinglePlayer implements GameScreen {
         });
     }
 
+    /**
+     * Stop SinglePlayer when user completes or fails the level
+     * Note: this will try to post the score to the ScoreServer using async task
+     */
     protected void stopSinglePlayer() {
         gameRunning = false;
         if (! SinglePlayer.PlayerWon) SinglePlayer.Score = 0;
         else CalculateScore();
 
-        //SinglePlayer.PlayerWon = true;
         // Get a handler that can be used to post to the main thread
         android.os.Handler mainHandler = new android.os.Handler(context.getMainLooper());
 
@@ -422,6 +430,17 @@ SinglePlayer implements GameScreen {
             menuScreen.singlePlayerOver(true);
         };
         mainHandler.post(myRunnable);
+        AsyncTask<Void, Void, Void> addScoreTask = ScoreServerHandler.addScore(context, new Callable<Void>() {
+            @Override
+            public Void call() {
+                if (ScoreServerHandler.getScoreStatus() == ApiStatus.Error) {
+                    Toast toast = Toast.makeText(context, "Error, not able to save the score", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                return null;
+            }
+        }, SinglePlayer.Score, SinglePlayer.PlayerWon ? 1 : 0, FileType.getFileName(SinglePlayer.CurrentLevel) , GameEngine.getGameMode(SinglePlayer.HardDifficulty));
+        addScoreTask.execute();
     }
 
 

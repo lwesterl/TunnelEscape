@@ -30,6 +30,15 @@ public class GameEngine extends SurfaceView implements SurfaceHolder.Callback {
     private MenuScreen menuScreen;
 
     /**
+     * Get game mode that matched Score server ids, these must absolute match the ScoreServer database counterparts
+     * @param hardDifficulty whether difficulty is hard
+     * @return ScoreServer database GameModes id
+     */
+    public static int getGameMode(boolean hardDifficulty) {
+        return hardDifficulty ? 2 : 1;
+    }
+
+    /**
      * @brief Constructor
      * @param context android context for the view
      * @param attributeSet AttributeSet
