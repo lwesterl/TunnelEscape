@@ -34,6 +34,7 @@ public class ScoreServerHandler {
     private static @ApiStatus.ApiStatusRef int apiStatus;
     private static @ApiStatus.ApiStatusRef int scoreStatus;
     private static Callable<Void> callable;
+    private static int ConnectionTimeout = 5000; /**< 5 s timeout, the server should respond in this time */
     public static String UserID;
 
 
@@ -182,6 +183,8 @@ public class ScoreServerHandler {
     private static boolean AddUser(String username) throws Exception {
         java.net.URL url = new URL(ScoreServerHandler.AddUserURL);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setConnectTimeout(ScoreServerHandler.ConnectionTimeout);
+        urlConnection.setReadTimeout(ScoreServerHandler.ConnectionTimeout);
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
         urlConnection.setRequestProperty("Accept", "application/json");
@@ -220,6 +223,8 @@ public class ScoreServerHandler {
     private static boolean AddScore(int userID, int score, int completed, String level, int gameMode) throws Exception {
         java.net.URL url = new URL(ScoreServerHandler.ScoreURL);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setConnectTimeout(ScoreServerHandler.ConnectionTimeout);
+        urlConnection.setReadTimeout(ScoreServerHandler.ConnectionTimeout);
         urlConnection.setRequestMethod("POST");
         urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
         urlConnection.setRequestProperty("Accept", "application/json");
