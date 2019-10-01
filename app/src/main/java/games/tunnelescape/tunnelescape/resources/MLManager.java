@@ -1,3 +1,9 @@
+/**
+ * @file MLManager.java
+ * @author Lauri Westerholm
+ * Contains MLManager which acts as a link between ml model and the game
+ */
+
 package games.tunnelescape.tunnelescape.resources;
 
 import android.app.Activity;

@@ -1,3 +1,9 @@
+/**
+ * @file ScoreServerHandler.java
+ * @author Lauri Westerholm
+ * Contains ScoreServerHandler which is a link between the game and API (ScoreServer)
+ */
+
 package games.tunnelescape.tunnelescape.resources;
 
 

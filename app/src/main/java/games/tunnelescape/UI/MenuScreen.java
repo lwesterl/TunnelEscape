@@ -1,3 +1,10 @@
+/**
+ * @file MenuScreen.java
+ * @author Lauri Westerholm
+ * Contains MenuScreen which is the main activity
+ */
+
+
 package games.tunnelescape.UI;
 
 import android.net.Uri;
@@ -424,6 +431,10 @@ public class MenuScreen extends AppCompatActivity implements View.OnClickListene
         levelSelectImage.setImageResource(GetLevelSelectImageResource());
     }
 
+    /**
+     * @brief Get image resource constant based on SinglePlayer.CurrentLevel
+     * @return Resource constant
+     */
     private int GetLevelSelectImageResource() {
         if (FileType.isAvailable(SinglePlayer.CurrentLevel)) {
             switch(SinglePlayer.CurrentLevel) {

@@ -1,3 +1,9 @@
+/**
+ * @file AIPlayer.java
+ * @author Lauri Westerholm
+ * Contains AIPlayer which is basically a ML model controlled player
+ */
+
 package games.tunnelescape.tunnelescape;
 
 import android.content.Context;
@@ -18,6 +24,11 @@ import games.tunnelescape.tunnelescape.resources.ResourceManager;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
+
+/**
+ * @class AIPlayer
+ * Implements a ML model controlled player object
+ */
 public class AIPlayer extends SinglePlayer {
 
     static public int reward = 0;
@@ -194,7 +205,7 @@ public class AIPlayer extends SinglePlayer {
 
         /**
          * This updates AIPlayer as a background task. The current configuration is for production
-         * (uses pre-trained Tensoflow lite model). For training the model, uncomment server related
+         * (uses pre-trained Tensorflow lite model). For training the model, uncomment server related
          * lines.
          * @param params URL (basically unnecessary for production) and current screen image capture as base64 string
          * @return string whether update was successful

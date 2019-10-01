@@ -1,3 +1,9 @@
+/**
+ * @file SinglePlayer.java
+ * @author Lauri Westerholm
+ * Contains SinglePlayer which implements the most of the single player logic
+ */
+
 package games.tunnelescape.tunnelescape;
 
 import android.content.Context;
@@ -70,7 +76,7 @@ SinglePlayer implements GameScreen {
 
     /**
      * @brief Default constructor
-     * @param context app context, MainMenu instance
+     * @param context app context, MenuScreen instance
      */
     public SinglePlayer(Context context) {
         this.context = context;
@@ -81,7 +87,7 @@ SinglePlayer implements GameScreen {
 
     /**
      * @brief Another constructor, which allows to pass level to be loaded (AIPlayer uses this)
-     * @param context app context, MainMenu instance
+     * @param context app context, MenuScreen instance
      * @param level to be loaded
      */
     public SinglePlayer(Context context, @FileType.FileTypeRef int level) {

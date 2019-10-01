@@ -1,3 +1,9 @@
+/**
+ * @file RegisterDialogFragment.java
+ * @author Lauri Westerholm
+ * Contains RegisterDialogFragment used to create a new user
+ */
+
 package games.tunnelescape.UI;
 
 import android.app.AlertDialog;
@@ -27,6 +33,11 @@ public class RegisterDialogFragment extends DialogFragment {
 
     private String username;
 
+    /**
+     * onCreateDialog override
+     * @param savedInstanceState state of the activity
+     * @return a new Dialog used for registering an user
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -46,6 +57,10 @@ public class RegisterDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * onStart override
+     * Create a dialog for registering a new user
+     */
     @Override
     public void onStart() {
         super.onStart();

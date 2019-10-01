@@ -1,3 +1,9 @@
+/**
+ * @file ImageObject.java
+ * @author Lauri Westerholm
+ * Contains ImageObject which is used to create non-physical objects
+ */
+
 package games.tunnelescape.tunnelescape.objects;
 
 import games.tunnelescape.tunnelescape.resources.ImageType;

@@ -1,3 +1,9 @@
+/**
+ * @file GameObject.java
+ * @author Lauri Westerholm
+ * Abstract class for objects used in the game
+ */
+
 package games.tunnelescape.tunnelescape.objects;
 
 import android.graphics.Canvas;

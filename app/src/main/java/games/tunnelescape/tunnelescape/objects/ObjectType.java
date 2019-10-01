@@ -1,3 +1,9 @@
+/**
+ * @file ObjectType
+ * @author Lauri Westerholm
+ * Contains ObjectType: object type constants
+ */
+
 package games.tunnelescape.tunnelescape.objects;
 
 import android.support.annotation.IntDef;

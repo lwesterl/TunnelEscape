@@ -1,3 +1,9 @@
+/**
+ * @file ResourceManager.java
+ * @author Lauri Westerholm
+ * Contains ResourceManager which handles loading resources etc.
+ */
+
 package games.tunnelescape.tunnelescape.resources;
 
 import android.content.Context;

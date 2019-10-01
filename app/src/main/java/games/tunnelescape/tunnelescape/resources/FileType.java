@@ -1,3 +1,9 @@
+/**
+ * @file FileType.java
+ * @author Lauri Westerholm
+ * Contains FileType: constants for different files
+ */
+
 package games.tunnelescape.tunnelescape.resources;
 
 import android.content.Context;
