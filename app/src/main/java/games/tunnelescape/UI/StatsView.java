@@ -24,7 +24,11 @@ public class StatsView {
     public static boolean showStats(Context context) {
         // check whether the user is already created
         String[] user = ScoreServerHandler.ReadUser(context);
-        if (Integer.valueOf(user[1]) < 0) {
+        try {
+            if (Integer.valueOf(user[1]) < 0) {
+                return false;
+            }
+        } catch(java.lang.NumberFormatException e) {
             return false;
         }
         ShowScores(context, user[0]);
