@@ -1,7 +1,7 @@
 /**
  * @file RegisterDialogFragment.java
  * @author Lauri Westerholm
- * Contains RegisterDialogFragment used to create a new user
+ * @details Contains RegisterDialogFragment used to create a new user
  */
 
 package games.tunnelescape.UI;

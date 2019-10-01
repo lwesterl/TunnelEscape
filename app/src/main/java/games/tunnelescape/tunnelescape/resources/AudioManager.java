@@ -1,7 +1,7 @@
 /**
  * @file AudioManager.java
  * @author Lauri Westerholm
- * Contains AudioManager which handles audio
+ * @details Contains AudioManager which handles audio
  */
 
 package games.tunnelescape.tunnelescape.resources;

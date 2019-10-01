@@ -1,7 +1,7 @@
 /**
  * @file ObjectType
  * @author Lauri Westerholm
- * Contains ObjectType: object type constants
+ * @details Contains ObjectType: object type constants
  */
 
 package games.tunnelescape.tunnelescape.objects;

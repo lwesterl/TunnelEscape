@@ -1,7 +1,7 @@
 /**
  * @file AIPlayer.java
  * @author Lauri Westerholm
- * Contains AIPlayer which is basically a ML model controlled player
+ * @details Contains AIPlayer which is basically a ML model controlled player
  */
 
 package games.tunnelescape.tunnelescape;

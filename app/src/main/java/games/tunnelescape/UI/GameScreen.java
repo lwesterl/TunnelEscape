@@ -1,7 +1,7 @@
 /**
  * @file GameScreen.java
  * @author Lauri Westerholm
- * Contains GameScreen: base class for different game modes / screens
+ * @details Contains GameScreen: base class for different game modes / screens
  */
 
 package games.tunnelescape.UI;

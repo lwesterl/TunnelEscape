@@ -1,7 +1,7 @@
 /**
  * @file StatsView.java
  * @author Lauri Westerholm
- * Contains StatsView which either displays a dialog for creating an user or open browser for user scores
+ * @details Contains StatsView which either displays a dialog for creating an user or open browser for user scores
  */
 
 package games.tunnelescape.UI;

@@ -1,7 +1,7 @@
 /**
  * @file ResourceManager.java
  * @author Lauri Westerholm
- * Contains ResourceManager which handles loading resources etc.
+ * @details Contains ResourceManager which handles loading resources etc.
  */
 
 package games.tunnelescape.tunnelescape.resources;

@@ -1,7 +1,7 @@
 /**
  * @file TreasureObject.java
  * @author Lauri Westerholm
- * Contains TreasureObject which is used to create collectable treasures
+ * @details Contains TreasureObject which is used to create collectable treasures
  */
 
 package games.tunnelescape.tunnelescape.objects;

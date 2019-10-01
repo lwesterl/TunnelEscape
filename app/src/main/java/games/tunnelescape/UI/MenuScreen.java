@@ -1,7 +1,7 @@
 /**
  * @file MenuScreen.java
  * @author Lauri Westerholm
- * Contains MenuScreen which is the main activity
+ * @details Contains MenuScreen which is the main activity
  */
 
 

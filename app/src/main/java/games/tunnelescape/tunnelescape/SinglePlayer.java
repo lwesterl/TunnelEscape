@@ -1,7 +1,7 @@
 /**
  * @file SinglePlayer.java
  * @author Lauri Westerholm
- * Contains SinglePlayer which implements the most of the single player logic
+ * @details Contains SinglePlayer which implements the most of the single player logic
  */
 
 package games.tunnelescape.tunnelescape;

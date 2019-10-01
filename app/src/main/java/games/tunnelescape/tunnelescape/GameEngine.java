@@ -1,7 +1,7 @@
 /**
  * @file GameEngine.java
  * @author Lauri Westerholm
- * Contains GameEngine which is one of the central classes for the game
+ * @details Contains GameEngine which is one of the central classes for the game
  */
 
 package games.tunnelescape.tunnelescape;

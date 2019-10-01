@@ -1,7 +1,7 @@
 /**
  * @file ImageType.java
  * @author Lauri Westerholm
- * Contains ImageType: constants for different images
+ * @details Contains ImageType: constants for different images
  */
 
 package games.tunnelescape.tunnelescape.resources;

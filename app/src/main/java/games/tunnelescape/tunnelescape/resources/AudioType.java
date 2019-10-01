@@ -1,7 +1,7 @@
 /**
  * @file AudioType.java
  * @author Lauri Westerholm
- * Contains AudioType: constants for different audio sources
+ * @details Contains AudioType: constants for different audio sources
  */
 
 package games.tunnelescape.tunnelescape.resources;

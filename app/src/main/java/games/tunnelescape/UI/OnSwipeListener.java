@@ -1,7 +1,7 @@
 /**
  * @file OnSwipeListener.java
  * @author Lauri Westerholm
- * Contains OnSwipeListener which is used for detecting swipe events
+ * @details Contains OnSwipeListener which is used for detecting swipe events
  */
 
 package games.tunnelescape.UI;

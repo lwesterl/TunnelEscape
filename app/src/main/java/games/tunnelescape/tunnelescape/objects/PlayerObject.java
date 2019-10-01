@@ -1,7 +1,7 @@
 /**
  * @file PlayerObject.java
  * @author Lauri Westerholm
- * Contains PlayerObject which represents the player
+ * @details Contains PlayerObject which represents the player
  */
 
 package games.tunnelescape.tunnelescape.objects;

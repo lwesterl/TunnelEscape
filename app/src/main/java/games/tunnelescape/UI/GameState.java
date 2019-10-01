@@ -1,7 +1,7 @@
 /**
  * @file GameState.java
  * @author Lauri Westerholm
- * Contains GameState: enum for different game states
+ * @details Contains GameState: enum for different game states
  */
 
 package games.tunnelescape.UI;

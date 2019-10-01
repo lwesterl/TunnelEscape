@@ -1,7 +1,7 @@
 /**
  * @file GameLoop.java
  * @author Lauri Westerholm
- * Contains GameLoop which creates another thread for the game itself
+ * @details Contains GameLoop which creates another thread for the game itself
  */
 
 package games.tunnelescape.tunnelescape;

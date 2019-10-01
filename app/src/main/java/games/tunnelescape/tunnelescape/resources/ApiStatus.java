@@ -1,7 +1,7 @@
 /**
  * @file ApiStatus.java
  * @author Lauri Westerholm
- * Contains ApiStatus: constants for API return values
+ * @details Contains ApiStatus: constants for API return values
  */
 
 package games.tunnelescape.tunnelescape.resources;

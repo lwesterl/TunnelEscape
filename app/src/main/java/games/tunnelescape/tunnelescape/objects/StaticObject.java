@@ -1,7 +1,7 @@
 /**
  * @file StaticObject.java
  * @author Lauri Westerholm
- * Contains StaticObject which is used to create non-moving, i.e. static, objects
+ * @details Contains StaticObject which is used to create non-moving, i.e. static, objects
  */
 
 package games.tunnelescape.tunnelescape.objects;
