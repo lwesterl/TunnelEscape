@@ -1,4 +1,4 @@
 #! /bin/bash
 echo "This wraps WorldWrapper C++ implementations to java"
 echo
-swig -c++ -java -package com.westerholmgmail.v.lauri.tunnelescape -outdir ../../java/com/westerholmgmail/v/lauri/tunnelescape/ WorldWrapper.i
+swig -c++ -java -package games.tunnelescape.tunnelescape -outdir ../../java/games/tunnelescape/tunnelescape/ WorldWrapper.i
