@@ -3,7 +3,7 @@
     package="games.tunnelescape">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         android:allowBackup="true"
         android:icon="@mipmap/tunnelescape_icon"
         android:logo="@mipmap/tunnelescape_icon"
@@ -16,8 +16,8 @@
         <activity android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden" android:name="games.tunnelescape.UI.MenuScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
     </application>

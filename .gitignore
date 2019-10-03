@@ -11,3 +11,5 @@
 .externalNativeBuild
 /.idea
 doc/
+app/debug/
+app/release/
