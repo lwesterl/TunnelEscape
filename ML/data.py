@@ -30,10 +30,14 @@ class Data:
     '''
     @staticmethod
     def init_ImageNum():
-        with open(Data.ImageNumFile, 'r') as file:
-            imageNumStr = file.read()
-            Data.ImageNum = int(imageNumStr.strip('\n'))
-            print('Starting from image nro: ', Data.ImageNum)
+        try:
+            with open(Data.ImageNumFile, 'r') as file:
+                imageNumStr = file.read()
+                Data.ImageNum = int(imageNumStr.strip('\n'))
+                print('Starting from image nro: ', Data.ImageNum)
+        except FileNotFoundError:
+            # Not yet created
+            Data.ImageNum = 0
 
     '''
     Call this to store ImageNum value to file

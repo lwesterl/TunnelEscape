@@ -52,10 +52,10 @@ Main: create server instance and init tensorflow session. Create also MLManager
 '''
 def main():
     httpd = None
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         Data.init_ImageNum()
         BasicServer.mlManager = MLManager(sess)
-        saver = tf.train.Saver()
+        saver = tf.compat.v1.train.Saver()
         try:
             saver.restore(sess, TensorFlowModelPath)
         except ValueError as e:

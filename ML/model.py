@@ -43,8 +43,8 @@ class Model:
     '''
     def __init_model(self, sess, __learning_rate):
         #self.__states = tf.placeholder(shape=[None, self.__num_states], dtype=tf.float32)
-        self.__states = tf.placeholder(shape=[None, IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_LAYERS], dtype=tf.float32)
-        self.__q_training = tf.placeholder(shape=[None, self.__num_actions], dtype=tf.float32)
+        self.__states = tf.compat.v1.placeholder(shape=[None, IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_LAYERS], dtype=tf.float32)
+        self.__q_training = tf.compat.v1.placeholder(shape=[None, self.__num_actions], dtype=tf.float32)
         # fully-connected layers
         #conv1 = tf.layers.conv2d(self.__states, filters=6, kernel_size=(5, 5), padding='same')
         #pooling = tf.layers.max_pooling2d(conv1, pool_size=(2, 2), strides=2)
@@ -56,14 +56,14 @@ class Model:
         #full1 = tf.layers.(self.__states, 1000, activation=tf.nn.relu)
         #full2 = tf.layers.dense(full1, 100, activation=tf.nn.relu)
         full1 = tf.layers.dense(flatten, 500, activation=tf.nn.relu)'''
-        flatten = tf.layers.flatten(self.__states)
-        full = tf.layers.dense(flatten, 500)
-        full2 = tf.layers.dense(full, 100)
-        full3 = tf.layers.dense(full2, 100)
-        self.__output = tf.layers.dense(full3, self.__num_actions)
+        flatten = tf.compat.v1.layers.flatten(self.__states)
+        full = tf.compat.v1.layers.dense(flatten, 500)
+        full2 = tf.compat.v1.layers.dense(full, 100)
+        full3 = tf.compat.v1.layers.dense(full2, 100)
+        self.__output = tf.compat.v1.layers.dense(full3, self.__num_actions)
         loss = tf.losses.mean_squared_error(self.__q_training, self.__output)
-        self.__optimizer = tf.train.GradientDescentOptimizer(learning_rate=__learning_rate).minimize(loss)
-        init = tf.global_variables_initializer()
+        self.__optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate=__learning_rate).minimize(loss)
+        init = tf.compat.v1.global_variables_initializer()
         sess.run(init)
 
     '''
