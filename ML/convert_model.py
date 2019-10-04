@@ -6,21 +6,21 @@ Script for converting model first to .pb file and then to tensorflow lite model
 Commented section contains code for creating a folder that can be viewed by tensorboard
 '''
 def convert_model():
-    meta_path = 'actual_model/model.ckpt.meta'
+    meta_path = 'model.ckpt.meta'
     output_file = 'output_graph.pb'
     lite_file = 'model_final.lite'
 
 
     with tf.Session() as sess:
         # Restore the graph
-        saver = tf.train.import_meta_graph(meta_path)
+        saver = tf.compat.v1.train.import_meta_graph(meta_path)
 
         # Load weights
-        saver.restore(sess,tf.train.latest_checkpoint('actual_model/'))
+        saver.restore(sess,tf.compat.v1.train.latest_checkpoint(''))
         output_node_names = ['Placeholder', 'flatten/Reshape', 'dense/BiasAdd', 'dense_1/BiasAdd', 'dense_2/BiasAdd', 'dense_3/BiasAdd'] # found by: tensorboard --logdir __tb
 
         # Freeze the graph
-        frozen_graph_def = tf.graph_util.convert_variables_to_constants(
+        frozen_graph_def = tf.compat.v1.graph_util.convert_variables_to_constants(
             sess,
             sess.graph_def,
             output_node_names)

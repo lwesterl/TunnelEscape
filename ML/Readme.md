@@ -25,6 +25,11 @@ Run the local ML server:
 python3 server.py
 ```
 
+## Converting model
+Use _convert_model.py_
+- The model must first exist
+- This needs some tweaking and the convert process has two steps (commenting/uncommenting code required)
+
 ## Note
 * The model uses old tensorflow non-functional API which is basically deprecated (tensorflow v.1)
 * It should be converted to use the Keras API for longevity
