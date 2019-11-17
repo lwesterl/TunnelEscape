@@ -508,13 +508,16 @@ SWIGEXPORT void JNICALL Java_games_tunnelescape_tunnelescape_WorldWrapperModuleJ
 }
 
 
-SWIGEXPORT void JNICALL Java_games_tunnelescape_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setPhysicsEngineThreads(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  unsigned int arg1 ;
+SWIGEXPORT void JNICALL Java_games_tunnelescape_tunnelescape_WorldWrapperModuleJNI_WorldWrapper_1setPhysicsEngineThreads(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  WorldWrapper *arg1 = (WorldWrapper *) 0 ;
+  unsigned int arg2 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = (unsigned int)jarg1; 
-  WorldWrapper::setPhysicsEngineThreads(arg1);
+  (void)jarg1_;
+  arg1 = *(WorldWrapper **)&jarg1; 
+  arg2 = (unsigned int)jarg2; 
+  (arg1)->setPhysicsEngineThreads(arg2);
 }
 
 

@@ -81,6 +81,9 @@ SinglePlayer implements GameScreen {
     public SinglePlayer(Context context) {
         this.context = context;
         worldWrapper = new WorldWrapper();
+        // set how many threads are used in PhysicsEngine, it actually uses one more thread than defined here
+        int threads = Runtime.getRuntime().availableProcessors() > 2 ? 2 : 0;
+        worldWrapper.setPhysicsEngineThreads(threads);
         loadLevel(FileType.getFilePath(SinglePlayer.CurrentLevel));
         gameRunning = true;
     }

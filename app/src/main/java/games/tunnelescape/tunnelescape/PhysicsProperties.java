@@ -76,10 +76,6 @@ public class PhysicsProperties {
     return (cPtr == 0) ? null : new PhysicsProperties(cPtr, false);
   }
 
-  public void setPosition(Vector2f pos) {
-    PhysicsPropertiesModuleJNI.PhysicsProperties_setPosition(swigCPtr, this, Vector2f.getCPtr(pos), pos);
-  }
-
   public void movePosition(Vector2f move) {
     PhysicsPropertiesModuleJNI.PhysicsProperties_movePosition(swigCPtr, this, Vector2f.getCPtr(move), move);
   }
@@ -117,6 +113,10 @@ public class PhysicsProperties {
   public Vector2f getAcceloration() {
     long cPtr = PhysicsPropertiesModuleJNI.PhysicsProperties_acceloration_get(swigCPtr, this);
     return (cPtr == 0) ? null : new Vector2f(cPtr, false);
+  }
+
+  public void setPosition(Vector2f value) {
+    PhysicsPropertiesModuleJNI.PhysicsProperties_position_set(swigCPtr, this, Vector2f.getCPtr(value), value);
   }
 
   public Vector2f getPosition() {

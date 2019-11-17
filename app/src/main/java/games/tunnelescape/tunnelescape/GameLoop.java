@@ -27,8 +27,6 @@ public class GameLoop extends Thread {
     static{
         // set also correct update interval to PhysicsWorld using WorldWrapper
         WorldWrapper.setPhysicsWorldUpdateInterval(1.f / (float) GameLoop.FrameRate);
-        // set how many threads are used in PhysicsEngine, it actually uses one more thread than defined here
-        WorldWrapper.setPhysicsEngineThreads(0);
     }
 
     /**
