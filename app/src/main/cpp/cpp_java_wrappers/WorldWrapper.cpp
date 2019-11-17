@@ -11,9 +11,9 @@ void WorldWrapper::setPhysicsWorldUpdateInterval(float interval) {
    if (interval) PhysicsWorld::setIterationAmount(1.f / interval);
 }
 
-// Static wrapper for setting the amount of threads PhysicsWorld uses */
+// Wrapper for setting the amount of threads PhysicsWorld uses */
 void WorldWrapper::setPhysicsEngineThreads(unsigned threads) {
-  PhysicsWorld::setThreads(threads);
+  physicsWorld->setThreads(threads);
 }
 
 // Init static ID, this should be always updated when new object is added and returned to Java implementations

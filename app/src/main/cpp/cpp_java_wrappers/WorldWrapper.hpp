@@ -98,7 +98,7 @@ class WorldWrapper {
     static void setPhysicsWorldUpdateInterval(float interval);
 
     /**< Set how many threads PhysicsWorld uses, this is just a wrapper for Java */
-    static void setPhysicsEngineThreads(unsigned threads);
+    void setPhysicsEngineThreads(unsigned threads);
 
     /**
       *   @brief Constructor
