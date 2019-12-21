@@ -29,5 +29,4 @@ Use [Android Studio](https://developer.android.com/studio) to build and test the
 
 
 ## Demo
-<a href="https://tunnelescape.games/static/media/TunnelEscape_video.bab32620.mp4" target="_blank"><img src="https://tunnelescape.games/static/media/level3_image1.2b7b368b.png"
-alt="IMAGE ALT TEXT HERE" width="400" height="200" border="10" /></a>
+[<img src="https://img.youtube.com/vi/XJ2IdPs0vd8/hqdefault.jpg" width="40%" height="40%">](https://youtu.be/XJ2IdPs0vd8)
